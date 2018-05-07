@@ -31,11 +31,11 @@ function page_atk()
 /*********************************************************
 *                      COOKIES
 *******************************************************/
-
-function createCookie(nom, value, days) {
-	if (days) {
+// time in seconds
+function createCookie(nom, value, time) {
+	if (time) {
 		var date = new Date();
-		date.setTime(date.getTime()+(days*24*60*60*1000));
+		date.setTime(date.getTime()+(time*1000));
 		var expires = "; expires="+date.toGMTString();
 	}
 	else var expires = "";
