@@ -7,5 +7,12 @@ function update(){
 	if(docSearchPath.split('&')[0] === "?page=attaque" && docSearchPath.split('&')[2] === "lieu=1")
 	{
 		alert(docSearchPath);
+		page_atk();
 	}
+};
+
+
+function page_atk()
+{
+	alert(getElementsByTagName('head')[0]);
 };
