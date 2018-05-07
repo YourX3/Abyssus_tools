@@ -1,9 +1,10 @@
 
+alert("hello !");
 
 update();
 
 
 function update(){
-	sleep(1000;:
+	sleep(1000);
 	alert("hello !");
 };
