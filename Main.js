@@ -14,5 +14,5 @@ function update(){
 
 function page_atk()
 {
-	alert(getElementsByTagName('head')[0]);
+	alert(getElementsByTagName('h1')[0]);
 };
