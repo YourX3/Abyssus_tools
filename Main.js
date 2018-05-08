@@ -21,7 +21,7 @@ function page_atk()
  	var playerName = document.getElementsByTagName('h1')[0].split(' ')[3];
 	alert(document.getElementsByTagName('h1')[0]);
 	
-	var inputTdcTarget = <input type="text" id="targetTdc" name="targetTdc" class="text" value="tdc de la cible" data-nb="0" style="font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; font-size: inherit; line-height: inherit; font-family: inherit; color: rgb(0, 0, 102); text-align: center; outline: none; padding: 5px; width: 120px; cursor: text;">
+	var inputTdcTarget = "<input type=\"text" id=\"targetTdc\" name=\"targetTdc\" class=\"text\" value=\"tdc de la cible\" data-nb=\"0\" style=\"font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; font-size: inherit; line-height: inherit; font-family: inherit; color: rgb(0, 0, 102); text-align: center; outline: none; padding: 5px; width: 120px; cursor: text;\">"
 	document.getElementsByTagName('center')[0].appendChild(inputTdcTarget);
 };
 
