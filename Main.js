@@ -38,11 +38,53 @@ function page_atk()
 			document.getElementsByTagName('h1')[0].textContent = "Tous les floods ont été lancés";
 		}
 		else{
+			putAllUnitsToNull();
 			document.getElementsByName('SJ')[0].value = readCookie("Attaque_"+readCookie("attakNum"));
 			document.getElementsByName('SJ')[0].data = readCookie("Attaque_"+readCookie("attakNum"));
 			createCookie("attakNum", String(Number(readCookie("attakNum"))+1));
 		}
 	}
+}
+
+function putAllUnitsToNull() {
+	document.getElementsByName('SJ')[0].value = 0;
+	document.getElementsByName('SJ')[0].data = 0;
+	
+	document.getElementsByName('S')[0].value = 0;
+	document.getElementsByName('S')[0].data = 0;
+	
+	document.getElementsByName('SC')[0].value = 0;
+	document.getElementsByName('SC')[0].data = 0;
+	
+	document.getElementsByName('R')[0].value = 0;
+	document.getElementsByName('R')[0].data = 0;
+	
+	document.getElementsByName('M')[0].value = 0;
+	document.getElementsByName('M')[0].data = 0;
+	
+	document.getElementsByName('PP')[0].value = 0;
+	document.getElementsByName('PP')[0].data = 0;
+	
+	document.getElementsByName('B')[0].value = 0;
+	document.getElementsByName('B')[0].data = 0;
+	
+	document.getElementsByName('BC')[0].value = 0;
+	document.getElementsByName('BC')[0].data = 0;
+	
+	document.getElementsByName('GRB')[0].value = 0;
+	document.getElementsByName('GRB')[0].data = 0;
+	
+	document.getElementsByName('OQ')[0].value = 0;
+	document.getElementsByName('OQ')[0].data = 0;
+	
+	document.getElementsByName('OQC')[0].value = 0;
+	document.getElementsByName('OQC')[0].data = 0;
+	
+	document.getElementsByName('K')[0].value = 0;
+	document.getElementsByName('K')[0].data = 0;
+	
+	document.getElementsByName('L')[0].value = 0;
+	document.getElementsByName('L')[0].data = 0;
 }
 
 function onClick_buttonFloods(){
@@ -92,6 +134,11 @@ function onClick_buttonFloods(){
             alert((listOfAttaks[i])[1]);
             createCookie((listOfAttaks[i])[0], (listOfAttaks[i])[1], 60);
         }
+		
+		putAllUnitsToNull();
+		document.getElementsByName('SJ')[0].value = readCookie("Attaque_"+readCookie("attakNum"));
+		document.getElementsByName('SJ')[0].data = readCookie("Attaque_"+readCookie("attakNum"));
+		createCookie("attakNum", String(Number(readCookie("attakNum"))+1));
     }
 }
 
