@@ -17,18 +17,32 @@ function update(){
 
 function page_atk()
 {
- 	var playerName = document.getElementsByTagName('h1')[0].textContent.split(' ')[3];
+	if(readCookie("numberOfAttaks") === null){
+		var playerName = document.getElementsByTagName('h1')[0].textContent.split(' ')[3];
 
-	var inputTdcTarget = document.createElement('none');
-    var input_innerHTML = '<input type="text" id="targetTM" name="targetTM" class="text" value="TM de ' + playerName + '" data-nb="0" style="font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; font-size: inherit; line-height: inherit; font-family: inherit; color: rgb(0, 0, 102); text-align: center; outline: none; padding: 5px; width: 120px; cursor: text;">';
-    inputTdcTarget.innerHTML =  input_innerHTML;
-    inputTdcTarget.value += "playerName";
-    document.getElementsByTagName('center')[0].insertBefore(inputTdcTarget, document.getElementsByTagName('h1')[0]);
-    
+		var inputTdcTarget = document.createElement('none');
+		var input_innerHTML = '<input type="text" id="targetTM" name="targetTM" class="text" value="TM de ' + playerName + '" data-nb="0" style="font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; font-size: inherit; line-height: inherit; font-family: inherit; color: rgb(0, 0, 102); text-align: center; outline: none; padding: 5px; width: 120px; cursor: text;">';
+		inputTdcTarget.innerHTML =  input_innerHTML;
+		inputTdcTarget.value += "playerName";
+		document.getElementsByTagName('center')[0].insertBefore(inputTdcTarget, document.getElementsByTagName('h1')[0]);
 
-    var but_launchFloods = document.createElement('none');
-    but_launchFloods.innerHTML = '<button onclick="onClick_buttonFloods()">Lancer les floods</button>';
-    document.getElementsByTagName('center')[0].insertBefore(but_launchFloods, document.getElementsByTagName('h1')[0]);
+
+		var but_launchFloods = document.createElement('none');
+		but_launchFloods.innerHTML = '<button onclick="onClick_buttonFloods()">Préparer les floods</button>';
+		document.getElementsByTagName('center')[0].insertBefore(but_launchFloods, document.getElementsByTagName('h1')[0]);
+	}
+	else{
+		if(Number(readCookie("numberOfAttaks")) > Number(readCookie("attakNum"))){
+			deleteCookie("numberOfAttaks");
+			deleteCookie("attakNum");
+			document.getElementsByTagName('h1')[0].textContent = "Tous les floods ont été lancés";
+		}
+		else{
+			document.getElementsByName('SJ')[0].value = readCookie("Attaque_"+readCookie("attakNum"));
+			document.getElementsByName('SJ')[0].data = readCookie("Attaque_"+readCookie("attakNum"));
+			createCookie("attakNum", String(Number(readCookie("attakNum"))+1));
+		}
+	}
 }
 
 function onClick_buttonFloods(){
@@ -73,7 +87,7 @@ function onClick_buttonFloods(){
         }
 
         createCookie("numberOfAttaks", listOfAttaks.lengh, 60);
-        createCookie("attakNum", 0, 60);
+        createCookie("attakNum", 1, 60);
         for(var i=0; i < listOfAttaks.lengh; ++i){
             alert((listOfAttaks[i])[1]);
             createCookie((listOfAttaks[i])[0], (listOfAttaks[i])[1], 60);
@@ -104,4 +118,8 @@ function readCookie(nom) {
 		if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
 	}
 	return null;
+}
+
+function deleteCookie(nom){
+	createCookie(nom,"",-1);
 }
