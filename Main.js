@@ -102,20 +102,20 @@ function onClick_buttonFloods(){
 
             if(nbRem >= twentyPercents){
                 if(targetTM-twentyPercents > (playerTM+twentyPercents)/2){
-                    listOfAttaks.push(["Attaque_"+String(listOfAttaks.lengh+1), +String(twentyPercents)]);
+                    listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), +String(twentyPercents)]);
                     nbRem -= twentyPercents;
                     targetTM -= twentyPercents;
                     playerTM += twentyPercents;
                 }
                 else if(!lastWasNotTwenty){
-                    listOfAttaks.push(["Attaque_"+String(listOfAttaks.lengh+1), +String(playerTM / 2 - targetTM)]);
+                    listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), +String(playerTM / 2 - targetTM)]);
                     nbRem -= playerTM / 2 - targetTM;
                     lastWasNotTwenty = true;
                     targetTM -= playerTM / 2 - targetTM;
                     playerTM += playerTM / 2 - targetTM;
                 }
                 else{
-                    listOfAttaks.push(["Attaque_"+String(listOfAttaks.lengh+1), +String(twentyPercents)]);
+                    listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), +String(twentyPercents)]);
                     nbRem -= twentyPercents;
                     _end = true;
                     targetTM -= twentyPercents;
@@ -123,14 +123,14 @@ function onClick_buttonFloods(){
                 }
             }
             else{
-                listOfAttaks.push(["Attaque_"+String(listOfAttaks.lengh+1), +String(nbRem)]);
+                listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), +String(nbRem)]);
                 _end = true;
             }
         }
 
-        createCookie("numberOfAttaks", listOfAttaks.lengh, 60);
+        createCookie("numberOfAttaks", listOfAttaks.length, 60);
         createCookie("attakNum", 1, 60);
-        for(var i=0; i < listOfAttaks.lengh; ++i){
+        for(var i=0; i < listOfAttaks.length; ++i){
             alert((listOfAttaks[i])[1]);
             createCookie((listOfAttaks[i])[0], (listOfAttaks[i])[1], 60);
         }
