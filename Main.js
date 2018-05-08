@@ -108,7 +108,7 @@ function onClick_buttonFloods(){
                     playerTM += twentyPercents;
                 }
                 else if(!lastWasNotTwenty){
-                    listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), +String(playerTM / 2 - targetTM)]);
+                    listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), +String(targetTM - playerTM / 2)]);
                     nbRem -= playerTM / 2 - targetTM;
                     lastWasNotTwenty = true;
                     targetTM -= playerTM / 2 - targetTM;
@@ -135,10 +135,10 @@ function onClick_buttonFloods(){
             createCookie((listOfAttaks[i])[0], (listOfAttaks[i])[1], 60);
         }
 		
-		putAllUnitsToNull();
-		document.getElementsByName('SJ')[0].value = readCookie("Attaque_"+readCookie("attakNum"));
-		document.getElementsByName('SJ')[0].data = readCookie("Attaque_"+readCookie("attakNum"));
-		createCookie("attakNum", String(Number(readCookie("attakNum"))+1));
+	putAllUnitsToNull();
+	document.getElementsByName('SJ')[0].value = readCookie("Attaque_"+readCookie("attakNum"));
+	document.getElementsByName('SJ')[0].data = readCookie("Attaque_"+readCookie("attakNum"));
+	createCookie("attakNum", String(Number(readCookie("attakNum"))+1), 60);
     }
 }
 
