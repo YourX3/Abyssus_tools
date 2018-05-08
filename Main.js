@@ -45,7 +45,7 @@ function onClick_buttonFloods(){
             var twentyPercents = Math.round(targetTM*20/100);
 
             if(nbRem >= twentyPercents){
-                if(targetTM-twentyPercents > playerTM+twentyPercents/2){
+                if(targetTM-twentyPercents > (playerTM+twentyPercents)/2){
                     listOfAttaks.push(["Attaque_"+String(listOfAttaks.lengh+1), +String(twentyPercents)]);
                     nbRem -= twentyPercents;
                     targetTM -= twentyPercents;
