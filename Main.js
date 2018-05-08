@@ -34,7 +34,7 @@ function page_atk()
 function onClick_buttonFloods(){
 
     var targetTM = Number(document.getElementsByName('targetTM')[0].value);
-    var nbRem = Number(document.getElementsByName('SJ')[0].value);
+    var nbRem = Number(document.getElementsByName('SJ')[0].value.replace(/\s/g, ''));
     var playerTM = Number(document.getElementsByTagName('span')[7].childNodes[1].data.replace(/\s/g, ''));
 
     if(nbRem > 0 && !isNaN(targetTM)){
@@ -48,16 +48,22 @@ function onClick_buttonFloods(){
                 if(targetTM-twentyPercents > playerTM+twentyPercents/2){
                     listOfAttaks.push(["Attaque_"+String(listOfAttaks.lengh+1), +String(twentyPercents)]);
                     nbRem -= twentyPercents;
+                    targetTM -= twentyPercents;
+                    playerTM += twentyPercents;
                 }
                 else if(!lastWasNotTwenty){
                     listOfAttaks.push(["Attaque_"+String(listOfAttaks.lengh+1), +String(playerTM / 2 - targetTM)]);
                     nbRem -= playerTM / 2 - targetTM;
                     lastWasNotTwenty = true;
+                    targetTM -= playerTM / 2 - targetTM;
+                    playerTM += playerTM / 2 - targetTM;
                 }
                 else{
                     listOfAttaks.push(["Attaque_"+String(listOfAttaks.lengh+1), +String(twentyPercents)]);
                     nbRem -= twentyPercents;
                     _end = true;
+                    targetTM -= twentyPercents;
+                    playerTM += twentyPercents;
                 }
             }
             else{
@@ -98,8 +104,4 @@ function readCookie(nom) {
 		if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
 	}
 	return null;
-}
-
-function removeCookie(nom) {
-	createCookie(nom,"",-1);
 }
