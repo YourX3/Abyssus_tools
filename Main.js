@@ -41,7 +41,7 @@ function page_atk()
 			putAllUnitsToNull();
 			document.getElementsByName('SJ')[0].value = readCookie("Attaque_"+readCookie("attakNum"));
 			document.getElementsByName('SJ')[0].data = readCookie("Attaque_"+readCookie("attakNum"));
-			createCookie("attakNum", String(Number(readCookie("attakNum"))+1));
+			createCookie("attakNum", String(Number(readCookie("attakNum"))+1), 60);
 		}
 	}
 }
@@ -128,8 +128,8 @@ function onClick_buttonFloods(){
             }
         }
 
-        createCookie("numberOfAttaks", listOfAttaks.length, 60);
-        createCookie("attakNum", 1, 60);
+        createCookie("numberOfAttaks", String(listOfAttaks.length), 60);
+        createCookie("attakNum", "1", 60);
         for(var i=0; i < listOfAttaks.length; ++i){
             alert((listOfAttaks[i])[1]);
             createCookie((listOfAttaks[i])[0], (listOfAttaks[i])[1], 60);
