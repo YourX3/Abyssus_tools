@@ -153,7 +153,11 @@ function onClick_buttonFloods(){
 
 function armyPage(){
 	var but_replaceArmy = document.createElement('none');
-	but_replaceArmy.innerHTML = '<button onclick="onClickButtonReplaceArmy()">Préparer les floods</button>';
+	but_replaceArmy.innerHTML = '<text>                      </text>';
+	document.getElementsByTagName('center')[0].insertBefore(but_replaceArmy, document.getElementsByTagName('table')[1]);
+	
+	var but_replaceArmy = document.createElement('none');
+	but_replaceArmy.innerHTML = '<button onclick="onClickButtonReplaceArmy()">Placer anti-sonde</button>';
 	document.getElementsByTagName('center')[0].insertBefore(but_replaceArmy, document.getElementsByTagName('table')[1]);
 }
 
