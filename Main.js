@@ -1,4 +1,4 @@
-// Last update : 19 H
+// Last update : 19h 30 H
 
 init();
 
