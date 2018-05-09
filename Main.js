@@ -35,7 +35,7 @@ function page_atk()
 		document.getElementsByTagName('center')[0].insertBefore(but_launchFloods, document.getElementsByTagName('h1')[0]);
 	}
 	else{
-		if(Number(readCookie("numberOfAttaks")) > Number(readCookie("attakNum"))){
+		if(Number(readCookie("numberOfAttaks")) < Number(readCookie("attakNum"))){
 			deleteCookie("numberOfAttaks");
 			deleteCookie("attakNum");
 			document.getElementsByTagName('h1')[0].textContent = "Tous les floods ont été lancés";
@@ -138,10 +138,10 @@ function onClick_buttonFloods(){
             createCookie((listOfAttaks[i])[0], (listOfAttaks[i])[1], 60);
         }
 		
-		putAllUnitsToNull();
-		document.getElementsByName('SJ')[0].value = readCookie("Attaque_"+readCookie("attakNum"));
-		document.getElementsByName('SJ')[0].data = readCookie("Attaque_"+readCookie("attakNum"));
-		createCookie("attakNum", String(Number(readCookie("attakNum"))+1), 60);
+	putAllUnitsToNull();
+	document.getElementsByName('SJ')[0].value = readCookie("Attaque_"+readCookie("attakNum"));
+	document.getElementsByName('SJ')[0].data = readCookie("Attaque_"+readCookie("attakNum"));
+	createCookie("attakNum", String(Number(readCookie("attakNum"))+1), 60);
     }
 }
 
