@@ -3,7 +3,7 @@
 // Desc        : Little tools for Abyssus Game("https://s1.abyssus.games/jeu.php")
 // Autor       : YourX3(youri03 in the game)
 // Creation    : 04/05/2018
-// Last update : 09/05/2018 19h 55
+// Last update : 09/05/2018 20h 22
 
 // Version     : 0.1.5
 
@@ -175,7 +175,7 @@ function onClick_buttonFloods(){
 
 function armyPage(){
 	var but_replaceArmy = document.createElement('none');
-	but_replaceArmy.innerHTML = '<text>                      </text>';
+	but_replaceArmy.innerHTML = '<text>/ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . </text>';
 	document.getElementsByTagName('center')[0].insertBefore(but_replaceArmy, document.getElementsByTagName('table')[1]);
 	
 	var but_replaceArmy = document.createElement('none');
