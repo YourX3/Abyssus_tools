@@ -34,7 +34,7 @@ function page_atk()
 		but_launchFloods.innerHTML = '<button onclick="onClick_buttonFloods()">Préparer les floods</button>';
 		document.getElementsByTagName('center')[0].insertBefore(but_launchFloods, document.getElementsByTagName('h1')[0]);
 	}
-	else{
+	else if(document.getElementsByTagName('h1').length > 0){
 		if(Number(readCookie("numberOfAttaks")) < Number(readCookie("attakNum"))){
 			deleteCookie("numberOfAttaks");
 			deleteCookie("attakNum");
