@@ -1,17 +1,28 @@
-// Last update : 19h 30 H
+
+// Title       : Abyssus toolz
+// Desc        : Little tools for Abyssus Game("https://s1.abyssus.games/jeu.php")
+// Autor       : YourX3(youri03 in the game)
+// Creation    : 04/05/2018
+// Last update : 09/05/2018 19h 30
+
+// Version     : 0.1.5
+
+
 
 init();
 
-
+// fonction appelée lorsque la page est chargée(sur https://s1.abyssus.games/*)
 function init(){
+	// fin de l'URL : sur https://s1.abyssus.games/jeu.php?page=armee : ?page=armee
 	var docSearchPath = document.location.search;
 
+	// si la page est la Page d'attaque sur le TM
 	if(docSearchPath.split('&')[0] === "?page=attaque" && docSearchPath.split('&')[2] === "lieu=1")
 		page_atk();
+	// si la page est la page d'armée
 	else if(docSearchPath === "?page=armee")
 		armyPage();
 };
-
 
 /************************************************************
 *                          PAGES
@@ -22,16 +33,19 @@ function init(){
 
 function page_atk()
 {
+	// Si aucun cookie au nom "numberOfAttaks" n'a été trouvé -> pas de floods lancés
 	if(readCookie("numberOfAttaks") === null){
-		var playerName = document.getElementsByTagName('h1')[0].textContent.split(' ')[3];
-
+		// nom de la cible
+		var targetName = document.getElementsByTagName('h1')[0].textContent.split(' ')[3];
+		
+		// case où entrer le TM la cible
 		var inputTdcTarget = document.createElement('none');
-		var input_innerHTML = '<input type="text" id="targetTM" name="targetTM" class="text" value="TM de ' + playerName + '" data-nb="0" style="font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; font-size: inherit; line-height: inherit; font-family: inherit; color: rgb(0, 0, 102); text-align: center; outline: none; padding: 5px; width: 120px; cursor: text;">';
+		var input_innerHTML = '<input type="text" id="targetTM" name="targetTM" class="text" value="TM de ' + targetName + '" data-nb="0" style="font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; font-size: inherit; line-height: inherit; font-family: inherit; color: rgb(0, 0, 102); text-align: center; outline: none; padding: 5px; width: 120px; cursor: text;">';
 		inputTdcTarget.innerHTML =  input_innerHTML;
 		inputTdcTarget.value += "playerName";
 		document.getElementsByTagName('center')[0].insertBefore(inputTdcTarget, document.getElementsByTagName('h1')[0]);
 
-
+		// Bouton qui prépare les floods
 		var but_launchFloods = document.createElement('none');
 		but_launchFloods.innerHTML = '<button onclick="onClick_buttonFloods()">Préparer les floods</button>';
 		document.getElementsByTagName('center')[0].insertBefore(but_launchFloods, document.getElementsByTagName('h1')[0]);
@@ -94,14 +108,15 @@ function putAllUnitsToNull() {
 
 function onClick_buttonFloods(){
 
-    var targetTM = Number(document.getElementsByName('targetTM')[0].value.replace(/\s/g, ''));
-    var nbRem = Number(document.getElementsByName('SJ')[0].value.replace(/\s/g, ''));
-    var playerTM = Number(document.getElementsByTagName('span')[7].childNodes[1].data.replace(/\s/g, ''));
+    var targetTM = Number(removeSpaces(document.getElementsByName('targetTM')[0].value));
+    var nbRem = Number(removeSpaces(document.getElementsByName('SJ')[0].value));
+    var playerTM = Number(removeSpaces(document.getElementsByTagName('span')[7].childNodes[1].data));
 
     if(nbRem > 0 && !isNaN(targetTM)){
         var listOfAttaks = [];
         var lastWasNotTwenty = false;
         var _end = false;
+	var totalFloods = 0;
         while(!_end){
             var twentyPercents = Math.round(targetTM*20/100);
 
@@ -111,6 +126,7 @@ function onClick_buttonFloods(){
                     nbRem -= twentyPercents;
                     targetTM -= twentyPercents;
                     playerTM += twentyPercents;
+					totalFloods += twentyPercents;
                 }
                 else if(!lastWasNotTwenty){
                     listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), +String(targetTM - playerTM / 2)]);
@@ -118,6 +134,7 @@ function onClick_buttonFloods(){
                     lastWasNotTwenty = true;
                     targetTM -= targetTM - playerTM / 2;
                     playerTM += targetTM - playerTM / 2;
+					totalFloods += targetTM - playerTM / 2;
                 }
                 else{
                     listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), +String(twentyPercents)]);
@@ -125,20 +142,25 @@ function onClick_buttonFloods(){
                     _end = true;
                     targetTM -= twentyPercents;
                     playerTM += twentyPercents;
+					totalFloods += twentyPercents;
                 }
             }
             else{
                 listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), +String(nbRem)]);
+				totalFloods += nbRem;
                 _end = true;
             }
         }
 
         createCookie("numberOfAttaks", String(listOfAttaks.length), 60);
         createCookie("attakNum", "1", 60);
+	var textToAlert = "Nb d'attaques : " + String(listOfAttaks.length) + "\n";
         for(var i=0; i < listOfAttaks.length; ++i){
-            alert((listOfAttaks[i])[1]);
-            createCookie((listOfAttaks[i])[0], (listOfAttaks[i])[1], 60);
+            textToAlert += "Attaque " + String((listOfAttaks[i])[0]) + ": " + String((listOfAttaks[i])[1]) + "\n";
+            createCookie(String((listOfAttaks[i])[0]), String((listOfAttaks[i])[1]), 60);
         }
+	textToAlert += String(totalFloods);
+	alert(textToAlert);
 		
 	putAllUnitsToNull();
 	document.getElementsByName('SJ')[0].value = readCookie("Attaque_"+readCookie("attakNum"));
@@ -166,12 +188,26 @@ function onClickButtonReplaceArmy(){
 		document.location.href='jeu.php?page=armee';
 	});
 }
-	
+
+
+
+//////////////////////////////////////////////////////////////
+//                        UTILS                            //
+////////////////////////////////////////////////////////////
+
+
+// supprime les espaces d'une chaîne de charactères
+function removeSpaces(string){
+	return string.replace(/\s/g, '');
+}
+
+
 
 /*********************************************************
 *                      COOKIES
 *******************************************************/
-// time in seconds
+
+// temps en secondes
 function createCookie(nom, value, time) {
 	if (time) {
 		var date = new Date();
