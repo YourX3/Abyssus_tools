@@ -150,7 +150,7 @@ function onClick_buttonFloods(){
 //                        PAGE ARMEE                     //
 
 function armyPage(){
-	var domeRem = doument.getElementsById("SJ")[1];
+	var domeRem = document.getElementsById("SJ")[1];
 	alert(domeRem.value);
 }
 
