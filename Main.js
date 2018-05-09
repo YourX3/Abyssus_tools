@@ -150,10 +150,17 @@ function onClick_buttonFloods(){
 //                        PAGE ARMEE                     //
 
 function armyPage(){
-	var domeRem = document.getElementsById("SJ")[1];
-	alert(domeRem.value);
+	var but_replaceArmy = document.createElement('none');
+	but_replaceArmy.innerHTML = '<button onclick="onClickButtonReplaceArmy()">Préparer les floods</button>';
+	document.getElementsByTagName('center')[0].insertBefore(but_replaceArmy, document.getElementsByTagName('table')[1]);
 }
 
+function onClickButtonReplaceArmy(){
+	$.post('ajax/deplacement_armee.php', {type:'SJ_dome', nb:10000}, function(data){
+		document.location.href='jeu.php?page=armee';
+	});
+}
+	
 
 /*********************************************************
 *                      COOKIES
