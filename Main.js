@@ -1,19 +1,22 @@
-update();
+init();
 
 
-function update(){
+function init(){
 	var docSearchPath = document.location.search;
 
 	if(docSearchPath.split('&')[0] === "?page=attaque" && docSearchPath.split('&')[2] === "lieu=1")
-	{
 		page_atk();
-	}
+	else if(docSearchPath === "?page=armee")
+		armyPage();
 };
 
 
 /************************************************************
 *                          PAGES
 ***********************************************************/
+
+////////////////////////////////////////////////////////////
+//                        PAGE ATTAQUE                    //
 
 function page_atk()
 {
@@ -135,12 +138,22 @@ function onClick_buttonFloods(){
             createCookie((listOfAttaks[i])[0], (listOfAttaks[i])[1], 60);
         }
 		
-	putAllUnitsToNull();
-	document.getElementsByName('SJ')[0].value = readCookie("Attaque_"+readCookie("attakNum"));
-	document.getElementsByName('SJ')[0].data = readCookie("Attaque_"+readCookie("attakNum"));
-	createCookie("attakNum", String(Number(readCookie("attakNum"))+1), 60);
+		putAllUnitsToNull();
+		document.getElementsByName('SJ')[0].value = readCookie("Attaque_"+readCookie("attakNum"));
+		document.getElementsByName('SJ')[0].data = readCookie("Attaque_"+readCookie("attakNum"));
+		createCookie("attakNum", String(Number(readCookie("attakNum"))+1), 60);
     }
 }
+
+
+////////////////////////////////////////////////////////////
+//                        PAGE ARMEE                     //
+
+function armyPage(){
+	var domeRem = doument.getElementsById("SJ")[1];
+	alert(domeRem.value);
+}
+
 
 /*********************************************************
 *                      COOKIES
