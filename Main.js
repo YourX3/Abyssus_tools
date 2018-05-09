@@ -174,17 +174,106 @@ function onClick_buttonFloods(){
 //                        PAGE ARMEE                     //
 
 function armyPage(){
-	var but_replaceArmy = document.createElement('none');
-	but_replaceArmy.innerHTML = '<text>/ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . </text>';
-	document.getElementsByTagName('center')[0].insertBefore(but_replaceArmy, document.getElementsByTagName('table')[1]);
+	var alignText = document.createElement('none');
+	alignText.innerHTML = '<text>/ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . </text>';
+	document.getElementsByTagName('center')[0].insertBefore(alignText, document.getElementsByTagName('table')[1]);
 	
 	var but_replaceArmy = document.createElement('none');
 	but_replaceArmy.innerHTML = '<button onclick="onClickButtonReplaceArmy()">Placer anti-sonde</button>';
 	document.getElementsByTagName('center')[0].insertBefore(but_replaceArmy, document.getElementsByTagName('table')[1]);
+	
+	var antiSondeText = document.createElement('none');
+	antiSondeText.innerHTML = '<text> __ Anti sonde : </text>';
+	document.getElementsByTagName('center')[0].insertBefore(antiSondeText, document.getElementsByTagName('table')[1]);
+	
+	var antiSondeInput = document.createElement('none');
+	antiSondeInput.innerHTML = '<input type="text" name="antiSondeInput" class="text" value="" style="font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; font-size: inherit; line-height: inherit; font-family: inherit; color: rgb(0, 0, 102); text-align: center; outline: none; padding: 5px; width: 120px; cursor: text;">';
+	
+	if(readCookie("antiSondeValue") === null){
+		antiSondeInput.value = "10000 rem";
+	}
+	else{
+		antiSondeInput.value = readCookie("antiSondeValue");
+	}
+	$(antiSondeInput).on('focusout', function(){
+	    onFocusOut_antiSondeInput();
+	});
+	document.getElementsByTagName('center')[0].insertBefore(antiSondeInput, document.getElementsByTagName('table')[1]);
+}
+
+function onFocusOut_antiSondeInput(){
+	var antiSondeInput_Value = document.getElementByName("antiSondeInput").value;
+	if(!rightAntiSonde(antiSondeInput_Value))
+		antiSondeInput_Value = "10000 rem";
+	createCookie("antiSondeValue", antiSondeInput_Value, 30*24*86400);
+}
+
+function rightAntiSonde(antiSonde){
+	
+	if(antiSonde.split(' ').length = 2)
+	{
+		var antiSondeType = antiSonde.split(' ')[1].toUpperCase();
+		if(antiSondeType === "REM" || antiSondeType === "PR" || antiSondeType === "R" || antiSondeType === "GR" || antiSondeType === "RP" || antiSondeType === "M" || antiSondeType === "ME" || antiSondeType === "RM" || antiSondeType === "RL" || antiSondeType === "RLV" || antiSondeType === "RB" || antiSondeType === "GRB" ||  antiSondeType === "K" ||  antiSondeType === "KI") 
+		{
+			return true;
+		}
+	}
+	return false;
 }
 
 function onClickButtonReplaceArmy(){
-	$.post('ajax/deplacement_armee.php', {type:'SJ_dome', nb:10000}, function(data){
+	var antiSondeInput_Value = document.getElementByName("antiSondeInput").value;
+	var type;
+	var nb = Number(removeSpaces(antiSondeInput_Value.split(' ')[0]));
+	
+	switch(antiSondeInput_Value.split(' ')[1].toUpperCase())
+	{
+		case 'REM':
+			type = "SJ";
+			break;
+		case 'PR':
+			type = "S";
+			break;
+		case 'R':
+			type = "SC";
+			break;
+		case 'GR':
+			type = "R";
+			break;
+		case 'RP':
+			type = "RB";
+			break;
+		case 'M':
+			type = "M";
+			break;
+		case 'ME':
+			type = "PP";
+			break;
+		case 'RM':
+			type = "B";
+			break;
+		case 'RL':
+			type = "BC";
+			break;
+		case 'RLV':
+			type = "GRB";
+			break;
+		case 'RB':
+			type = "OQ";
+			break;
+		case 'GRB':
+			type = "OQC";
+			break;
+		case 'K':
+			type = "K";
+			break;
+		case 'KI':
+			type = "L";
+			break;
+	}
+	type += "_dome"
+	
+	$.post('ajax/deplacement_armee.php', {type:type, nb:nb}, function(data){
 		document.location.href='jeu.php?page=armee';
 	});
 }
