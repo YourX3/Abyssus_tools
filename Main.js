@@ -89,7 +89,7 @@ function putAllUnitsToNull() {
 
 function onClick_buttonFloods(){
 
-    var targetTM = Number(document.getElementsByName('targetTM')[0].value);
+    var targetTM = Number(document.getElementsByName('targetTM')[0].value.replace(/\s/g, ''));
     var nbRem = Number(document.getElementsByName('SJ')[0].value.replace(/\s/g, ''));
     var playerTM = Number(document.getElementsByTagName('span')[7].childNodes[1].data.replace(/\s/g, ''));
 
@@ -111,8 +111,8 @@ function onClick_buttonFloods(){
                     listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), +String(targetTM - playerTM / 2)]);
                     nbRem -= playerTM / 2 - targetTM;
                     lastWasNotTwenty = true;
-                    targetTM -= playerTM / 2 - targetTM;
-                    playerTM += playerTM / 2 - targetTM;
+                    targetTM -= targetTM - playerTM / 2;
+                    playerTM += targetTM - playerTM / 2;
                 }
                 else{
                     listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), +String(twentyPercents)]);
