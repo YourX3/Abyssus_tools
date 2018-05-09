@@ -3,7 +3,7 @@
 // Desc        : Little tools for Abyssus Game("https://s1.abyssus.games/jeu.php")
 // Autor       : YourX3(youri03 in the game)
 // Creation    : 04/05/2018
-// Last update : 09/05/2018 19h 30
+// Last update : 09/05/2018 19h 55
 
 // Version     : 0.1.5
 
