@@ -3,7 +3,7 @@
 // Desc        : Little tools for Abyssus Game("https://s1.abyssus.games/jeu.php")
 // Autor       : YourX3(youri03 in the game)
 // Creation    : 04/05/2018
-// Last update : 09/05/2018 20h 22
+// Last update : 09/05/2018 22h 22
 
 // Version     : 0.1.5
 
@@ -107,7 +107,6 @@ function putAllUnitsToNull() {
 }
 
 function onClick_buttonFloods(){
-
     var targetTM = Number(removeSpaces(document.getElementsByName('targetTM')[0].value));
     var nbRem = Number(removeSpaces(document.getElementsByName('SJ')[0].value));
     var playerTM = Number(removeSpaces(document.getElementsByTagName('span')[7].childNodes[1].data));
@@ -159,7 +158,7 @@ function onClick_buttonFloods(){
             textToAlert += "Attaque " + String((listOfAttaks[i])[0]) + ": " + String((listOfAttaks[i])[1]) + "\n";
             createCookie(String((listOfAttaks[i])[0]), String((listOfAttaks[i])[1]), 60);
         }
-	textToAlert += String(totalFloods);
+	textToAlert += "Total: " + String(totalFloods);
 	alert(textToAlert);
 		
 	putAllUnitsToNull();
