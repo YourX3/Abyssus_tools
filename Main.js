@@ -3,7 +3,7 @@
 // Desc        : Little tools for Abyssus Game("https://s1.abyssus.games/jeu.php")
 // Autor       : YourX3(youri03 in the game)
 // Creation    : 04/05/2018
-// Last update : 10/05/2018  16h20
+// Last update : 10/05/2018  17h48
 
 // Version     : 0.1.5
 
@@ -20,7 +20,7 @@ function init(){
 	if(docSearchPath.split('&')[0] === "?page=attaque" && docSearchPath.split('&')[2] === "lieu=1")
 		page_atk();
 	// si la page est la page d'armée
-	else if(docSearchPath === "?page=armee")
+	else if(docSearchPath === "?page=armee" || docSearchPath === "page=armee&action=barriere")
 		armyPage();
 };
 
