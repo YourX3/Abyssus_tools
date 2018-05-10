@@ -185,15 +185,18 @@ function armyPage(){
 	antiSondeText.innerHTML = '<text> __ Anti sonde : </text>';
 	document.getElementsByTagName('center')[0].insertBefore(antiSondeText, document.getElementsByTagName('table')[1]);
 	
-	var antiSondeInput = document.createElement('none');
-	antiSondeInput.innerHTML = '<input type="text" name="antiSondeInput" class="text" value="" style="font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; font-size: inherit; line-height: inherit; font-family: inherit; color: rgb(0, 0, 102); text-align: center; outline: none; padding: 5px; width: 120px; cursor: text;">';
-	
+	var antiSondeValue;
 	if(readCookie("antiSondeValue") === null){
-		antiSondeInput.value = "10000 rem";
+		antiSondeValue.value = "10000 rem";
 	}
 	else{
-		antiSondeInput.value = readCookie("antiSondeValue");
+		antiSondeValue.value = readCookie("antiSondeValue");
 	}
+	
+	var antiSondeInput = document.createElement('none');
+	antiSondeInput.innerHTML = '<input type="text" name="antiSondeInput" class="text" value="' + antiSondeValue + '" style="font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; font-size: inherit; line-height: inherit; font-family: inherit; color: rgb(0, 0, 102); text-align: center; outline: none; padding: 5px; width: 120px; cursor: text;">';
+	
+	
 	$(antiSondeInput).on('focusout', function(){
 	    onFocusOut_antiSondeInput();
 	});
