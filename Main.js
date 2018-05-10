@@ -291,7 +291,7 @@ function rightAntiSonde(antiSonde){
 
 function onClickButtonReplaceArmy(){
 	createCookie("armyReplacing", "1", 5);
-	$.post('ajax/deplacement_armee.php', {type:type, nb:nb}, function(data){
+	$.post('ajax/deplacement_armee.php', function(data){
 		document.location.href='jeu.php?page=armee&action=barriere';
 	});
 	
