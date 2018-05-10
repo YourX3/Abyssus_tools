@@ -3,7 +3,7 @@
 // Desc        : Little tools for Abyssus Game("https://s1.abyssus.games/jeu.php")
 // Autor       : YourX3(youri03 in the game)
 // Creation    : 04/05/2018
-// Last update : 09/05/2018 22h 22
+// Last update : 10/05/2018  12h03
 
 // Version     : 0.1.5
 
@@ -201,7 +201,7 @@ function armyPage(){
 }
 
 function onFocusOut_antiSondeInput(){
-	var antiSondeInput_Value = document.getElementByName("antiSondeInput").value;
+	var antiSondeInput_Value = document.getElementsByName("antiSondeInput")[0].value;
 	if(!rightAntiSonde(antiSondeInput_Value))
 		antiSondeInput_Value = "10000 rem";
 	createCookie("antiSondeValue", antiSondeInput_Value, 30*24*86400);
@@ -221,7 +221,7 @@ function rightAntiSonde(antiSonde){
 }
 
 function onClickButtonReplaceArmy(){
-	var antiSondeInput_Value = document.getElementByName("antiSondeInput").value;
+	var antiSondeInput_Value = document.getElementsByName("antiSondeInput")[0].value;
 	var type;
 	var nb = Number(removeSpaces(antiSondeInput_Value.split(' ')[0]));
 	
