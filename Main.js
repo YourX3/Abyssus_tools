@@ -290,10 +290,9 @@ function rightAntiSonde(antiSonde){
 }
 
 function onClickButtonReplaceArmy(){
-	
 	createCookie("armyReplacing", "1", 5);
 	$.post('ajax/deplacement_armee.php', {type:type, nb:nb}, function(data){
-		document.location.href='jeu.php?page=armee&action=barriere;
+		document.location.href='jeu.php?page=armee&action=barriere';
 	});
 	
 }
