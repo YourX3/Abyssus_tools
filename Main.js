@@ -136,14 +136,14 @@ function onClick_buttonFloods(){
 
             if(nbRem >= twentyPercents){
                 if(targetTM-twentyPercents > (playerTM+twentyPercents)/2){
-			listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), +String(twentyPercents)]);
+			listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), String(twentyPercents)]);
 			nbRem -= twentyPercents;
 			targetTM -= twentyPercents;
 			playerTM += twentyPercents;
 			totalFloods += twentyPercents;
                 }
                 else if(!lastWasNotTwenty){
-			listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), +String(Math.round(targetTM - playerTM / 2))]);
+			listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), String(Math.round(targetTM - playerTM / 2))]);
 			nbRem -= Math.round(targetTM - playerTM / 2);
 			lastWasNotTwenty = true;
 			targetTM -= Math.round(targetTM - playerTM / 2);
@@ -152,10 +152,10 @@ function onClick_buttonFloods(){
                 }
                 else{
 			if(ghost){
-				listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), +String(twentyPercents)]);
+				listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), String(twentyPercents)]);
 			}
 			else{
-				listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), + "Ghost")]);
+				listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), "Ghost"]);
 			}
 			nbRem -= twentyPercents;
 			_end = true;
