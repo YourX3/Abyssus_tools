@@ -3,7 +3,7 @@
 // Desc        : Little tools for Abyssus Game("https://s1.abyssus.games/jeu.php")
 // Autor       : YourX3(youri03 in the game)
 // Creation    : 04/05/2018
-// Last update : 10/05/2018  14h10
+// Last update : 10/05/2018  15h10
 
 // Version     : 0.1.5
 
@@ -173,34 +173,100 @@ function onClick_buttonFloods(){
 //                        PAGE ARMEE                     //
 
 function armyPage(){
-	var alignText = document.createElement('none');
-	alignText.innerHTML = '<text>/ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . </text>';
-	document.getElementsByTagName('center')[0].insertBefore(alignText, document.getElementsByTagName('table')[1]);
-	
-	var but_replaceArmy = document.createElement('none');
-	but_replaceArmy.innerHTML = '<button onclick="onClickButtonReplaceArmy()">Placer anti-sonde</button>';
-	document.getElementsByTagName('center')[0].insertBefore(but_replaceArmy, document.getElementsByTagName('table')[1]);
-	
-	var antiSondeText = document.createElement('none');
-	antiSondeText.innerHTML = '<text> __ Anti sonde : </text>';
-	document.getElementsByTagName('center')[0].insertBefore(antiSondeText, document.getElementsByTagName('table')[1]);
-	
-	var antiSondeValue;
-	if(readCookie("antiSondeValue") === null){
-		antiSondeValue.value = "10000 rem";
+	if(readCookie("armyReplacing") === null){
+		var alignText = document.createElement('none');
+		alignText.innerHTML = '<text>/ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . </text>';
+		document.getElementsByTagName('center')[0].insertBefore(alignText, document.getElementsByTagName('table')[1]);
+
+		var but_replaceArmy = document.createElement('none');
+		but_replaceArmy.innerHTML = '<button onclick="onClickButtonReplaceArmy()">Placer anti-sonde</button>';
+		document.getElementsByTagName('center')[0].insertBefore(but_replaceArmy, document.getElementsByTagName('table')[1]);
+
+		var antiSondeText = document.createElement('none');
+		antiSondeText.innerHTML = '<text> __ Anti sonde : </text>';
+		document.getElementsByTagName('center')[0].insertBefore(antiSondeText, document.getElementsByTagName('table')[1]);
+
+		var antiSondeValue;
+		if(readCookie("antiSondeValue") === null){
+			antiSondeValue = "10000 rem";
+		}
+		else{
+			antiSondeValue = readCookie("antiSondeValue");
+		}
+
+		var antiSondeInput = document.createElement('none');
+		antiSondeInput.innerHTML = '<input type="text" name="antiSondeInput" class="text" value="' + antiSondeValue + '" style="font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; font-size: inherit; line-height: inherit; font-family: inherit; color: rgb(0, 0, 102); text-align: center; outline: none; padding: 5px; width: 120px; cursor: text;">';
+
+
+		$(antiSondeInput).on('focusout', function(){
+		    onFocusOut_antiSondeInput();
+		});
+		document.getElementsByTagName('center')[0].insertBefore(antiSondeInput, document.getElementsByTagName('table')[1]);
 	}
-	else{
-		antiSondeValue.value = readCookie("antiSondeValue");
+	else if(readCookie("armyReplacing") === "1"){
+		createCookie("armyReplacing", "2", 5);
+		var antiSondeInput_Value = document.getElementsByName("antiSondeInput")[0].value;
+		var type;
+		var nb = Number(removeSpaces(antiSondeInput_Value.split(' ')[0]));
+
+		switch(antiSondeInput_Value.split(' ')[1].toUpperCase())
+		{
+			case 'REM':
+				type = "SJ";
+				break;
+			case 'PR':
+				type = "S";
+				break;
+			case 'R':
+				type = "SC";
+				break;
+			case 'GR':
+				type = "R";
+				break;
+			case 'RP':
+				type = "RB";
+				break;
+			case 'M':
+				type = "M";
+				break;
+			case 'ME':
+				type = "PP";
+				break;
+			case 'RM':
+				type = "B";
+				break;
+			case 'RL':
+				type = "BC";
+				break;
+			case 'RLV':
+				type = "GRB";
+				break;
+			case 'RB':
+				type = "OQ";
+				break;
+			case 'GRB':
+				type = "OQC";
+				break;
+			case 'K':
+				type = "K";
+				break;
+			case 'KI':
+				type = "L";
+				break;
+		}
+		type += "_dome"
+
+
+		$.post('ajax/deplacement_armee.php', {type:type, nb:nb}, function(data){
+			document.location.href='jeu.php?page=armee';
+		});
 	}
-	
-	var antiSondeInput = document.createElement('none');
-	antiSondeInput.innerHTML = '<input type="text" name="antiSondeInput" class="text" value="' + antiSondeValue + '" style="font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; font-size: inherit; line-height: inherit; font-family: inherit; color: rgb(0, 0, 102); text-align: center; outline: none; padding: 5px; width: 120px; cursor: text;">';
-	
-	
-	$(antiSondeInput).on('focusout', function(){
-	    onFocusOut_antiSondeInput();
-	});
-	document.getElementsByTagName('center')[0].insertBefore(antiSondeInput, document.getElementsByTagName('table')[1]);
+	else if(readCookie("armyReplacing") === "2"){
+		$.post('ajax/deplacement_armee.php', {type:"SJ", nb:1}, function(data){
+			document.location.href='jeu.php?page=armee';
+		});
+		deleteCookie("armyReplacing");
+	}
 }
 
 function onFocusOut_antiSondeInput(){
@@ -224,60 +290,12 @@ function rightAntiSonde(antiSonde){
 }
 
 function onClickButtonReplaceArmy(){
-	var antiSondeInput_Value = document.getElementsByName("antiSondeInput")[0].value;
-	var type;
-	var nb = Number(removeSpaces(antiSondeInput_Value.split(' ')[0]));
 	
-	switch(antiSondeInput_Value.split(' ')[1].toUpperCase())
-	{
-		case 'REM':
-			type = "SJ";
-			break;
-		case 'PR':
-			type = "S";
-			break;
-		case 'R':
-			type = "SC";
-			break;
-		case 'GR':
-			type = "R";
-			break;
-		case 'RP':
-			type = "RB";
-			break;
-		case 'M':
-			type = "M";
-			break;
-		case 'ME':
-			type = "PP";
-			break;
-		case 'RM':
-			type = "B";
-			break;
-		case 'RL':
-			type = "BC";
-			break;
-		case 'RLV':
-			type = "GRB";
-			break;
-		case 'RB':
-			type = "OQ";
-			break;
-		case 'GRB':
-			type = "OQC";
-			break;
-		case 'K':
-			type = "K";
-			break;
-		case 'KI':
-			type = "L";
-			break;
-	}
-	type += "_dome"
-	
+	createCookie("armyReplacing", "1", 5);
 	$.post('ajax/deplacement_armee.php', {type:type, nb:nb}, function(data){
-		document.location.href='jeu.php?page=armee';
+		document.location.href='jeu.php?page=armee&action=barriere;
 	});
+	
 }
 
 
