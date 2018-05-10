@@ -1,2 +1,2 @@
-# Abyssus_toolz
-Toolz for Abyssus Games
+# Abyssus_tools
+Tools for Abyssus Games
