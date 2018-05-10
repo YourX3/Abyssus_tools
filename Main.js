@@ -121,27 +121,27 @@ function onClick_buttonFloods(){
 
             if(nbRem >= twentyPercents){
                 if(targetTM-twentyPercents > (playerTM+twentyPercents)/2){
-                    listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), +String(twentyPercents)]);
-                    nbRem -= twentyPercents;
-                    targetTM -= twentyPercents;
-                    playerTM += twentyPercents;
-					totalFloods += twentyPercents;
+			listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), +String(twentyPercents)]);
+			nbRem -= twentyPercents;
+			targetTM -= twentyPercents;
+			playerTM += twentyPercents;
+			totalFloods += twentyPercents;
                 }
                 else if(!lastWasNotTwenty){
-                    listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), +String(targetTM - playerTM / 2)]);
-                    nbRem -= playerTM / 2 - targetTM;
-                    lastWasNotTwenty = true;
-                    targetTM -= targetTM - playerTM / 2;
-                    playerTM += targetTM - playerTM / 2;
-					totalFloods += targetTM - playerTM / 2;
+			listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), +String(Math.round(targetTM - playerTM / 2))]);
+			nbRem -= Math.round(targetTM - playerTM / 2);
+			lastWasNotTwenty = true;
+			targetTM -= Math.round(targetTM - playerTM / 2);
+			playerTM += Math.round(targetTM - playerTM / 2);
+			totalFloods += Math.round(targetTM - playerTM / 2);
                 }
                 else{
-                    listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), +String(twentyPercents)]);
-                    nbRem -= twentyPercents;
-                    _end = true;
-                    targetTM -= twentyPercents;
-                    playerTM += twentyPercents;
-					totalFloods += twentyPercents;
+			listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), +String(twentyPercents)]);
+			nbRem -= twentyPercents;
+			_end = true;
+			targetTM -= twentyPercents;
+			playerTM += twentyPercents;
+			totalFloods += twentyPercents;
                 }
             }
             else{
