@@ -155,7 +155,7 @@ function onClick_buttonFloods(){
 				listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), +String(twentyPercents)]);
 			}
 			else{
-				listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), + "Ghost");
+				listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), + "Ghost")]);
 			}
 			nbRem -= twentyPercents;
 			_end = true;
