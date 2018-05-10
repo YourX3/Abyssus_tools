@@ -175,7 +175,7 @@ function onClick_buttonFloods(){
 function armyPage(){
 	if(readCookie("armyReplacing") === null){
 		var alignText = document.createElement('none');
-		alignText.innerHTML = '<text>/ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . </text>';
+		alignText.innerHTML = '<text>/ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . </text>';
 		document.getElementsByTagName('center')[0].insertBefore(alignText, document.getElementsByTagName('table')[1]);
 
 		var but_replaceArmy = document.createElement('none');
