@@ -3,7 +3,7 @@
 // Desc        : Little tools for Abyssus Game("https://s1.abyssus.games/jeu.php")
 // Autor       : YourX3(youri03 in the game)
 // Creation    : 04/05/2018
-// Last update : 10/05/2018  19h36
+// Last update : 10/05/2018  20h10
 
 // Version     : 0.1.5
 
@@ -49,6 +49,14 @@ function page_atk()
 		var but_launchFloods = document.createElement('none');
 		but_launchFloods.innerHTML = '<button onclick="onClick_buttonFloods()">Préparer les floods</button>';
 		document.getElementsByTagName('center')[0].insertBefore(but_launchFloods, document.getElementsByTagName('h1')[0]);
+		
+		var checkBoxGhost = document.createElement('none');
+		checkBoxGhost.innerHTML = '<input id="checkBoxGhost" type="checkbox">';
+		document.getElementsByTagName('center')[0].insertBefore(checkBoxGhost, document.getElementsByTagName('h1')[0]);
+		
+		var textGhost = document.createElement('none');
+		textGhost.innerHTML = '<text> Ghost ?</text>';
+		document.getElementsByTagName('center')[0].insertBefore(textGhost, document.getElementsByTagName('h1')[0]);
 	}
 	else if(document.getElementsByTagName('h1').length > 0){
 		if(Number(readCookie("numberOfAttaks")) < Number(readCookie("attakNum"))){
@@ -57,10 +65,16 @@ function page_atk()
 			document.getElementsByTagName('h1')[0].textContent = "Tous les floods ont été lancés";
 		}
 		else{
-			putAllUnitsToNull();
-			document.getElementsByName('SJ')[0].value = readCookie("Attaque_"+readCookie("attakNum"));
-			document.getElementsByName('SJ')[0].data = readCookie("Attaque_"+readCookie("attakNum"));
-			createCookie("attakNum", String(Number(readCookie("attakNum"))+1), 60);
+			if(readCookie("Attaque_"+readCookie("attakNum")) === "Ghost"){
+				createCookie("attakNum", String(Number(readCookie("attakNum"))+1), 60);
+			}
+			else
+			{
+				putAllUnitsToNull();
+				document.getElementsByName('SJ')[0].value = readCookie("Attaque_"+readCookie("attakNum"));
+				document.getElementsByName('SJ')[0].data = readCookie("Attaque_"+readCookie("attakNum"));
+				createCookie("attakNum", String(Number(readCookie("attakNum"))+1), 60);
+			}
 		}
 	}
 }
@@ -110,6 +124,7 @@ function onClick_buttonFloods(){
     var targetTM = Number(removeSpaces(document.getElementsByName('targetTM')[0].value));
     var nbRem = Number(removeSpaces(document.getElementsByName('SJ')[0].value));
     var playerTM = Number(removeSpaces(document.getElementsByTagName('span')[7].childNodes[1].data));
+	var ghost = document.getElementById('checkBoxGhost').checked;
 
     if(nbRem > 0 && !isNaN(targetTM)){
         var listOfAttaks = [];
@@ -136,7 +151,12 @@ function onClick_buttonFloods(){
 			totalFloods += Math.round(targetTM - playerTM / 2);
                 }
                 else{
-			listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), +String(twentyPercents)]);
+			if(ghost){
+				listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), +String(twentyPercents)]);
+			}
+			else{
+				listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), + "Ghost");
+			}
 			nbRem -= twentyPercents;
 			_end = true;
 			targetTM -= twentyPercents;
