@@ -43,10 +43,16 @@ function page_atk()
 	if(readCookie("numberOfAttaks") === null){
 		// nom de la cible
 		var targetName = document.getElementsByTagName('h1')[0].textContent.split(' ')[3];
-		
+		var inputTargetTM_value = "TM de " + targetName;
 		// case où entrer le TM la cible
 		var inputTdcTarget = document.createElement('none');
-		var input_innerHTML = '<input type="text" id="targetTM" name="targetTM" class="text" value="TM de ' + targetName + '" data-nb="0" style="font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; font-size: inherit; line-height: inherit; font-family: inherit; color: rgb(0, 0, 102); text-align: center; outline: none; padding: 5px; width: 120px; cursor: text;">';
+		
+		if(sessionStorage.getItem('targetTM').length != undefined){
+			inputTargetTM_value = sessionStorage.getItem('targetTM');
+			sessionStorage.removeItem('targetTM');
+		}
+		
+		var input_innerHTML = '<input type="text" id="targetTM" name="targetTM" class="text" value="' + targetName + '" data-nb="0" style="font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; font-size: inherit; line-height: inherit; font-family: inherit; color: rgb(0, 0, 102); text-align: center; outline: none; padding: 5px; width: 120px; cursor: text;">';
 		inputTdcTarget.innerHTML =  input_innerHTML;
 		inputTdcTarget.value += "playerName";
 		document.getElementsByTagName('center')[0].insertBefore(inputTdcTarget, document.getElementsByTagName('h1')[0]);
@@ -332,7 +338,14 @@ function onClickButtonReplaceArmy(){
 	
 	
 function page_playerProfile(){
-	var tmAttackButton = document.getElementsByTagName('tbody')[1].childNode[6].childNode[0].childNode[5];
+	document.getElementsByTagName('tbody')[1].childNodes[13].childNodes[1].childNodes[8].onclick = onclick_tmAttack();
+}
+	
+function onclick_tmAttack(){
+	alert("Click !!!");
+	var tmTarget = document.getElementsByTagName('tbody')[1].childNodes[5].childNodes[3].innerText;
+	tmTarget = removeSpaces(tmTarget).split('(')[0];
+	sessionStorage.setItem('targetTM', tmTarget);
 }
 	
 
