@@ -3,7 +3,7 @@
 // Desc        : Little tools for Abyssus Game("https://s1.abyssus.games/jeu.php")
 // Autor       : YourX3(youri03 in the game)
 // Creation    : 04/05/2018
-// Last update : 10/05/2018  22h15
+// Last update : 11/05/2018  15h20
 
 // Version     : 0.2
 
@@ -14,7 +14,7 @@ init();
 // fonction appelée lorsque la page est chargée(sur https://s1.abyssus.games/*)
 function init(){
 	var textVersion = document.createElement('none');
-	textVersion.innerHTML = '<text> Abyssus Tools V 0.2 __ Last Updtate 10/05/2018  22h15</text>';
+	textVersion.innerHTML = '<font color="white">Abyssus Tools V 0.2 __ Last Updtate 10/05/2018  15h20</font>';
 	document.getElementById('bas').insertBefore(textVersion, document.getElementById('footer'));
 	
 	// fin de l'URL : sur https://s1.abyssus.games/jeu.php?page=armee : ?page=armee
@@ -26,6 +26,8 @@ function init(){
 	// si la page est la page d'armée
 	else if(docSearchPath === "?page=armee" || docSearchPath === "?page=armee&action=barriere")
 		armyPage();
+	else if(docSearchPath === "?page=armee")
+		
 };
 
 /************************************************************
@@ -324,6 +326,15 @@ function onClickButtonReplaceArmy(){
 }
 
 
+	
+////////////////////////////////////////////////////////////////
+//                    PAGE PLAYER PROFILE                    //
+	
+	
+function page_playerProfile(){
+	var tmAttackButton = document.getElementsByTagName('tbody')[1].childNode[6].childNode[0].childNode[5];
+}
+	
 
 //////////////////////////////////////////////////////////////
 //                        UTILS                            //
