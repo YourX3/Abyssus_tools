@@ -47,7 +47,7 @@ function page_atk()
 		// case où entrer le TM la cible
 		var inputTdcTarget = document.createElement('none');
 		
-		if(sessionStorage.getItem('targetTM').length != undefined){
+		if(sessionStorage.getItem('targetTM') != null){
 			inputTargetTM_value = sessionStorage.getItem('targetTM');
 			sessionStorage.removeItem('targetTM');
 		}
