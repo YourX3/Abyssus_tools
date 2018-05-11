@@ -229,7 +229,7 @@ function armyPage(){
 	}
 	else if(readCookie("armyReplacing") === "1"){
 		createCookie("armyReplacing", "2", 5);
-		var antiSondeInput_Value = document.getElementsByName("antiSondeInput")[0].value;
+		var antiSondeInput_Value = readCookie("antiSondeValue");
 		var type;
 		var nb = Number(removeSpaces(antiSondeInput_Value.split(' ')[0]));
 
