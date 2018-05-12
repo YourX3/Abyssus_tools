@@ -142,32 +142,32 @@ function onClick_buttonFloods(){
         var listOfAttaks = [];
         var lastWasNotTwenty = false;
         var _end = false;
-	var totalFloods = 0;
+		var totalFloods = 0;
         while(!_end){
             var twentyPercents = Math.round(targetTM*20/100);
 
             if(nbRem >= twentyPercents){
                 if(targetTM-twentyPercents > (playerTM+twentyPercents)/2){
-			listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), String(twentyPercents)]);
-			nbRem -= twentyPercents;
-			targetTM -= twentyPercents;
-			playerTM += twentyPercents;
-			totalFloods += twentyPercents;
+					listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), String(twentyPercents)]);
+					nbRem -= twentyPercents;
+					targetTM -= twentyPercents;
+					playerTM += twentyPercents;
+					totalFloods += twentyPercents;
                 }
                 else if(!lastWasNotTwenty){
-			listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), String(Math.round(targetTM - playerTM / 2))]);
-			nbRem -= Math.round(targetTM - playerTM / 2);
-			lastWasNotTwenty = true;
-			targetTM -= Math.round(targetTM - playerTM / 2);
-			playerTM += Math.round(targetTM - playerTM / 2);
-			totalFloods += Math.round(targetTM - playerTM / 2);
+					listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), String(Math.round(targetTM - playerTM / 2))]);
+					nbRem -= Math.round(targetTM - playerTM / 2);
+					lastWasNotTwenty = true;
+					targetTM -= Math.round(targetTM - playerTM / 2);
+					playerTM += Math.round(targetTM - playerTM / 2);
+					totalFloods += Math.round(targetTM - playerTM / 2);
                 }
                 else{
 			if(ghost){
-				listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), String(twentyPercents)]);
+				listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), "Ghost"]);
 			}
 			else{
-				listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), "Ghost"]);
+				listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), String(twentyPercents)]);
 			}
 			nbRem -= twentyPercents;
 			_end = true;
@@ -185,7 +185,7 @@ function onClick_buttonFloods(){
 
         createCookie("numberOfAttaks", String(listOfAttaks.length), 60);
         createCookie("attakNum", "1", 60);
-	var textToAlert = "Nb d'attaques : " + String(listOfAttaks.length) + "\n";
+		var textToAlert = "Nb d'attaques : " + String(listOfAttaks.length) + "\n";
         for(var i=0; i < listOfAttaks.length; ++i){
             textToAlert += "Attaque " + String((listOfAttaks[i])[0]) + ": " + String((listOfAttaks[i])[1]) + "\n";
             createCookie(String((listOfAttaks[i])[0]), String((listOfAttaks[i])[1]), 60);
