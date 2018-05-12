@@ -14,7 +14,7 @@ init();
 // fonction appelée lorsque la page est chargée(sur https://s1.abyssus.games/*)
 function init(){
 	var textVersion = document.createElement('none');
-	textVersion.innerHTML = '<font color="white">Abyssus Tools V 0.2 __ Last Updtate 11/05/2018  15h52</font>';
+	textVersion.innerHTML = '<font color="white">Abyssus Tools V 0.2 __ Last Updtate 12/05/2018  10h37</font>';
 	document.getElementById('bas').insertBefore(textVersion, document.getElementById('footer'));
 	
 	// fin de l'URL : sur https://s1.abyssus.games/jeu.php?page=armee : ?page=armee
