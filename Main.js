@@ -26,7 +26,7 @@ function init(){
 	// si la page est la page d'armée
 	else if(docSearchPath === "?page=armee" || docSearchPath === "?page=armee&action=barriere")
 		armyPage();
-	else if(docSearchPath === "?page=armee")
+	else if(docSearchPath.split('&')[0] === "?page=joueur")
 		page_playerProfile();
 };
 
@@ -49,10 +49,10 @@ function page_atk()
 		
 		if(sessionStorage.getItem('targetTM') != null){
 			inputTargetTM_value = sessionStorage.getItem('targetTM');
-			sessionStorage.removeItem('targetTM');
 		}
+		sessionStorage.removeItem('targetTM');
 		
-		var input_innerHTML = '<input type="text" id="targetTM" name="targetTM" class="text" value="' + targetName + '" data-nb="0" style="font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; font-size: inherit; line-height: inherit; font-family: inherit; color: rgb(0, 0, 102); text-align: center; outline: none; padding: 5px; width: 120px; cursor: text;">';
+		var input_innerHTML = '<input type="text" id="targetTM" name="targetTM" class="text" value="' + inputTargetTM_value + '" data-nb="0" style="font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; font-size: inherit; line-height: inherit; font-family: inherit; color: rgb(0, 0, 102); text-align: center; outline: none; padding: 5px; width: 120px; cursor: text;">';
 		inputTdcTarget.innerHTML =  input_innerHTML;
 		inputTdcTarget.value += "playerName";
 		document.getElementsByTagName('center')[0].insertBefore(inputTdcTarget, document.getElementsByTagName('h1')[0]);
