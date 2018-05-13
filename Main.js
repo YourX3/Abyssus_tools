@@ -364,7 +364,7 @@ function page_playerProfile(){
 	
 	var button_ItsMe = document.createElement('none');
 	button_ItsMe.innerHTML = '<button neme="buttonItsMe" onclick="onclick_buttonItsMe()">C est moi !</button>';
-	document.getElementByTagName('center')[0].insertBefore(button_ItsMe, document.getElementByTagName('table')[1]);
+	document.getElementsByTagName('center')[0].insertBefore(button_ItsMe, document.getElementByTagName('table')[1]);
 }
 
 function onclick_buttonItsMe(){
