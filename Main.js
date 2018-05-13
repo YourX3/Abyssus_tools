@@ -14,7 +14,7 @@ init();
 // fonction appelée lorsque la page est chargée(sur https://s1.abyssus.games/*)
 function init(){
 	var textVersion = document.createElement('id="global');
-	textVersion.innerHTML = '<font color="white">Abyssus Tools V 0.2 __ Last Updtate 13/05/2018  16h31</font>';
+	textVersion.innerHTML = '<font color="white">Abyssus Tools V 0.2 __ Last Updtate 13/05/2018  16h45</font>';
 	document.getElementById('bas').insertBefore(textVersion, document.getElementById('footer'));
 	
 	// fin de l'URL : sur https://s1.abyssus.games/jeu.php?page=armee : ?page=armee
@@ -345,7 +345,7 @@ function page_playerProfile(){
 			var textPosPlayer = document.getElementsByTagName('tbody')[1].childNodes[3].innerText;
 			var posXx = textPosPlayer.split(' ')[3];
 			var posX = "";
-			for(var i =0; i < posXx.length, ++i){
+			for(var i =0; i < posXx.length; ++i){
 				if(posXx[i] == '+' || posXx[i] == '-' || !isNaN(Number(posXx[i])))
 				{
 					posX += posXx[i];
