@@ -14,7 +14,7 @@ init();
 // fonction appelée lorsque la page est chargée(sur https://s1.abyssus.games/*)
 function init(){
 	var textVersion = document.createElement('id="global');
-	textVersion.innerHTML = '<font color="white">Abyssus Tools V 0.2 __ Last Updtate 13/05/2018  14h44</font>';
+	textVersion.innerHTML = '<font color="white">Abyssus Tools V 0.2 __ Last Updtate 13/05/2018  16h31</font>';
 	document.getElementById('bas').insertBefore(textVersion, document.getElementById('footer'));
 	
 	// fin de l'URL : sur https://s1.abyssus.games/jeu.php?page=armee : ?page=armee
@@ -340,8 +340,52 @@ function onClickButtonReplaceArmy(){
 function page_playerProfile(){
 	document.getElementsByTagName('tbody')[1].childNodes[13].childNodes[1].childNodes[8].onclick = function(){onclick_tmAttack()};
 	
+	if(localStorage.getItem("userId") !== null){
+		if(localStorage.getItem("userId") !== document.location.search.split('&')[1]){
+			var textPosPlayer = document.getElementsByTagName('tbody')[1].childNodes[3].innerText;
+			var posXx = textPosPlayer.split(' ')[3];
+			var posX = "";
+			for(var i =0; i < posXx.length, ++i){
+				if(posXx[i] == '+' || posXx[i] == '-' || !isNaN(Number(posXx[i])))
+				{
+					posX += posXx[i];
+				}
+			}
+			posX = Number(posX);
+			var posY = Number(textPosPlayer.split(' ')[6]);
+			
+			var userPosX = Number(localStorage.getItem("userPos").split(' ')[0]);
+			var userPosY = Number(localStorage.getItem("userPos").split(' ')[1]);
+			var dist = Math.round(Math.sqrt((userPosX-posX)*(userPosX-posX) + (userPosY-posY)*(userPosY-posY)) + 0.5);
+			
+			document.getElementsByTagName('tbody')[1].childNodes[3].innerText += " Distance: " + String(dist);
+		}
+	}
+	
+	var button_ItsMe = document.createElement('none');
+	button_ItsMe.innerHTML = '<button neme="buttonItsMe" onclick="onclick_buttonItsMe()">C est moi !</button>';
+	document.getElementByTagName('center')[0].insertBefore(button_ItsMe, document.getElementByTagName('table')[1]);
+}
+
+function onclick_buttonItsMe(){
+	localStorage.setItem('userId', document.location.search.split('&')[1]);
+	
+	var textPosPlayer = document.getElementsByTagName('tbody')[1].childNodes[3].innerText;
+	var posXx = textPosPlayer.split(' ')[3];
+	var posX = "";
+	for(var i =0; i < posXx.length, ++i){
+		if(posXx[i] == '+' || posXx[i] == '-' || !isNaN(Number(posXx[i])))
+		{
+			posX += posXx[i];
+		}
+	}
+	var posY = textPosPlayer.split(' ')[6];
+	
+	var position = posX + " " + posY;
+	localStorage.setItem('userPos', position);
 }
 	
+
 function onclick_tmAttack(){
 	var tmTarget = document.getElementsByTagName('tbody')[1].childNodes[5].childNodes[3].innerText;
 	tmTarget = removeSpaces(tmTarget).split('(')[0];
