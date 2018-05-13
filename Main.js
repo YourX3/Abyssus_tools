@@ -373,7 +373,7 @@ function onclick_buttonItsMe(){
 	var textPosPlayer = document.getElementsByTagName('tbody')[1].childNodes[3].innerText;
 	var posXx = textPosPlayer.split(' ')[3];
 	var posX = "";
-	for(var i =0; i < posXx.length, ++i){
+	for(var i =0; i < posXx.length; ++i){
 		if(posXx[i] == '+' || posXx[i] == '-' || !isNaN(Number(posXx[i])))
 		{
 			posX += posXx[i];
