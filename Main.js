@@ -13,8 +13,8 @@ init();
 
 // fonction appelée lorsque la page est chargée(sur https://s1.abyssus.games/*)
 function init(){
-	var textVersion = document.createElement('div');
-	textVersion.innerHTML = '<div id="global" <font color="white">Abyssus Tools V 0.2 __ Last Updtate 13/05/2018  13h09</font> </div>';
+	var textVersion = document.createElement('id="global');
+	textVersion.innerHTML = '<font color="white">Abyssus Tools V 0.2 __ Last Updtate 13/05/2018  14h44</font>';
 	document.getElementById('bas').insertBefore(textVersion, document.getElementById('footer'));
 	
 	// fin de l'URL : sur https://s1.abyssus.games/jeu.php?page=armee : ?page=armee
@@ -339,10 +339,10 @@ function onClickButtonReplaceArmy(){
 	
 function page_playerProfile(){
 	document.getElementsByTagName('tbody')[1].childNodes[13].childNodes[1].childNodes[8].onclick = function(){onclick_tmAttack()};
+	
 }
 	
 function onclick_tmAttack(){
-	alert("Click !!!");
 	var tmTarget = document.getElementsByTagName('tbody')[1].childNodes[5].childNodes[3].innerText;
 	tmTarget = removeSpaces(tmTarget).split('(')[0];
 	sessionStorage.setItem('targetTM', tmTarget);
