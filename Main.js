@@ -14,7 +14,7 @@ init();
 // fonction appelée lorsque la page est chargée(sur https://s1.abyssus.games/*)
 function init(){
 	var textVersion = document.createElement('none');
-	textVersion.innerHTML = '<font size="1" color="white">Abyssus Tools V 0.2 __ Last Updtate 13/05/2018  19h50 </font>';
+	textVersion.innerHTML = '<font size="1" color="white">Abyssus Tools V 0.2 __ Last Updtate 13/05/2018  21h59 </font>';
 	document.getElementById('footer').insertBefore(textVersion, document.getElementById('footer').childNodes[0]);
 	
 	// fin de l'URL : sur https://s1.abyssus.games/jeu.php?page=armee : ?page=armee
@@ -358,7 +358,7 @@ function page_playerProfile(){
 			var userPosY = Number(localStorage.getItem("userPos").split(' ')[1]);
 			var dist = Math.round(Math.sqrt((userPosX-posX)*(userPosX-posX) + (userPosY-posY)*(userPosY-posY)) + 0.5);
 			
-			document.getElementsByTagName('tbody')[1].childNodes[3].innerText += " Distance: " + String(dist);
+			document.getElementsByTagName('tbody')[1].childNodes[3].childNodes[2].innerText += " distance: " + String(dist);
 		}
 	}
 	
