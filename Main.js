@@ -360,10 +360,11 @@ function page_playerProfile(){
 			
 			document.getElementsByTagName('tbody')[1].childNodes[3].childNodes[3].innerText += " distance: " + String(dist);
 			
-			var playerTDC = removeSpaces(document.getElementsByTagName('tbody')[2].childNodes[3].childNodes[3].innerText.split('('));
-			
-			$.post('ajax/ennemies.php', {mintdc:playerTDC, maxtdc:playerTDC+1, page:1, tri:'distance', sens:'asc', guerre:0, paix:0, ally:0}, function(data){
-				print(data);
+			var playerTDC = document.getElementsByTagName('tbody')[1].childNodes[5].childNodes[3].innerText;
+			playerTDC = playerTDC.substring(0, playerTDC.length-2);
+
+			$.post('ajax/ennemies.php', {mintdc:playerTDC, maxtdc:(playerTDC+1), page:1, tri:'distance', sens:'asc', guerre:0, paix:0, ally:0}, function(data){
+				var xxx = data;
 			});
 		}
 	}
