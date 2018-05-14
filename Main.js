@@ -14,7 +14,7 @@ init();
 // fonction appelée lorsque la page est chargée(sur https://s1.abyssus.games/*)
 function init(){
 	var textVersion = document.createElement('none');
-	textVersion.innerHTML = '<font size="1" color="white">Abyssus Tools V 0.2 __ Last Updtate 13/05/2018  21h59 </font>';
+	textVersion.innerHTML = '<font size="1" color="white">Abyssus Tools V 0.2 __ Last Updtate 14/05/2018  08h55 </font>';
 	document.getElementById('footer').insertBefore(textVersion, document.getElementById('footer').childNodes[0]);
 	
 	// fin de l'URL : sur https://s1.abyssus.games/jeu.php?page=armee : ?page=armee
@@ -363,8 +363,12 @@ function page_playerProfile(){
 	}
 	
 	var button_ItsMe = document.createElement('none');
-	button_ItsMe.innerHTML = '<button neme="buttonItsMe" onclick="onclick_buttonItsMe()">C est moi !</button>';
+	button_ItsMe.innerHTML = '<button name="buttonItsMe" onclick="onclick_buttonItsMe()">C est moi !</button>';
 	document.getElementsByTagName('center')[0].insertBefore(button_ItsMe, document.getElementsByTagName('table')[1]);
+	
+	/*var textNameUser = document.createElement('none');
+	textNameUser.innerHTML = '<button name="buttonItsMe" onclick="onclick_buttonItsMe()">C est moi !</button>';
+	document.getElementsByTagName('center')[0].insertBefore(textNameUser, document.getElementsByTagName('table')[1]);*/
 }
 
 function onclick_buttonItsMe(){
