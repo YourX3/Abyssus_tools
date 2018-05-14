@@ -14,7 +14,7 @@ init();
 // fonction appelée lorsque la page est chargée(sur https://s1.abyssus.games/*)
 function init(){
 	var textVersion = document.createElement('none');
-	textVersion.innerHTML = '<font size="1" color="white">Abyssus Tools V 0.2 __ Last Updtate 14/05/2018  08h55 </font>';
+	textVersion.innerHTML = '<font size="1" color="white">Abyssus Tools V 0.2 __ Last Updtate 14/05/2018  11h35 </font>';
 	document.getElementById('footer').insertBefore(textVersion, document.getElementById('footer').childNodes[0]);
 	
 	// fin de l'URL : sur https://s1.abyssus.games/jeu.php?page=armee : ?page=armee
@@ -358,7 +358,7 @@ function page_playerProfile(){
 			var userPosY = Number(localStorage.getItem("userPos").split(' ')[1]);
 			var dist = Math.round(Math.sqrt((userPosX-posX)*(userPosX-posX) + (userPosY-posY)*(userPosY-posY)) + 0.5);
 			
-			document.getElementsByTagName('tbody')[1].childNodes[3].childNodes[2].innerText += " distance: " + String(dist);
+			document.getElementsByTagName('tbody')[1].childNodes[3].childNodes[3].innerText += " distance: " + String(dist);
 		}
 	}
 	
@@ -367,7 +367,7 @@ function page_playerProfile(){
 	document.getElementsByTagName('center')[0].insertBefore(button_ItsMe, document.getElementsByTagName('table')[1]);
 	
 	var textNameUser = document.createElement('none');
-	var userName = " (" + localStorage.getItem("userName") + " )";
+	var userName = " ( " + localStorage.getItem("userName") + " )";
 	if(userName === null){
 		userName = " (pas encore defini)"
 	}
@@ -392,6 +392,8 @@ function onclick_buttonItsMe(){
 	
 	var position = posX + " " + posY;
 	localStorage.setItem('userPos', position);
+	
+	localStorage.setItem("userName", document.getElementsByTagName('h1')[0].innerText);
 }
 	
 
