@@ -359,6 +359,12 @@ function page_playerProfile(){
 			var dist = Math.round(Math.sqrt((userPosX-posX)*(userPosX-posX) + (userPosY-posY)*(userPosY-posY)) + 0.5);
 			
 			document.getElementsByTagName('tbody')[1].childNodes[3].childNodes[3].innerText += " distance: " + String(dist);
+			
+			var playerTDC = removeSpaces(document.getElementsByTagName('tbody')[2].childNodes[3].childNodes[3].innerText.split('('));
+			
+			$.post('ajax/ennemies.php', {mintdc:playerTDC, maxtdc:playerTDC+1, page:1, tri:'distance', sens:'asc', guerre:0, paix:0, ally:0}, function(data){
+				print(data);
+			});
 		}
 	}
 	
