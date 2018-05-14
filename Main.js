@@ -366,9 +366,14 @@ function page_playerProfile(){
 	button_ItsMe.innerHTML = '<button name="buttonItsMe" onclick="onclick_buttonItsMe()">C est moi !</button>';
 	document.getElementsByTagName('center')[0].insertBefore(button_ItsMe, document.getElementsByTagName('table')[1]);
 	
-	/*var textNameUser = document.createElement('none');
-	textNameUser.innerHTML = '<button name="buttonItsMe" onclick="onclick_buttonItsMe()">C est moi !</button>';
-	document.getElementsByTagName('center')[0].insertBefore(textNameUser, document.getElementsByTagName('table')[1]);*/
+	var textNameUser = document.createElement('none');
+	var userName = " (" + localStorage.getItem("userName") + " )";
+	if(userName === null){
+		userName = " (pas encore defini)"
+	}
+	textNameUser.innerHTML = '<font color="white" name="userName"> (..) </font>';
+	textNameUser.innerText = userName;
+	document.getElementsByTagName('center')[0].insertBefore(textNameUser, document.getElementsByTagName('table')[1]);
 }
 
 function onclick_buttonItsMe(){
