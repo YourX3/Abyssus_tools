@@ -501,7 +501,7 @@ function setDistanceAndTime_Ally(){
 }
 
 function getPlayersTr(){
-	var listOfElements = document.getElementsByTag('tbody')[2].childNodes;
+	var listOfElements = document.getElementsByTagName('tbody')[2].childNodes;
 	var result = [];
 	
 	for(var i=1; i < listOfElements.length; ++i){
