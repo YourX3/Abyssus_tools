@@ -326,7 +326,8 @@ function rightAntiSonde(antiSonde){
 function onClickButtonReplaceArmy(){
 	createCookie("armyReplacing", "1", 5);
 	$.post('ajax/deplacement_armee.php', function(data){
-		document.location.href='jeu.php?page=armee&action=barriere&token=5afb0ea408a77';
+		var href = getElementByInnerText("a", "Barrière de corail").href;
+		document.location.href = href;
 	});
 	
 }
@@ -511,6 +512,18 @@ function removeSpaces(string){
 	return string.replace(/\s/g, '');
 }
 
+
+function getElementByInnerText(tag, innerText){
+	var listOfElements = document.getElementsByTagName(tag);
+	var result = null;
+	
+	for(var i=0; i < listOfElements.length; ++i){
+		if(listOfElements[i].innerText === innerText){
+			result = listOfElements[i];
+		}
+	}
+	return result;
+}
 
 
 /*********************************************************
