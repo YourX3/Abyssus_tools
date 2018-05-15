@@ -14,7 +14,7 @@ init();
 // fonction appelée lorsque la page est chargée(sur https://s1.abyssus.games/*)
 function init(){
 	var textVersion = document.createElement('none');
-	textVersion.innerHTML = '<font size="1" color="white">Abyssus Tools V 0.2 __ Last Updtate 15/05/2018  18h35 </font>';
+	textVersion.innerHTML = '<font size="1" color="white">Abyssus Tools V 0.2 __ Last Updtate 15/05/2018  19h16 </font>';
 	document.getElementById('footer').insertBefore(textVersion, document.getElementById('footer').childNodes[0]);
 	
 	// fin de l'URL : sur https://s1.abyssus.games/jeu.php?page=armee : ?page=armee
@@ -365,7 +365,7 @@ function page_playerProfile(){
 			var maxTM = (Number(playerTM.replace(/\s/g, ''))+1).nombreFormate(0);
 
 			$.post('ajax/ennemies.php', {mintdc:playerTM, maxtdc:maxTM, page:1, tri:'distance', sens:'asc', guerre:0, paix:0, ally:0}, function(data){
-				var time = setPlayerTravelTime("playerName:"+document.getElementsByTagName('h1')[0].innerText)[4];
+				var time = setPlayerTravelTime(data, "playerName:"+document.getElementsByTagName('h1')[0].innerText)[4];
 				document.getElementsByTagName('tbody')[1].childNodes[3].childNodes[3].innerText += " _ Temps de trajet: " + time;
 			});
 		}
@@ -385,7 +385,7 @@ function page_playerProfile(){
 	document.getElementsByTagName('center')[0].insertBefore(textNameUser, document.getElementsByTagName('table')[1]);
 }
 
-function setPlayerTravelTime(){
+function setPlayerTravelTime(data, constraint = "none"){
 	var dataSplited = data.split(/\r?\n/);
 	
 	var playerName, ally, tdc, distance, time;
@@ -409,7 +409,7 @@ function setPlayerTravelTime(){
 	
 	var finalValue;
 	if(listOfElements.length > 0){
-		if(constraint !== null){
+		if(constraint !== "none"){
 			var consType = constraint.split(':')[0];
 			var consValue = constraint.split(':')[1];
 
