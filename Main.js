@@ -24,7 +24,7 @@ function init(){
 	if(docSearchPath.split('&')[0] === "?page=attaque" && docSearchPath.split('&')[2] === "lieu=1")
 		page_atk();
 	// si la page est la page d'armée
-	else if(docSearchPath === "?page=armee" || docSearchPath === "?page=armee&action=barriere")
+	else if(docSearchPath === "?page=armee" || docSearchPath.split('&')[1] === "action=barriere")
 		armyPage();
 	else if(docSearchPath.split('&')[0] === "?page=joueur")
 		page_playerProfile();
@@ -326,7 +326,7 @@ function rightAntiSonde(antiSonde){
 function onClickButtonReplaceArmy(){
 	createCookie("armyReplacing", "1", 5);
 	$.post('ajax/deplacement_armee.php', function(data){
-		document.location.href='jeu.php?page=armee&action=barriere';
+		document.location.href='jeu.php?page=armee&action=barriere&token=5afb0ea408a77';
 	});
 	
 }
