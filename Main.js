@@ -479,7 +479,7 @@ function setDistanceAndTime_Ally(){
 	var maxTM = (Number(playerTM.replace(/\s/g, ''))+1).nombreFormate(0);
 
 	$.post('ajax/ennemies.php', {mintdc:playerTM, maxtdc:maxTM, page:1, tri:'distance', sens:'asc', guerre:0, paix:0, ally:0}, function(data){
-		var listOfResults = setPlayerTravelTime(data, "ally:"+document.location.search.split('&')[1].substr(4);
+		var listOfResults = setPlayerTravelTime(data, "ally:"+document.location.search.split('&')[1].substr(4));
 		var distance = listOfResults[3];
 		var time = listOfResults[4];
 		var listOfPlayersTr = getPlayersTr();
