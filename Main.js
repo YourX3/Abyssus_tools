@@ -338,7 +338,7 @@ function onClickButtonReplaceArmy(){
 	
 	
 function page_playerProfile(){
-	document.getElementsByTagName('tbody')[1].childNodes[13].childNodes[1].childNodes[8].onclick = function(){onclick_tmAttack()};
+	document.getElementsByTagName('tbody')[1].childNodes[9].childNodes[1].childNodes[8].onclick = function(){onclick_tmAttack()};
 	
 	if(localStorage.getItem("userId") !== null){
 		if(localStorage.getItem("userId") !== document.location.search.split('&')[1]){
@@ -360,11 +360,13 @@ function page_playerProfile(){
 			
 			document.getElementsByTagName('tbody')[1].childNodes[3].childNodes[3].innerText += " distance: " + String(dist);
 			
-			var playerTDC = document.getElementsByTagName('tbody')[1].childNodes[5].childNodes[3].innerText;
-			playerTDC = playerTDC.substring(0, playerTDC.length-2);
+			var playerTM = document.getElementsByTagName('tbody')[1].childNodes[5].childNodes[3].innerText;
+			Number.prototype.nombreFormate=function(decimales,signe,separateurMilliers){var _sNombre=String(this),i,_sRetour="",_sDecimales="";if(decimales==undefined)decimales=2;if(signe==undefined)signe='';if(separateurMilliers==undefined)separateurMilliers=' ';function separeMilliers(sNombre){var sRetour="";while(sNombre.length%3!=0){sNombre="0"+sNombre}for(i=0;i<sNombre.length;i+=3){if(i==sNombre.length-1)separateurMilliers='';sRetour+=sNombre.substr(i,3)+separateurMilliers}while(sRetour.substr(0,1)=="0"){sRetour=sRetour.substr(1)}return sRetour.substr(0,sRetour.lastIndexOf(separateurMilliers))}if(_sNombre==0){_sRetour=0}else{if(_sNombre.indexOf('.')==-1){for(i=0;i<decimales;i++){_sDecimales+="0"}_sRetour=separeMilliers(_sNombre)+signe+_sDecimales}else{var sDecimalesTmp=(_sNombre.substr(_sNombre.indexOf('.')+1));if(sDecimalesTmp.length>decimales){var nDecimalesManquantes=sDecimalesTmp.length-decimales;var nDiv=1;for(i=0;i<nDecimalesManquantes;i++){nDiv*=10}_sDecimales=Math.round(Number(sDecimalesTmp)/nDiv)}_sRetour=separeMilliers(_sNombre.substr(0,_sNombre.indexOf('.')))+String(signe)+_sDecimales}}return _sRetour}
+			var maxTM = (Number(playerTM.replace(/\s/g, ''))+1).nombreFormate(0);
 
-			$.post('ajax/ennemies.php', {mintdc:playerTDC, maxtdc:(playerTDC+1), page:1, tri:'distance', sens:'asc', guerre:0, paix:0, ally:0}, function(data){
-				var xxx = data;
+			$.post('ajax/ennemies.php', {mintdc:playerTM, maxtdc:maxTM, page:1, tri:'distance', sens:'asc', guerre:0, paix:0, ally:0}, function(data){
+				var time = setPlayerTravelTime("playerName:"+document.getElementsByTagName('h1')[0].innerText)[4];
+				document.getElementsByTagName('tbody')[1].childNodes[3].childNodes[3].innerText += " _ Temps de trajet: " + time;
 			});
 		}
 	}
@@ -381,6 +383,92 @@ function page_playerProfile(){
 	textNameUser.innerHTML = '<font color="white" name="userName"> (..) </font>';
 	textNameUser.innerText = userName;
 	document.getElementsByTagName('center')[0].insertBefore(textNameUser, document.getElementsByTagName('table')[1]);
+}
+
+function setPlayerTravelTime(){
+	var dataSplited = data.split(/\r?\n/);
+	
+	var playerName, ally, tdc, distance, time;
+	var listOfElements = [];
+
+	for(var i=0; i < dataSplited.length; ++i){
+		var indexOfPlayer = dataSplited[i].indexOf("page=joueur");
+		if(indexOfPlayer !== -1){
+			playerName = dataSplited[i].substring(dataSplited[i].indexOf(">", indexOfPlayer) +1, dataSplited[i].indexOf("<", indexOfPlayer));
+
+			var allyIndexOf = dataSplited[i+1].indexOf("tag=");
+			ally = dataSplited[i+1].substring(allyIndexOf+4, dataSplited[i+1].indexOf('"', allyIndexOf));
+
+			tdc = dataSplited[i+3].substring(dataSplited[i+3].indexOf('>')+1, dataSplited[i+3].indexOf("</"));
+			distance = dataSplited[i+7].substring(dataSplited[i+7].indexOf('>')+1, dataSplited[i+7].indexOf("</"));
+			time = dataSplited[i+8].substring(dataSplited[i+8].indexOf('>')+1, dataSplited[i+8].indexOf("</"));
+			listOfElements.push([playerName, ally, tdc, distance, time]);
+			i += 9;
+		}
+	}
+	
+	var finalValue;
+	if(listOfElements.length > 0){
+		if(constraint !== null){
+			var consType = constraint.split(':')[0];
+			var consValue = constraint.split(':')[1];
+
+			switch(consType)
+			{
+				case "playerName":
+					for(var i=0; i < listOfElements.length; ++i){
+						if((listOfElements[i])[0] === consValue){
+							finalValue = listOfElements[i];
+							break;
+						}
+					}
+					break;
+
+				case "ally":
+					for(var i=0; i < listOfElements.length; ++i){
+						if((listOfElements[i])[1] === consValue){
+							finalValue = listOfElements[i];
+							break;
+						}
+					}
+					break;
+
+				case "tdc":
+					for(var i=0; i < listOfElements.length; ++i){
+						if((listOfElements[i])[2] === consValue){
+							finalValue = listOfElements[i];
+							break;
+						}
+					}
+					break;
+
+				case "distance":
+					for(var i=0; i < listOfElements.length; ++i){
+						if((listOfElements[i])[3] === consValue){
+							finalValue = listOfElements[i];
+							break;
+						}
+					}
+					break;
+
+				case "time":
+					for(var i=0; i < listOfElements.length; ++i){
+						if((listOfElements[i])[4] === consValue){
+							finalValue = listOfElements[i];
+							break;
+						}
+					}
+					break;
+			}
+		}
+		else{
+			finalValue = listOfElements[0];
+		}
+	}
+	else{
+		finalValue = null;
+	}
+	return finalValue;
 }
 
 function onclick_buttonItsMe(){
