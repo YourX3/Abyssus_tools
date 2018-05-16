@@ -485,7 +485,10 @@ function setDistanceAndTime_Ally(){
 	
 	$.post('ajax/ennemies.php', {mintdc:playerTM, maxtdc:maxTM, page:1, tri:'distance', sens:'asc', guerre:0, paix:0, ally:0}, function(data){
 		var listOfResults = setPlayerTravelTime(data, "ally:"+document.location.search.split('&')[1].substr(4));
-		if(listOfResults === null){
+		var listOfPlayersTr = getPlayersTr();
+		var targetPlayer = listOfPlayersTr[Number(readCookie("playerListNumber"))];
+		
+		if(listOfResults === null){	
 			var distanceTd = document.createElement('td');
 			distanceTd.align = "center";
 			distanceTd.innerText = "inconnue";
@@ -499,8 +502,6 @@ function setDistanceAndTime_Ally(){
 		else{
 			var distance = listOfResults[3];
 			var time = listOfResults[4];
-			var listOfPlayersTr = getPlayersTr();
-			var targetPlayer = listOfPlayersTr[Number(readCookie("playerListNumber"))];
 
 			var distanceTd = document.createElement('td');
 			distanceTd.align = "center";
@@ -534,14 +535,40 @@ function getPlayersTr(){
 //                         TRI ALLY                       //
 
 
-function onclick_allyDistanceAsc(){
-	alert("i'm clicked !");
+function onclick_allyDistanceAsc(){// plus petit au plus grand
+	var listOfPlayersTr = getPlayersTr();
+	var listSorted = [];
+	listSorted.push(listOfPlayersTr[0]);
+	for(var i=1; i < listOfPlayersTr.length; ++i){
+		if(isNaN(Number(getDistanceOfElement(listSorted[0])))){
+			listSorted.splice(0, 0, listOfPlayersTr[i]);
+		}
+		else if(isNaN(Number(getDistanceOfElement(listOfPlayersTr[i])))){
+			listSorted.push(listOfPlayersTr[i]);
+		}
+		else{
+			var findedMore = false;
+			for(var j=0; j < listSorted[0].length; ++j){
+				if(Number(getDistanceOfElement(listOfPlayersTr[i])) <= Number(getDistanceOfElement(listSorted[j]))){
+					listSorted.splice(0, 0, listOfPlayersTr[i]);
+					findedMore = true;
+					break;
+				}
+			}
+			if(!findedMore)
+				listSorted.push(listOfPlayersTr[i]);
+		}
+	}
 }
-
 
 function onclick_allyDistanceDesc(){
 	alert("i'm clicked !");
 }
+
+function getDistanceOfElement(element){
+	return element.childNodes[11];
+}
+
 
 function onclick_allyTimeAsc(){
 	alert("i'm clicked !");
