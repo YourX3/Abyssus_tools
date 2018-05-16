@@ -455,14 +455,16 @@ function onclick_tmAttack(){
 
 function page_ally(){
 	var columnDistance = document.createElement('td');
-	columnDistance.innerHTML = '<td align="center"><td align="center"><strong>Distance</strong></td></td>';
+	columnDistance.innerHTML = '<td align="center"><td align="center"><a onclick="onclick_allyDistanceAsc()"><img src="images/asc.png" style="vertical-align: middle;"></a><strong>Temps de trajet</strong><a onclick="onclick_allyDistanceDesc()"><img src="images/desc.png" style="vertical-align: middle;"></a></td></td>';
 	columnDistance.align ="center";
 	document.getElementsByTagName('tbody')[2].childNodes[1].appendChild(columnDistance);
-
+	
+	
 	var columnTime = document.createElement('td');
-	columnTime.innerHTML = '<td align="center"><td align="center"><strong>Temps de trajet</strong></td></td>';
+	columnTime.innerHTML = '<td align="center"><td align="center"><a onclick="onclick_allyTimeAsc()"><img src="images/asc.png" style="vertical-align: middle;"></a><strong>Temps de trajet</strong><a onclick="onclick_allyTimeDesc()"><img src="images/desc.png" style="vertical-align: middle;"></a></td></td>';
 	columnTime.align ="center";
 	document.getElementsByTagName('tbody')[2].childNodes[1].appendChild(columnTime);
+	
 	
 	createCookie("playerListNumber", "0", 5);
 	setDistanceAndTime_Ally();
@@ -497,6 +499,7 @@ function setDistanceAndTime_Ally(){
 	});
 }
 
+
 function getPlayersTr(){
 	var listOfElements = document.getElementsByTagName('tbody')[2].childNodes;
 	var result = [];
@@ -509,9 +512,27 @@ function getPlayersTr(){
 	return result;
 }
 
+/////////////////////////////////////////////////////////////
+//                         TRI ALLY                       //
 
 
+function onclick_allyDistanceAsc(){
+	alert("i'm clicked !");
+}
 
+
+function onclick_allyDistanceDesc(){
+	alert("i'm clicked !");
+}
+
+function onclick_allyTimeAsc(){
+	alert("i'm clicked !");
+}
+
+
+function onclick_allyTimeDesc(){
+	alert("i'm clicked !");
+}
 
 
 //////////////////////////////////////////////////////////////
