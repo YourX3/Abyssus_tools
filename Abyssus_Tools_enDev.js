@@ -14,7 +14,7 @@ init();
 // fonction appelée lorsque la page est chargée(sur https://s1.abyssus.games/*)
 function init(){
 	var textVersion = document.createElement('none');
-	textVersion.innerHTML = '<font size="1" color="white">Abyssus Tools V 0.3 __ Last Updtate 16/05/2018  19h52\r</font>';
+	textVersion.innerHTML = '<font size="1" color="white">Abyssus Tools V 0.3 __ Last Updtate 16/05/2018  21h49\r</font>';
 	document.getElementById('footer').insertBefore(textVersion, document.getElementById('footer').childNodes[0]);
 	
 	// fin de l'URL : sur https://s1.abyssus.games/jeu.php?page=armee : ?page=armee
@@ -209,7 +209,7 @@ function onClick_buttonFloods(){
 function armyPage(){
 	if(readCookie("armyReplacing") === null){
 		var alignText = document.createElement('none');
-		alignText.innerHTML = '<text>/ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . </text>';
+		alignText.innerHTML = '<text>/ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . </text>';
 		document.getElementsByTagName('center')[0].insertBefore(alignText, document.getElementsByTagName('table')[1]);
 
 		var but_replaceArmy = document.createElement('none');
@@ -554,7 +554,7 @@ function onclick_allyDistanceAsc(){// plus petit au plus grand
 		}
 		else{
 			var findedMore = false;
-			for(var j=0; j < listSorted[0].length; ++j){
+			for(var j=0; j < listSorted.length; ++j){
 				if(Number(getDistanceOfElement(listOfPlayersTr[i])) <= Number(getDistanceOfElement(listSorted[j]))){
 					listSorted.splice(0, 0, listOfPlayersTr[i]);
 					findedMore = true;
@@ -586,7 +586,7 @@ function onclick_allyDistanceDesc(){
 		}
 		else{
 			var findedMore = false;
-			for(var j=0; j < listSorted[0].length; ++j){
+			for(var j=0; j < listSorted.length; ++j){
 				if(Number(getDistanceOfElement(listOfPlayersTr[i])) >= Number(getDistanceOfElement(listSorted[j]))){
 					listSorted.splice(0, 0, listOfPlayersTr[i]);
 					findedMore = true;
