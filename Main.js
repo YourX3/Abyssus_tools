@@ -501,7 +501,7 @@ function getPlayersTr(){
 	var listOfElements = document.getElementsByTagName('tbody')[2].childNodes;
 	var result = [];
 	
-	for(var i=1; i < listOfElements.length; ++i){
+	for(var i=2; i < listOfElements.length; ++i){
 		if(listOfElements[i].tagName === "TR"){
 			result.push(listOfElements[i]);
 		}
