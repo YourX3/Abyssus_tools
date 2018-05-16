@@ -352,7 +352,7 @@ function page_playerProfile(){
 		var distance = listOfResults[3];
 		var time = listOfResults[4];
 
-		document.getElementsByTagName('tbody')[1].childNodes[3].childNodes[3].innerText += " Distance: " + distance + '\r' + " _ Temps de trajet: " + time;
+		document.getElementsByTagName('tbody')[1].childNodes[3].childNodes[3].innerText += " Distance: " + distance + '\r' + " Temps de trajet: " + time;
 	});
 }
 
