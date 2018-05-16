@@ -378,7 +378,7 @@ function setPlayerTravelTime(data, constraint = "none"){
 		}
 	}
 	
-	var finalValue;
+	var finalValue = null;
 	if(listOfElements.length > 0){
 		if(constraint !== "none"){
 			var consType = constraint.split(':')[0];
@@ -435,9 +435,6 @@ function setPlayerTravelTime(data, constraint = "none"){
 		else{
 			finalValue = listOfElements[0];
 		}
-	}
-	else{
-		finalValue = null;
 	}
 	return finalValue;
 }
@@ -505,7 +502,7 @@ function getPlayersTr(){
 	var result = [];
 	
 	for(var i=1; i < listOfElements.length; ++i){
-		if(listOfElements[i].tagName = "TR"){
+		if(listOfElements[i].tagName === "TR"){
 			result.push(listOfElements[i]);
 		}
 	}
