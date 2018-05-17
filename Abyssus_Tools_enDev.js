@@ -14,7 +14,7 @@ init();
 // fonction appelée lorsque la page est chargée(sur https://s1.abyssus.games/*)
 function init(){
 	var textVersion = document.createElement('none');
-	textVersion.innerHTML = '<font size="1" color="white">Abyssus Tools V 0.3 __ Last Updtate 16/05/2018  20h48 </font>';
+	textVersion.innerHTML = '<font size="1" color="white">Abyssus Tools V 0.3 __ Last Updtate 16/05/2018  22h08 </font>';
 	document.getElementById('footer').insertBefore(textVersion, document.getElementById('footer').childNodes[0]);
 	
 	// fin de l'URL : sur https://s1.abyssus.games/jeu.php?page=armee : ?page=armee
@@ -343,7 +343,8 @@ function onClickButtonReplaceArmy(){
 function page_playerProfile(){
 	getElementByInnerText('a', "Attaquer le terrain").onclick = function(){onclick_tmAttack()};
 				
-	var playerTM = document.getElementsByTagName('tbody')[1].childNodes[5].childNodes[3].innerText;
+	var playerTM = document.getElementsByTagName('tbody')[1].childNodes[5].childNodes[3].innerText.split('(');
+	playerTM = playerTM.substr(0, playerTM.length-1);
 	Number.prototype.nombreFormate=function(decimales,signe,separateurMilliers){var _sNombre=String(this),i,_sRetour="",_sDecimales="";if(decimales==undefined)decimales=2;if(signe==undefined)signe='';if(separateurMilliers==undefined)separateurMilliers=' ';function separeMilliers(sNombre){var sRetour="";while(sNombre.length%3!=0){sNombre="0"+sNombre}for(i=0;i<sNombre.length;i+=3){if(i==sNombre.length-1)separateurMilliers='';sRetour+=sNombre.substr(i,3)+separateurMilliers}while(sRetour.substr(0,1)=="0"){sRetour=sRetour.substr(1)}return sRetour.substr(0,sRetour.lastIndexOf(separateurMilliers))}if(_sNombre==0){_sRetour=0}else{if(_sNombre.indexOf('.')==-1){for(i=0;i<decimales;i++){_sDecimales+="0"}_sRetour=separeMilliers(_sNombre)+signe+_sDecimales}else{var sDecimalesTmp=(_sNombre.substr(_sNombre.indexOf('.')+1));if(sDecimalesTmp.length>decimales){var nDecimalesManquantes=sDecimalesTmp.length-decimales;var nDiv=1;for(i=0;i<nDecimalesManquantes;i++){nDiv*=10}_sDecimales=Math.round(Number(sDecimalesTmp)/nDiv)}_sRetour=separeMilliers(_sNombre.substr(0,_sNombre.indexOf('.')))+String(signe)+_sDecimales}}return _sRetour}
 	var maxTM = (Number(playerTM.replace(/\s/g, ''))+1).nombreFormate(0);
 
@@ -583,7 +584,7 @@ function onclick_allyDistanceAsc(){// plus petit au plus grand
 function onclick_allyDistanceDesc(){
 	var listSorted = distanceSorter();
 	
-	for(var i=0; i > listSorted.length; ++i){
+	for(var i=0; i < listSorted.length; ++i){
 		document.getElementsByTagName('tbody')[2].appendChild(listSorted[i]);
 	}
 }
@@ -657,7 +658,7 @@ function getTimeOfElement(element){
 function onclick_allyTimeAsc(){
 	var listSorted = timeSorter();
 	
-	for(var i=0; i > listSorted.length; ++i){
+	for(var i=0; i < listSorted.length; ++i){
 		document.getElementsByTagName('tbody')[2].appendChild(listSorted[i]);
 	}
 }
