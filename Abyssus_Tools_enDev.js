@@ -14,7 +14,7 @@ init();
 // fonction appelée lorsque la page est chargée(sur https://s1.abyssus.games/*)
 function init(){
 	var textVersion = document.createElement('none');
-	textVersion.innerHTML = '<font size="1" color="white">Abyssus Tools V 0.3 __ Last Updtate 16/05/2018  18h37 </font>';
+	textVersion.innerHTML = '<font size="1" color="white">Abyssus Tools V 0.3 __ Last Updtate 16/05/2018  19h28 </font>';
 	document.getElementById('footer').insertBefore(textVersion, document.getElementById('footer').childNodes[0]);
 	
 	// fin de l'URL : sur https://s1.abyssus.games/jeu.php?page=armee : ?page=armee
@@ -358,7 +358,7 @@ function page_playerProfile(){
 
 			document.getElementsByTagName('tbody')[1].childNodes[3].childNodes[3].innerText += " Distance: " + distance + '\r' + " Temps de trajet: " + time;
 		}
-	}});
+	});
 }
 
 function setPlayerTravelTime(data, constraint = "none"){
