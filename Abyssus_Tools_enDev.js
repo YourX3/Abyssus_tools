@@ -589,14 +589,85 @@ function onclick_allyDistanceDesc(){
 }
 
 
+function timeSorter(){
+	var listOfPlayersTr = getPlayersTr();
+	for(var i=0; i < listOfPlayersTr.length; ++i){
+		document.getElementsByTagName('tbody')[2].removeChild(listOfPlayersTr[i]);
+	}
+	var listSorted = [];
+	listSorted.push(listOfPlayersTr[0]);
+	for(var i=1; i < listOfPlayersTr.length; ++i){
+		if(getTimeOfElement(listSorted[0]) === "inconnu"){
+			listSorted.splice(0, 0, listOfPlayersTr[i]);
+		}
+		else if(getTimeOfElement(listOfPlayersTr[i]) === "inconnu"){
+			listSorted.push(listOfPlayersTr[i]);
+		}
+		else{
+			var findedMore = false;
+			for(var j=0; j < listSorted.length; ++j){
+				if(getTimeOfElement(listOfPlayersTr[i]) <= getTimeOfElement(listSorted[j])){
+					listSorted.splice(j, 0, listOfPlayersTr[i]);
+					findedMore = true;
+					break;
+				}
+			}
+			if(!findedMore)
+				listSorted.push(listOfPlayersTr[i]);
+		}
+	}
+}
+
+function getTimeOfElement(element){
+	var textTime = element.childNodes[12].innerText;
+	if(textTime !== "inconnu"){
+		var listOfUnits = textTime.split(' ');
+		var total = 0;
+		if(listOfUnits.length === 4){
+			var dayNb = Number(listOfUnits[0].replace('j', ''));
+			var hourNb = Number(listOfUnits[1].replace('h', ''));
+			var minNb = Number(listOfUnits[2].replace('m', ''));
+			var secNb = Number(listOfUnits[3].replace('s', ''));
+
+			total = dayNb*86400 + hourNb*3600 + minNb*60 + secNb;
+		}
+		else if(listOfUnits.length === 3){
+			var hourNb = Number(listOfUnits[0].replace('h', ''));
+			var minNb = Number(listOfUnits[1].replace('m', ''));
+			var secNb = Number(listOfUnits[2].replace('s', ''));
+
+			total = hourNb*3600 + minNb*60 + secNb;
+		}
+		else{
+			var minNb = Number(listOfUnits[1].replace('m', ''));
+			var secNb = Number(listOfUnits[2].replace('s', ''));
+
+			total = minNb*60 + secNb;
+		}
+		return total;
+	}
+	return "inconnu";
+}
+
+
+
+
 
 function onclick_allyTimeAsc(){
-	alert("i'm clicked !");
+	var listSorted = timeSorter();
+	
+	for(var i=0; i > listSorted.length; ++i){
+		document.getElementsByTagName('tbody')[2].appendChild(listSorted[i]);
+	}
 }
 
 
 function onclick_allyTimeDesc(){
-	alert("i'm clicked !");
+	var listSorted = timeSorter();
+	
+	for(var i=listSorted.length-1; i > -1; --i){
+		document.getElementsByTagName('tbody')[2].appendChild(listSorted[i]);
+	}
 }
 
 
