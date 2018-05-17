@@ -641,8 +641,8 @@ function getTimeOfElement(element){
 			total = hourNb*3600 + minNb*60 + secNb;
 		}
 		else{
-			var minNb = Number(listOfUnits[1].replace('m', ''));
-			var secNb = Number(listOfUnits[2].replace('s', ''));
+			var minNb = Number(listOfUnits[0].replace('m', ''));
+			var secNb = Number(listOfUnits[1].replace('s', ''));
 
 			total = minNb*60 + secNb;
 		}
