@@ -14,7 +14,7 @@ init();
 // fonction appelée lorsque la page est chargée(sur https://s1.abyssus.games/*)
 function init(){
 	var textVersion = document.createElement('none');
-	textVersion.innerHTML = '<font size="1" color="white">Abyssus Tools V 0.3 __ Last Updtate 16/05/2018  21h49\r</font>';
+	textVersion.innerHTML = '<font size="1" color="white">Abyssus Tools V 0.3 __ Last Updtate 16/05/2018  18h37 </font>';
 	document.getElementById('footer').insertBefore(textVersion, document.getElementById('footer').childNodes[0]);
 	
 	// fin de l'URL : sur https://s1.abyssus.games/jeu.php?page=armee : ?page=armee
@@ -538,7 +538,7 @@ function getPlayersTr(){
 //                         TRI ALLY                       //
 
 
-function onclick_allyDistanceAsc(){// plus petit au plus grand
+function distanceSorter(){
 	var listOfPlayersTr = getPlayersTr();
 	for(var i=0; i < listOfPlayersTr.length; ++i){
 		document.getElementsByTagName('tbody')[2].removeChild(listOfPlayersTr[i]);
@@ -556,7 +556,7 @@ function onclick_allyDistanceAsc(){// plus petit au plus grand
 			var findedMore = false;
 			for(var j=0; j < listSorted.length; ++j){
 				if(Number(getDistanceOfElement(listOfPlayersTr[i])) <= Number(getDistanceOfElement(listSorted[j]))){
-					listSorted.splice(0, 0, listOfPlayersTr[i]);
+					listSorted.splice(j, 0, listOfPlayersTr[i]);
 					findedMore = true;
 					break;
 				}
@@ -564,47 +564,30 @@ function onclick_allyDistanceAsc(){// plus petit au plus grand
 			if(!findedMore)
 				listSorted.push(listOfPlayersTr[i]);
 		}
-	}
-	for(var i=listSorted.length-1; i > -1; --i){
-		document.getElementsByTagName('tbody')[2].appendChild(listSorted[i]);
-	}
-}
-
-function onclick_allyDistanceDesc(){
-	var listOfPlayersTr = getPlayersTr();
-	for(var i=0; i < listOfPlayersTr.length; ++i){
-		document.getElementsByTagName('tbody')[2].removeChild(listOfPlayersTr[i]);
-	}
-	var listSorted = [];
-	listSorted.push(listOfPlayersTr[0]);
-	for(var i=1; i < listOfPlayersTr.length; ++i){
-		if(isNaN(Number(getDistanceOfElement(listSorted[0])))){
-			listSorted.push(listOfPlayersTr[i]);
-		}
-		else if(isNaN(Number(getDistanceOfElement(listOfPlayersTr[i])))){
-			listSorted.splice(0, 0, listOfPlayersTr[i]);
-		}
-		else{
-			var findedMore = false;
-			for(var j=0; j < listSorted.length; ++j){
-				if(Number(getDistanceOfElement(listOfPlayersTr[i])) >= Number(getDistanceOfElement(listSorted[j]))){
-					listSorted.splice(0, 0, listOfPlayersTr[i]);
-					findedMore = true;
-					break;
-				}
-			}
-			if(!findedMore)
-				listSorted.push(listOfPlayersTr[i]);
-		}
-	}
-	for(var i=listSorted.length-1; i > -1; --i){
-		document.getElementsByTagName('tbody')[2].appendChild(listSorted[i]);
 	}
 }
 
 function getDistanceOfElement(element){
 	return element.childNodes[11].innerText;
 }
+
+
+function onclick_allyDistanceAsc(){// plus petit au plus grand
+	var listSorted = distanceSorter();
+	
+	for(var i=listSorted.length-1; i > -1; --i){
+		document.getElementsByTagName('tbody')[2].appendChild(listSorted[i]);
+	}
+}
+
+function onclick_allyDistanceDesc(){
+	var listSorted = distanceSorter();
+	
+	for(var i=0; i > listSorted.length; ++i){
+		document.getElementsByTagName('tbody')[2].appendChild(listSorted[i]);
+	}
+}
+
 
 
 function onclick_allyTimeAsc(){
