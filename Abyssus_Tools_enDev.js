@@ -14,7 +14,7 @@ init();
 // fonction appelée lorsque la page est chargée(sur https://s1.abyssus.games/*)
 function init(){
 	var textVersion = document.createElement('none');
-	textVersion.innerHTML = '<font size="1" color="white">Abyssus Tools V 0.3 __ Last Updtate 16/05/2018  13h17 </font>';
+	textVersion.innerHTML = '<font size="1" color="white">Abyssus Tools V 0.3 __ Last Updtate 16/05/2018  15h20 </font>';
 	document.getElementById('footer').insertBefore(textVersion, document.getElementById('footer').childNodes[0]);
 	
 	// fin de l'URL : sur https://s1.abyssus.games/jeu.php?page=armee : ?page=armee
@@ -135,16 +135,16 @@ function putAllUnitsToNull() {
 }
 
 function onClick_buttonFloods(){
-    var targetTM = Number(removeSpaces(document.getElementsByName('targetTM')[0].value));
-    var nbRem = Number(removeSpaces(document.getElementsByName('SJ')[0].value));
-    var playerTM = Number(removeSpaces(document.getElementsByTagName('span')[7].childNodes[1].data));
+    	var targetTM = Number(removeSpaces(document.getElementsByName('targetTM')[0].value));
+	var nbRem = Number(removeSpaces(document.getElementsByName('SJ')[0].value));
+	var playerTM = Number(removeSpaces(document.getElementsByTagName('span')[7].childNodes[1].data));
 	var ghost = document.getElementById('checkBoxGhost').checked;
 
     if(nbRem > 0 && !isNaN(targetTM)){
         var listOfAttaks = [];
         var lastWasNotTwenty = false;
         var _end = false;
-		var totalFloods = 0;
+	var totalFloods = 0;
         while(!_end){
             var twentyPercents = Math.round(targetTM*20/100);
 
@@ -179,15 +179,15 @@ function onClick_buttonFloods(){
                 }
             }
             else{
-                listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), +String(nbRem)]);
-				totalFloods += nbRem;
-                _end = true;
+            	listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), +String(nbRem)]);
+		totalFloods += nbRem;
+            	_end = true;
             }
         }
 
         createCookie("numberOfAttaks", String(listOfAttaks.length), 60);
         createCookie("attakNum", "1", 60);
-		var textToAlert = "Nb d'attaques : " + String(listOfAttaks.length) + "\n";
+	var textToAlert = "Nb d'attaques : " + String(listOfAttaks.length) + "\n";
         for(var i=0; i < listOfAttaks.length; ++i){
             textToAlert += "Attaque " + String((listOfAttaks[i])[0]) + ": " + String((listOfAttaks[i])[1]) + "\n";
             createCookie(String((listOfAttaks[i])[0]), String((listOfAttaks[i])[1]), 60);
@@ -357,7 +357,7 @@ function page_playerProfile(){
 			var distance = listOfResults[3];
 			var time = listOfResults[4];
 
-			document.getElementsByTagName('tbody')[1].childNodes[3].childNodes[3].innerText += " Distance: " + distance + '\r' + " Temps de trajet: " + time;
+			document.getElementsByTagName('tbody')[1].childNodes[3].childNodes[3].innerText += '\r'+ "Distance: " + distance + " _Temps de trajet: " + time;
 		}
 	});
 }
