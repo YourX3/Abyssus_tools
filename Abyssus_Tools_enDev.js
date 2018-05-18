@@ -14,7 +14,7 @@ init();
 // fonction appelée lorsque la page est chargée(sur https://s1.abyssus.games/*)
 function init(){
 	var textVersion = document.createElement('none');
-	textVersion.innerHTML = '<font size="1" color="white">Abyssus Tools V 0.3 __ Last Updtate 16/05/2018  22h08 </font>';
+	textVersion.innerHTML = '<font size="1" color="white">Abyssus Tools V 0.3 __ Last Updtate 16/05/2018  13h17 </font>';
 	document.getElementById('footer').insertBefore(textVersion, document.getElementById('footer').childNodes[0]);
 	
 	// fin de l'URL : sur https://s1.abyssus.games/jeu.php?page=armee : ?page=armee
@@ -555,7 +555,7 @@ function distanceSorter(){
 		else{
 			var findedMore = false;
 			for(var j=0; j < listSorted.length; ++j){
-				if(Number(getDistanceOfElement(listOfPlayersTr[i])) <= Number(getDistanceOfElement(listSorted[j]))){
+				if(Number(getDistanceOfElement(listOfPlayersTr[i])) < Number(getDistanceOfElement(listSorted[j]))){
 					listSorted.splice(j, 0, listOfPlayersTr[i]);
 					findedMore = true;
 					break;
@@ -576,7 +576,7 @@ function getDistanceOfElement(element){
 function onclick_allyDistanceAsc(){// plus petit au plus grand
 	var listSorted = distanceSorter();
 	
-	for(var i=listSorted.length-1; i > -1; --i){
+	for(var i=0; i < listSorted.length; ++i){
 		document.getElementsByTagName('tbody')[2].appendChild(listSorted[i]);
 	}
 }
@@ -584,7 +584,7 @@ function onclick_allyDistanceAsc(){// plus petit au plus grand
 function onclick_allyDistanceDesc(){
 	var listSorted = distanceSorter();
 	
-	for(var i=0; i < listSorted.length; ++i){
+	for(var i=listSorted.length-1; i > -1; --i){
 		document.getElementsByTagName('tbody')[2].appendChild(listSorted[i]);
 	}
 }
@@ -607,7 +607,7 @@ function timeSorter(){
 		else{
 			var findedMore = false;
 			for(var j=0; j < listSorted.length; ++j){
-				if(getTimeOfElement(listOfPlayersTr[i]) <= getTimeOfElement(listSorted[j])){
+				if(getTimeOfElement(listOfPlayersTr[i]) < getTimeOfElement(listSorted[j])){
 					listSorted.splice(j, 0, listOfPlayersTr[i]);
 					findedMore = true;
 					break;
