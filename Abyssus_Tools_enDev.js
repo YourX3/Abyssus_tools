@@ -14,7 +14,7 @@ init();
 // fonction appelée lorsque la page est chargée(sur https://s1.abyssus.games/*)
 function init(){
 	var textVersion = document.createElement('none');
-	textVersion.innerHTML = '<font size="1" color="white">Abyssus Tools V 0.3 __ Last Updtate 31/05/2018  15h20 </font>';
+	textVersion.innerHTML = '<font size="1" color="white">Abyssus Tools V 0.3 __ Last Updtate 31/05/2018  21h13 </font>';
 	document.getElementById('footer').insertBefore(textVersion, document.getElementById('footer').childNodes[0]);
 	
 	// fin de l'URL : sur https://s1.abyssus.games/jeu.php?page=armee : ?page=armee
@@ -157,7 +157,7 @@ function onClick_buttonFloods(){
 					totalFloods += twentyPercents;
                 }
                 else if(!lastWasNotTwenty){
-			var value = Math.floor(targetTM-(0.5*playerTM+1) )*2/3);
+			var value = Math.floor(targetTM-(0.5*playerTM+1)*2/3);
 			listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), String(value)]);
 			nbRem -= value;
 			lastWasNotTwenty = true;
