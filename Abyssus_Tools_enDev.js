@@ -477,6 +477,11 @@ function page_ally(){
 	setDistanceAndTime_Ally();
 }
 
+
+function getTagInH1(var str){
+	return str.substring(1, str.indexOf("]"));
+}
+
 function setDistanceAndTime_Ally(){
 	var listOfPlayersTr = getPlayersTr();
 	
@@ -487,7 +492,7 @@ function setDistanceAndTime_Ally(){
 		var maxTM = (Number(playerTM.replace(/\s/g, ''))+1).nombreFormate(0);
 
 		$.post('ajax/ennemies.php', {mintdc:playerTM, maxtdc:maxTM, page:1, tri:'distance', sens:'asc', guerre:0, paix:0, ally:0}, function(data){
-			var listOfResults = setPlayerTravelTime(data, "ally:"+document.location.search.split('&')[1].substr(4));
+			var listOfResults = setPlayerTravelTime(data, "ally:"+getTagInH1(document.getElementByTagName("h1").innerText));
 			var listOfPlayersTr = getPlayersTr();
 			var targetPlayer = listOfPlayersTr[Number(readCookie("playerListNumber"))];
 
