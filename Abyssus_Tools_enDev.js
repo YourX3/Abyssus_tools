@@ -30,6 +30,8 @@ function init(){
 		page_playerProfile();
 	else if(docSearchPath.split('&')[0] === "?page=alliance")
 		page_ally();
+	else if(docSearchPath.split('&')[0] === "?page=alliance")
+		page_prodUnit();
 };
 
 /************************************************************
@@ -680,6 +682,50 @@ function onclick_allyTimeDesc(){
 
 
 //////////////////////////////////////////////////////////////
+//                      PAGE PROD UNITS                    //
+
+function getElementsByTagNameInList(list, tagName){
+	var result = [];
+	for(var i=0; i < list.length; ++i){
+	    if(list[i].tag === tagName){
+		 result.push(list[i]);
+	    }
+	}
+	return result;
+}
+
+function page_prodUnit(){
+	var body = document.getElementsByTagName("body")[0];
+	body.addEventListener("keydown", function(){onclick_tmAttack()};
+}
+
+function updateTables(){
+	var tables = getElementsByTagNameInList(document.getElementById("bloc").childNodes, "table");
+	if(tables.length > 0){
+		for(var i=0; i < tables.length; ++i){
+			var trs = getElementsByTagNameInList(tables[i].childNodes, "tr");
+			
+			if(localStrorage.getItem("ecaille") !== null){
+				var hpsValue = getElementsByTagNameInList(getElementsByTagNameInList(trs[1].childNodes, "td")[0].childNodes, "span").innerText;
+				hpsValue = " " + String(Number(removeSpaces(hpsValue)) + Number(removeSpaces(hpsValue)) * (Number(localStrorage.getItem("ecaille"))/10))
+				getElementsByTagNameInList(getElementsByTagNameInList(trs[1].childNodes, "td")[0].childNodes, "span").innerText = hpsValue;
+			}
+			if(localStrorage.getItem("morsure") !== null){
+				var atkValue = getElementsByTagNameInList(getElementsByTagNameInList(trs[2].childNodes, "td")[0].childNodes, "span").innerText;
+				atkValue = " " + String(Number(removeSpaces(atkValue)) + Number(removeSpaces(atkValue)) * (Number(localStrorage.getItem("morsure"))/10))
+				getElementsByTagNameInList(getElementsByTagNameInList(trs[2].childNodes, "td")[0].childNodes, "span").innerText = atkValue;
+			}
+			if(localStrorage.getItem("morsure") !== null){
+				var defValue = getElementsByTagNameInList(getElementsByTagNameInList(trs[3].childNodes, "td")[0].childNodes, "span").innerText;
+				defValue = " " + String(Number(removeSpaces(defValue)) + Number(removeSpaces(defValue)) * (Number(localStrorage.getItem("morsure"))/10))
+				getElementsByTagNameInList(getElementsByTagNameInList(trs[3].childNodes, "td")[0].childNodes, "span").innerText = defValue;
+			}
+		}
+	}
+}
+
+
+//////////////////////////////////////////////////////////////
 //                        UTILS                            //
 ////////////////////////////////////////////////////////////
 
@@ -703,7 +749,7 @@ function getElementByInnerText(tag, innerText){
 }
 
 
-/*********************************************************
+/******************************************************
 *                      COOKIES
 *******************************************************/
 
