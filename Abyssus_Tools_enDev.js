@@ -14,7 +14,7 @@ init();
 // fonction appelée lorsque la page est chargée(sur https://s1.abyssus.games/*)
 function init(){
 	var textVersion = document.createElement('none');
-	textVersion.innerHTML = '<font size="1" color="white">Abyssus Tools V 0.3 __ Last Updtate 01/06/2018  17h22 </font>';
+	textVersion.innerHTML = '<font size="1" color="white">Abyssus Tools V 0.3 __ Last Updtate 01/06/2018  22h17 </font>';
 	document.getElementById('footer').insertBefore(textVersion, document.getElementById('footer').childNodes[0]);
 	
 	// fin de l'URL : sur https://s1.abyssus.games/jeu.php?page=armee : ?page=armee
@@ -707,19 +707,19 @@ function updateTables(){
 		for(var i=0; i < tables.length; ++i){
 			var trs = getElementsByTagNameInList(tables[i].childNodes, "tr");
 			
-			if(localStrorage.getItem("ecaille") !== null){
+			if(localStorage.getItem("ecaille") !== null){
 				var hpsValue = getElementsByTagNameInList(getElementsByTagNameInList(trs[1].childNodes, "td")[0].childNodes, "span").innerText;
-				hpsValue = " " + String(Number(removeSpaces(hpsValue)) + Number(removeSpaces(hpsValue)) * (Number(localStrorage.getItem("ecaille"))/10))
+				hpsValue = " " + String(Number(removeSpaces(hpsValue)) + Number(removeSpaces(hpsValue)) * (Number(localStorage.getItem("ecaille"))/10))
 				getElementsByTagNameInList(getElementsByTagNameInList(trs[1].childNodes, "td")[0].childNodes, "span").innerText = hpsValue;
 			}
-			if(localStrorage.getItem("morsure") !== null){
+			if(localStorage.getItem("morsure") !== null){
 				var atkValue = getElementsByTagNameInList(getElementsByTagNameInList(trs[2].childNodes, "td")[0].childNodes, "span").innerText;
-				atkValue = " " + String(Number(removeSpaces(atkValue)) + Number(removeSpaces(atkValue)) * (Number(localStrorage.getItem("morsure"))/10))
+				atkValue = " " + String(Number(removeSpaces(atkValue)) + Number(removeSpaces(atkValue)) * (Number(localStorage.getItem("morsure"))/10))
 				getElementsByTagNameInList(getElementsByTagNameInList(trs[2].childNodes, "td")[0].childNodes, "span").innerText = atkValue;
 			}
-			if(localStrorage.getItem("morsure") !== null){
+			if(localStorage.getItem("morsure") !== null){
 				var defValue = getElementsByTagNameInList(getElementsByTagNameInList(trs[3].childNodes, "td")[0].childNodes, "span").innerText;
-				defValue = " " + String(Number(removeSpaces(defValue)) + Number(removeSpaces(defValue)) * (Number(localStrorage.getItem("morsure"))/10))
+				defValue = " " + String(Number(removeSpaces(defValue)) + Number(removeSpaces(defValue)) * (Number(localStorage.getItem("morsure"))/10))
 				getElementsByTagNameInList(getElementsByTagNameInList(trs[3].childNodes, "td")[0].childNodes, "span").innerText = defValue;
 			}
 		}
@@ -737,10 +737,10 @@ function page_labo(){
 
 	for(var i=0; i < headers2.length; ++i){
 		if(headers2[i].innerText.split(' ')[0] === "Ecaille"){
-			localStrorage.setItem("ecaille", headers2[i].innerText.split(' ')[3]);
+			localStorage.setItem("ecaille", headers2[i].innerText.split(' ')[3]);
 		}
 		else if(headers2[i].innerText.split(' ')[0] === "morsure"){
-			localStrorage.setItem("morsure", headers2[i].innerText.split(' ')[3]);
+			localStorage.setItem("morsure", headers2[i].innerText.split(' ')[3]);
 		}
 	}
 }
