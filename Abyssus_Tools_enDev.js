@@ -737,10 +737,10 @@ function page_labo(){
 
 	for(var i=0; i < headers2.length; ++i){
 		if(headers2[i].innerText.split(' ')[0] === "Ecaille"){
-			localStorage.setItem("ecaille", headers2[i].innerText.split(' ')[3]);
+			localStorage.setItem("ecaille", headers2[i].innerText.split(' ')[2]);
 		}
 		else if(headers2[i].innerText.split(' ')[0] === "morsure"){
-			localStorage.setItem("morsure", headers2[i].innerText.split(' ')[3]);
+			localStorage.setItem("morsure", headers2[i].innerText.split(' ')[2]);
 		}
 	}
 }
