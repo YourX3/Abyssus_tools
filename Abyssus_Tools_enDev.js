@@ -689,7 +689,7 @@ function onclick_allyTimeDesc(){
 function getElementsByTagNameInList(list, tagName){
 	var result = [];
 	for(var i=0; i < list.length; ++i){
-	    if(list[i].tag === tagName){
+	    if(list[i].tagName === tagName){
 		 result.push(list[i]);
 	    }
 	}
@@ -702,23 +702,23 @@ function page_prodUnit(){
 }
 
 function updateTables(){
-	var tables = getElementsByTagNameInList(document.getElementById("bloc").childNodes, "table");
+	var tables = getElementsByTagNameInList(document.getElementById("bloc").childNodes, "TABLE");
 	if(tables.length > 0){
 		for(var i=0; i < tables.length; ++i){
-			var trs = getElementsByTagNameInList(tables[i].childNodes, "tr");
+			var trs = getElementsByTagNameInList(tables[i].childNodes, "TR");
 			
 			if(localStorage.getItem("ecaille") !== null){
-				var hpsValue = getElementsByTagNameInList(getElementsByTagNameInList(trs[1].childNodes, "td")[0].childNodes, "span").innerText;
+				var hpsValue = getElementsByTagNameInList(getElementsByTagNameInList(trs[1].childNodes, "TD")[0].childNodes, "SPAN").innerText;
 				hpsValue = " " + String(Number(removeSpaces(hpsValue)) + Number(removeSpaces(hpsValue)) * (Number(localStorage.getItem("ecaille"))/10))
 				getElementsByTagNameInList(getElementsByTagNameInList(trs[1].childNodes, "td")[0].childNodes, "span").innerText = hpsValue;
 			}
 			if(localStorage.getItem("morsure") !== null){
-				var atkValue = getElementsByTagNameInList(getElementsByTagNameInList(trs[2].childNodes, "td")[0].childNodes, "span").innerText;
+				var atkValue = getElementsByTagNameInList(getElementsByTagNameInList(trs[2].childNodes, "TD")[0].childNodes, "SPAN").innerText;
 				atkValue = " " + String(Number(removeSpaces(atkValue)) + Number(removeSpaces(atkValue)) * (Number(localStorage.getItem("morsure"))/10))
 				getElementsByTagNameInList(getElementsByTagNameInList(trs[2].childNodes, "td")[0].childNodes, "span").innerText = atkValue;
 			}
 			if(localStorage.getItem("morsure") !== null){
-				var defValue = getElementsByTagNameInList(getElementsByTagNameInList(trs[3].childNodes, "td")[0].childNodes, "span").innerText;
+				var defValue = getElementsByTagNameInList(getElementsByTagNameInList(trs[3].childNodes, "TD")[0].childNodes, "SPAN").innerText;
 				defValue = " " + String(Number(removeSpaces(defValue)) + Number(removeSpaces(defValue)) * (Number(localStorage.getItem("morsure"))/10))
 				getElementsByTagNameInList(getElementsByTagNameInList(trs[3].childNodes, "td")[0].childNodes, "span").innerText = defValue;
 			}
