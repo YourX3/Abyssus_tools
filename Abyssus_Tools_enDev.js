@@ -30,8 +30,10 @@ function init(){
 		page_playerProfile();
 	else if(docSearchPath.split('&')[0] === "?page=alliance")
 		page_ally();
-	else if(docSearchPath.split('&')[0] === "?page=alliance")
+	else if(docSearchPath.split('&')[0] === "?page=productionunite")
 		page_prodUnit();
+	else if(docSearchPath.split('&')[0] === "?page=laboratoire")
+		page_labo();
 };
 
 /************************************************************
@@ -696,7 +698,7 @@ function getElementsByTagNameInList(list, tagName){
 
 function page_prodUnit(){
 	var body = document.getElementsByTagName("body")[0];
-	body.addEventListener("keydown", function(){onclick_tmAttack()});
+	body.addEventListener("keydown", function(){updateTables()});
 }
 
 function updateTables(){
@@ -724,6 +726,24 @@ function updateTables(){
 	}
 }
 
+
+
+
+//////////////////////////////////////////////////////////////
+//                    PAGE LABO                             //
+
+function page_labo(){
+	var headers2 = document.getElementsByTagName("h2");
+
+	for(var i=0; i < headers2.length; ++i){
+		if(headers2[i].innerText.split(' ')[0] === "Ecaille"){
+			localStrorage.setItem("ecaille", headers2[i].innerText.split(' ')[3]);
+		}
+		else if(headers2[i].innerText.split(' ')[0] === "morsure"){
+			localStrorage.setItem("morsure", headers2[i].innerText.split(' ')[3]);
+		}
+	}
+}
 
 //////////////////////////////////////////////////////////////
 //                        UTILS                            //
