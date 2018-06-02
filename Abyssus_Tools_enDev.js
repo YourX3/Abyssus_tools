@@ -14,7 +14,7 @@ init();
 // fonction appelée lorsque la page est chargée(sur https://s1.abyssus.games/*)
 function init(){
 	var textVersion = document.createElement('none');
-	textVersion.innerHTML = '<font size="1" color="white">Abyssus Tools V 0.3 __ Last Updtate 01/06/2018  12h08 </font>';
+	textVersion.innerHTML = '<font size="1" color="white">Abyssus Tools V 0.3 __ Last Updtate 01/06/2018  19h38 </font>';
 	document.getElementById('footer').insertBefore(textVersion, document.getElementById('footer').childNodes[0]);
 	
 	// fin de l'URL : sur https://s1.abyssus.games/jeu.php?page=armee : ?page=armee
@@ -710,17 +710,17 @@ function updateTables(){
 			if(localStorage.getItem("ecaille") !== null){
 				var hpsValue = getElementsByTagNameInList(getElementsByTagNameInList(trs[1].childNodes, "TD")[0].childNodes, "SPAN")[0].innerText;
 				hpsValue = " " + String(Number(removeSpaces(hpsValue)) + Number(removeSpaces(hpsValue)) * (Number(localStorage.getItem("ecaille"))/10))
-				getElementsByTagNameInList(getElementsByTagNameInList(trs[1].childNodes, "td")[0].childNodes, "span").innerText = hpsValue;
+				getElementsByTagNameInList(getElementsByTagNameInList(trs[1].childNodes, "TD")[0].childNodes, "SPAN").innerText = hpsValue;
 			}
 			if(localStorage.getItem("morsure") !== null){
 				var atkValue = getElementsByTagNameInList(getElementsByTagNameInList(trs[2].childNodes, "TD")[0].childNodes, "SPAN")[0].innerText;
 				atkValue = " " + String(Number(removeSpaces(atkValue)) + Number(removeSpaces(atkValue)) * (Number(localStorage.getItem("morsure"))/10))
-				getElementsByTagNameInList(getElementsByTagNameInList(trs[2].childNodes, "td")[0].childNodes, "span").innerText = atkValue;
+				getElementsByTagNameInList(getElementsByTagNameInList(trs[2].childNodes, "TD")[0].childNodes, "SPAN").innerText = atkValue;
 			}
 			if(localStorage.getItem("morsure") !== null){
 				var defValue = getElementsByTagNameInList(getElementsByTagNameInList(trs[3].childNodes, "TD")[0].childNodes, "SPAN")[0].innerText;
 				defValue = " " + String(Number(removeSpaces(defValue)) + Number(removeSpaces(defValue)) * (Number(localStorage.getItem("morsure"))/10))
-				getElementsByTagNameInList(getElementsByTagNameInList(trs[3].childNodes, "td")[0].childNodes, "span").innerText = defValue;
+				getElementsByTagNameInList(getElementsByTagNameInList(trs[3].childNodes, "TD")[0].childNodes, "SPAN").innerText = defValue;
 			}
 		}
 	}
