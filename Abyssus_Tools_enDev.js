@@ -708,17 +708,17 @@ function updateTables(){
 			var trs = getElementsByTagNameInList(tables[i].childNodes[1].childNodes, "TR");
 			
 			if(localStorage.getItem("ecaille") !== null){
-				var hpsValue = getElementsByTagNameInList(getElementsByTagNameInList(trs[1].childNodes, "TD")[0].childNodes, "SPAN").innerText;
+				var hpsValue = getElementsByTagNameInList(getElementsByTagNameInList(trs[1].childNodes, "TD")[0].childNodes, "SPAN")[0].innerText;
 				hpsValue = " " + String(Number(removeSpaces(hpsValue)) + Number(removeSpaces(hpsValue)) * (Number(localStorage.getItem("ecaille"))/10))
 				getElementsByTagNameInList(getElementsByTagNameInList(trs[1].childNodes, "td")[0].childNodes, "span").innerText = hpsValue;
 			}
 			if(localStorage.getItem("morsure") !== null){
-				var atkValue = getElementsByTagNameInList(getElementsByTagNameInList(trs[2].childNodes, "TD")[0].childNodes, "SPAN").innerText;
+				var atkValue = getElementsByTagNameInList(getElementsByTagNameInList(trs[2].childNodes, "TD")[0].childNodes, "SPAN")[0].innerText;
 				atkValue = " " + String(Number(removeSpaces(atkValue)) + Number(removeSpaces(atkValue)) * (Number(localStorage.getItem("morsure"))/10))
 				getElementsByTagNameInList(getElementsByTagNameInList(trs[2].childNodes, "td")[0].childNodes, "span").innerText = atkValue;
 			}
 			if(localStorage.getItem("morsure") !== null){
-				var defValue = getElementsByTagNameInList(getElementsByTagNameInList(trs[3].childNodes, "TD")[0].childNodes, "SPAN").innerText;
+				var defValue = getElementsByTagNameInList(getElementsByTagNameInList(trs[3].childNodes, "TD")[0].childNodes, "SPAN")[0].innerText;
 				defValue = " " + String(Number(removeSpaces(defValue)) + Number(removeSpaces(defValue)) * (Number(localStorage.getItem("morsure"))/10))
 				getElementsByTagNameInList(getElementsByTagNameInList(trs[3].childNodes, "td")[0].childNodes, "span").innerText = defValue;
 			}
