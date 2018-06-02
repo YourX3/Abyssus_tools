@@ -14,7 +14,7 @@ init();
 // fonction appelée lorsque la page est chargée(sur https://s1.abyssus.games/*)
 function init(){
 	var textVersion = document.createElement('none');
-	textVersion.innerHTML = '<font size="1" color="white">Abyssus Tools V 0.3 __ Last Updtate 01/06/2018  22h17 </font>';
+	textVersion.innerHTML = '<font size="1" color="white">Abyssus Tools V 0.3 __ Last Updtate 01/06/2018  10h37 </font>';
 	document.getElementById('footer').insertBefore(textVersion, document.getElementById('footer').childNodes[0]);
 	
 	// fin de l'URL : sur https://s1.abyssus.games/jeu.php?page=armee : ?page=armee
@@ -705,7 +705,7 @@ function updateTables(){
 	var tables = getElementsByTagNameInList(document.getElementById("bloc").childNodes, "TABLE");
 	if(tables.length > 0){
 		for(var i=0; i < tables.length; ++i){
-			var trs = getElementsByTagNameInList(tables[i].childNodes, "TR");
+			var trs = getElementsByTagNameInList(tables[i].childNodes[1].childNodes, "TR");
 			
 			if(localStorage.getItem("ecaille") !== null){
 				var hpsValue = getElementsByTagNameInList(getElementsByTagNameInList(trs[1].childNodes, "TD")[0].childNodes, "SPAN").innerText;
