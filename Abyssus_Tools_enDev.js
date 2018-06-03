@@ -702,30 +702,28 @@ function page_prodUnit(){
 }
 
 function updateTables(){
-	setTimeout(function(){
 	var tables = getElementsByTagNameInList(document.getElementById("bloc").childNodes, "TABLE");
-		if(tables.length > 0){
-			for(var i=0; i < tables.length; ++i){
-				var trs = getElementsByTagNameInList(tables[i].childNodes[1].childNodes, "TR");
+	if(tables.length > 0){
+		for(var i=0; i < tables.length; ++i){
+			var trs = getElementsByTagNameInList(tables[i].childNodes[1].childNodes, "TR");
 
-				if(localStorage.getItem("ecaille") !== null){
-					var hpsValue = getElementsByTagNameInList(getElementsByTagNameInList(trs[1].childNodes, "TD")[0].childNodes, "SPAN")[0].innerText;
-					hpsValue = " " + String(Number(removeSpaces(hpsValue)) + Number(removeSpaces(hpsValue)) * (Number(localStorage.getItem("ecaille"))/10))
-					getElementsByTagNameInList(getElementsByTagNameInList(trs[1].childNodes, "TD")[0].childNodes, "SPAN").textContent = hpsValue;
-				}
-				if(localStorage.getItem("morsure") !== null){
-					var atkValue = getElementsByTagNameInList(getElementsByTagNameInList(trs[2].childNodes, "TD")[0].childNodes, "SPAN")[0].innerText;
-					atkValue = " " + String(Number(removeSpaces(atkValue)) + Number(removeSpaces(atkValue)) * (Number(localStorage.getItem("morsure"))/10))
-					getElementsByTagNameInList(getElementsByTagNameInList(trs[2].childNodes, "TD")[0].childNodes, "SPAN").textContent = atkValue;
-				}
-				if(localStorage.getItem("morsure") !== null){
-					var defValue = getElementsByTagNameInList(getElementsByTagNameInList(trs[3].childNodes, "TD")[0].childNodes, "SPAN")[0].innerText;
-					defValue = " " + String(Number(removeSpaces(defValue)) + Number(removeSpaces(defValue)) * (Number(localStorage.getItem("morsure"))/10))
-					getElementsByTagNameInList(getElementsByTagNameInList(trs[3].childNodes, "TD")[0].childNodes, "SPAN").textContent = defValue;
-				}
+			if(localStorage.getItem("ecaille") !== null){
+				var hpsValue = getElementsByTagNameInList(getElementsByTagNameInList(trs[1].childNodes, "TD")[0].childNodes, "SPAN")[0].innerText;
+				hpsValue = " " + String(Number(removeSpaces(hpsValue)) + Number(removeSpaces(hpsValue)) * (Number(localStorage.getItem("ecaille"))/10))
+				getElementsByTagNameInList(getElementsByTagNameInList(trs[1].childNodes, "TD")[0].childNodes, "SPAN").value = hpsValue;
+			}
+			if(localStorage.getItem("morsure") !== null){
+				var atkValue = getElementsByTagNameInList(getElementsByTagNameInList(trs[2].childNodes, "TD")[0].childNodes, "SPAN")[0].innerText;
+				atkValue = " " + String(Number(removeSpaces(atkValue)) + Number(removeSpaces(atkValue)) * (Number(localStorage.getItem("morsure"))/10))
+				getElementsByTagNameInList(getElementsByTagNameInList(trs[2].childNodes, "TD")[0].childNodes, "SPAN").value = atkValue;
+			}
+			if(localStorage.getItem("morsure") !== null){
+				var defValue = getElementsByTagNameInList(getElementsByTagNameInList(trs[3].childNodes, "TD")[0].childNodes, "SPAN")[0].innerText;
+				defValue = " " + String(Number(removeSpaces(defValue)) + Number(removeSpaces(defValue)) * (Number(localStorage.getItem("morsure"))/10))
+				getElementsByTagNameInList(getElementsByTagNameInList(trs[3].childNodes, "TD")[0].childNodes, "SPAN").value = defValue;
 			}
 		}
-	}, 10);
+	}
 }
 
 
