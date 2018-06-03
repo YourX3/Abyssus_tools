@@ -199,7 +199,7 @@ function onClick_buttonFloods(){
             textToAlert += "Attaque " + String((listOfAttaks[i])[0]) + ": " + String((listOfAttaks[i])[1]) + "\n";
             createCookie(String((listOfAttaks[i])[0]), String((listOfAttaks[i])[1]), 60);
         }
-	textToAlert += "Total: " + String(totalFloods) + "\n";
+	textToAlert += "Total: " + String(totalFloods) + "\n" + "\n";
 	textToAlert += "Votre TM: " + String(playerTM) + "\n";
 	textToAlert += "TM de la cible: " + String(targetTM);
 	
