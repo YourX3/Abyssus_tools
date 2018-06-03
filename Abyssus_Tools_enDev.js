@@ -14,7 +14,7 @@ init();
 // fonction appelée lorsque la page est chargée(sur https://s1.abyssus.games/*)
 function init(){
 	var textVersion = document.createElement('none');
-	textVersion.innerHTML = '<font size="1" color="white">Abyssus Tools V 0.3 __ Last Updtate 03/06/2018  18h31 </font>';
+	textVersion.innerHTML = '<font size="1" color="white">Abyssus Tools V 0.3 __ Last Updtate 03/06/2018 19h12 </font>';
 	document.getElementById('footer').insertBefore(textVersion, document.getElementById('footer').childNodes[0]);
 	
 	// fin de l'URL : sur https://s1.abyssus.games/jeu.php?page=armee : ?page=armee
@@ -185,6 +185,8 @@ function onClick_buttonFloods(){
             }
             else{
             	listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), +String(nbRem)]);
+		playerTM += nbRem;
+		targetTM -= nbRem;
 		totalFloods += nbRem;
             	_end = true;
             }
@@ -197,7 +199,10 @@ function onClick_buttonFloods(){
             textToAlert += "Attaque " + String((listOfAttaks[i])[0]) + ": " + String((listOfAttaks[i])[1]) + "\n";
             createCookie(String((listOfAttaks[i])[0]), String((listOfAttaks[i])[1]), 60);
         }
-	textToAlert += "Total: " + String(totalFloods);
+	textToAlert += "Total: " + String(totalFloods) + "\n";
+	textToAlert += "Votre TM: " + String(playerTM) + "\n";
+	textToAlert += "TM de la cible: " + String(targetTM);
+	
 	alert(textToAlert);
 		
 	putAllUnitsToNull();
