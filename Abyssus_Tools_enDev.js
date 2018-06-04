@@ -14,7 +14,7 @@ init();
 // fonction appelée lorsque la page est chargée(sur https://s1.abyssus.games/*)
 function init(){
 	var textVersion = document.createElement('none');
-	textVersion.innerHTML = '<font size="1" color="white">Abyssus Tools V 0.3 __ Last Updtate 04/06/2018 20h45 </font>';
+	textVersion.innerHTML = '<font size="1" color="white">Abyssus Tools V 0.3 __ Last Updtate 04/06/2018 21h37 </font>';
 	document.getElementById('footer').insertBefore(textVersion, document.getElementById('footer').childNodes[0]);
 	
 	// fin de l'URL : sur https://s1.abyssus.games/jeu.php?page=armee : ?page=armee
@@ -34,6 +34,8 @@ function init(){
 		page_prodUnit();
 	else if(docSearchPath.split('&')[0] === "?page=laboratoire")
 		page_labo();
+	else if(docSearchPath.split('&')[0] === "?page=listemembre")
+		page_membres();
 };
 
 /************************************************************
