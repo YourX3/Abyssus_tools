@@ -729,7 +729,7 @@ function updateTables(){
 					getElementsByTagNameInList(getElementsByTagNameInList(trs[2].childNodes, "TD")[0].childNodes, "SPAN")[0].textContent = atkValue;
 				}
 				if(localStorage.getItem("morsure") !== null){
-					var defValue = Math.round(Number(removeSpaces(input.value)) * Number(input.dataset.fdd) + Math.round(Number(removeSpaces(input.value)) * Number(input.dataset.fdd) * (Number(localStorage.getItem("morsure"))/10));
+					var defValue = Math.round(Number(removeSpaces(input.value)) * Number(input.dataset.fdd) + Number(removeSpaces(input.value)) * Number(input.dataset.fdd) * (Number(localStorage.getItem("morsure"))/10));
 					defValue = " " + defValue.nombreFormate(0);
 					getElementsByTagNameInList(getElementsByTagNameInList(trs[3].childNodes, "TD")[0].childNodes, "SPAN")[0].textContent = defValue;
 				}
