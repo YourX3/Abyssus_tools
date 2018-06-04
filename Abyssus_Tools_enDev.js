@@ -14,7 +14,7 @@ init();
 // fonction appelée lorsque la page est chargée(sur https://s1.abyssus.games/*)
 function init(){
 	var textVersion = document.createElement('none');
-	textVersion.innerHTML = '<font size="1" color="white">Abyssus Tools V 0.3 __ Last Updtate 04/06/2018 20h05 </font>';
+	textVersion.innerHTML = '<font size="1" color="white">Abyssus Tools V 0.3 __ Last Updtate 04/06/2018 20h45 </font>';
 	document.getElementById('footer').insertBefore(textVersion, document.getElementById('footer').childNodes[0]);
 	
 	// fin de l'URL : sur https://s1.abyssus.games/jeu.php?page=armee : ?page=armee
@@ -754,6 +754,109 @@ function page_labo(){
 			localStorage.setItem("morsure", headers2[i].innerText.split(' ')[2]);
 		}
 	}
+}
+
+
+////////////////////////////////////////////////////////////////////
+//                         PAGE MEMBRES                           //
+
+function page_membres(){
+	var columnDistance = document.createElement('td');
+	columnDistance.innerHTML = '<td align="center"><td align="center"><a onclick="onClick_membersDistanceAsc()"><img src="images/asc.png" style="vertical-align: middle;"></a><strong> Distance </strong><a onclick="onClick_membersDistanceDec()"><img src="images/desc.png" style="vertical-align: middle;"></a></td></td>';
+	columnDistance.align ="center";
+	document.getElementsByTagName('tbody')[1].childNodes[1].appendChild(columnDistance);
+	
+	
+	var columnTime = document.createElement('td');
+	columnTime.innerHTML = '<td align="center"><td align="center"><a onclick="onclick_allyTimeAsc()"><img src="images/asc.png" style="vertical-align: middle;"></a><strong> Temps de trajet </strong><a onclick="onclick_allyTimeDesc()"><img src="images/desc.png" style="vertical-align: middle;"></a></td></td>';
+	columnTime.align ="center";
+	document.getElementsByTagName('tbody')[2].childNodes[1].appendChild(columnTime);
+	
+	createCookie("playerListNumber", "0", 5);
+	setDistanceAndTime_Members();
+}
+
+function setDistanceAndTime_Members(){
+	var listOfPlayersTr = getPlayersTrMembers();
+	
+	if(Number(readCookie("playerListNumber")) < listOfPlayersTr.length)
+	{
+		var playerTM = listOfPlayersTr[Number(readCookie("playerListNumber"))].childNodes[5].innerText;
+		var maxTM = (Number(playerTM.replace(/\s/g, ''))+1).nombreFormate(0);
+
+		$.post('ajax/ennemies.php', {mintdc:playerTM, maxtdc:maxTM, page:1, tri:'distance', sens:'asc', guerre:0, paix:0, ally:0}, function(data){
+			var listOfResults = setPlayerTravelTime(data, "ally:"+getTagInH1(document.getElementsByTagName("h1")[0].innerText));
+			var listOfPlayersTr = getPlayersTrMembers();
+			var targetPlayer = listOfPlayersTr[Number(readCookie("playerListNumber"))];
+
+			if(listOfResults === null){	
+				var distanceTd = document.createElement('td');
+				distanceTd.align = "center";
+				distanceTd.innerText = "inconnue";
+				targetPlayer.appendChild(distanceTd);
+
+				var timeTd = document.createElement('td');
+				timeTd.align = "center";
+				timeTd.innerText = "inconnu";
+				targetPlayer.appendChild(timeTd);
+			}
+			else{
+				var distance = listOfResults[3];
+				var time = listOfResults[4];
+
+				var distanceTd = document.createElement('td');
+				distanceTd.align = "center";
+				distanceTd.innerText = distance;
+				targetPlayer.appendChild(distanceTd);
+
+				var timeTd = document.createElement('td');
+				timeTd.align = "center";
+				timeTd.innerText = time;
+				targetPlayer.appendChild(timeTd);
+			}
+			createCookie("playerListNumber", String(Number(readCookie("playerListNumber")) +1), 5);
+			setDistanceAndTime_Members();
+		});
+	}
+}
+
+
+function getPlayersTrMembers(){
+	var listOfElements = document.getElementsByTagName('tbody')[1].childNodes;
+	var result = [];
+	
+	for(var i=2; i < listOfElements.length; ++i){
+		if(listOfElements[i].tagName === "TR"){
+			result.push(listOfElements[i]);
+		}
+	}
+	return result;
+}
+
+
+function onClick_membersDistanceAsc(){
+	
+}
+
+function onClick_membersDistanceDec(){
+	
+}
+
+function membersDistanceSorter(){
+	
+}
+
+
+function onClick_membersTimeAsc(){
+	
+}
+
+function onClick_membersTimeDec(){
+	
+}
+
+function membersTimeSorter(){
+	
 }
 
 //////////////////////////////////////////////////////////////
