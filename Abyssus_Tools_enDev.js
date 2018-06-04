@@ -706,7 +706,7 @@ function getElementsByTagNameInList(list, tagName){
 
 function page_prodUnit(){
 	var body = document.getElementsByTagName("body")[0];
-	body.addEventListener("keydown", function(){updateTables()});
+	body.addEventListener("keyup", function(){updateTables()});
 }
 
 function updateTables(){
@@ -720,17 +720,17 @@ function updateTables(){
 				
 								       
 				if(localStorage.getItem("ecaille") !== null){
-					var hpsValue = Math.round(Number(removeSpaces(input.value)) * Number(input.dataset.vie) * (Number(localStorage.getItem("ecaille"))/10));
+					var hpsValue = Math.round(Number(removeSpaces(input.value)) * Number(input.dataset.vie) + Number(removeSpaces(input.value)) * Number(input.dataset.vie) * (Number(localStorage.getItem("ecaille"))/10));
 					hpsValue = " " + hpsValue.nombreFormate(0);
 					getElementsByTagNameInList(getElementsByTagNameInList(trs[1].childNodes, "TD")[0].childNodes, "SPAN")[0].textContent = hpsValue;
 				}
 				if(localStorage.getItem("morsure") !== null){
-					var atkValue = Math.round(Number(removeSpaces(input.value)) * Number(input.dataset.fdf) * (Number(localStorage.getItem("morsure"))/10));
+					var atkValue = Math.round(Number(removeSpaces(input.value)) * Number(input.dataset.fdf) + Number(removeSpaces(input.value)) * Number(input.dataset.fdf)* (Number(localStorage.getItem("morsure"))/10));
 					atkValue = " " + atkValue.nombreFormate(0);
 					getElementsByTagNameInList(getElementsByTagNameInList(trs[2].childNodes, "TD")[0].childNodes, "SPAN")[0].textContent = atkValue;
 				}
 				if(localStorage.getItem("morsure") !== null){
-					var defValue = Math.round(Number(removeSpaces(input.value)) * Number(input.dataset.fdd) * (Number(localStorage.getItem("morsure"))/10));
+					var defValue = Math.round(Number(removeSpaces(input.value)) * Number(input.dataset.fdd) + Math.round(Number(removeSpaces(input.value)) * Number(input.dataset.fdd) * (Number(localStorage.getItem("morsure"))/10));
 					defValue = " " + defValue.nombreFormate(0);
 					getElementsByTagNameInList(getElementsByTagNameInList(trs[3].childNodes, "TD")[0].childNodes, "SPAN")[0].textContent = defValue;
 				}
@@ -757,6 +757,7 @@ function page_labo(){
 		}
 	}
 }
+
 
 
 ////////////////////////////////////////////////////////////////////
