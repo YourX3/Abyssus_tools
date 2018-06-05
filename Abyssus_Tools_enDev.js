@@ -936,7 +936,7 @@ function membersTimeSorter(){
 }
 
 function getTimeOfElementMembers(element){
-	var textTime = element.childNodes[20].innerText;
+	var textTime = element.childNodes[22].innerText;
 	if(textTime !== "inconnu"){
 		var listOfUnits = textTime.split(' ');
 		var total = 0;
