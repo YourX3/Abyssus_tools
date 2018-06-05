@@ -775,7 +775,7 @@ function page_membres(){
 	var columnTime = document.createElement('td');
 	columnTime.innerHTML = '<td align="center"><td align="center"><a onclick="onclick_allyTimeAsc()"><img src="images/asc.png" style="vertical-align: middle;"></a><strong> Temps de trajet </strong><a onclick="onclick_allyTimeDesc()"><img src="images/desc.png" style="vertical-align: middle;"></a></td></td>';
 	columnTime.align ="center";
-	document.getElementsByTagName('tbody')[2].childNodes[1].appendChild(columnTime);
+	document.getElementsByTagName('tbody')[1].childNodes[1].appendChild(columnTime);
 	
 	createCookie("playerListNumber", "0", 5);
 	setDistanceAndTime_Members();
