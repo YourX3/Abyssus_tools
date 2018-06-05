@@ -785,7 +785,7 @@ function setDistanceAndTime_Members(){
 	
 	if(Number(readCookie("playerListNumber")) < listOfPlayersTr.length)
 	{
-		var playerTM = listOfPlayersTr[Number(readCookie("playerListNumber"))].childNodes[5].innerText;
+		var playerTM = listOfPlayersTr[Number(readCookie("playerListNumber"))].childNodes[21].innerText;
 		var maxTM = (Number(playerTM.replace(/\s/g, ''))+1).nombreFormate(0);
 
 		$.post('ajax/ennemies.php', {mintdc:playerTM, maxtdc:maxTM, page:1, tri:'distance', sens:'asc', guerre:0, paix:0, ally:0}, function(data){
