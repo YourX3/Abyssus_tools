@@ -14,7 +14,7 @@ init();
 // fonction appelée lorsque la page est chargée(sur https://s1.abyssus.games/*)
 function init(){
 	var textVersion = document.createElement('none');
-	textVersion.innerHTML = '<font size="1" color="white">Abyssus Tools V 0.3 __ Last Updtate 04/06/2018 21h37 </font>';
+	textVersion.innerHTML = '<font size="1" color="white">Abyssus Tools V 0.3 __ Last Updtate 05/06/2018 13h20 </font>';
 	document.getElementById('footer').insertBefore(textVersion, document.getElementById('footer').childNodes[0]);
 	
 	// fin de l'URL : sur https://s1.abyssus.games/jeu.php?page=armee : ?page=armee
@@ -715,24 +715,27 @@ function updateTables(){
 			for(var i=0; i < tables.length; ++i){
 				var trs = getElementsByTagNameInList(tables[i].childNodes[1].childNodes, "TR");
 				
-				var input = getElementsByTagNameInList(getElementsByTagNameInList(trs[0].childNodes, "TD")[1].childNodes, "INPUT")[0];
-				
+				var input = getElementsByTagNameInList(getElementsByTagNameInList(trs[0].childNodes, "TD")[1].childNodes, "INPUT");
+				if(input.length > 0){
+					input = input[0];
+					if(localStorage.getItem("ecaille") !== null){
+						var hpsValue = Math.round(Number(removeSpaces(input.value)) * Number(input.dataset.vie) + Number(removeSpaces(input.value)) * Number(input.dataset.vie) * (Number(localStorage.getItem("ecaille"))/10));
+						hpsValue = " " + hpsValue.nombreFormate(0);
+						getElementsByTagNameInList(getElementsByTagNameInList(trs[1].childNodes, "TD")[0].childNodes, "SPAN")[0].textContent = hpsValue;
+					}
+					if(localStorage.getItem("morsure") !== null){
+						var atkValue = Math.round(Number(removeSpaces(input.value)) * Number(input.dataset.fdf) + Number(removeSpaces(input.value)) * Number(input.dataset.fdf)* (Number(localStorage.getItem("morsure"))/10));
+						atkValue = " " + atkValue.nombreFormate(0);
+						getElementsByTagNameInList(getElementsByTagNameInList(trs[2].childNodes, "TD")[0].childNodes, "SPAN")[0].textContent = atkValue;
+					}
+					if(localStorage.getItem("morsure") !== null){
+						var defValue = Math.round(Number(removeSpaces(input.value)) * Number(input.dataset.fdd) + Number(removeSpaces(input.value)) * Number(input.dataset.fdd) * (Number(localStorage.getItem("morsure"))/10));
+						defValue = " " + defValue.nombreFormate(0);
+						getElementsByTagNameInList(getElementsByTagNameInList(trs[3].childNodes, "TD")[0].childNodes, "SPAN")[0].textContent = defValue;
+					}
+				}
 								       
-				if(localStorage.getItem("ecaille") !== null){
-					var hpsValue = Math.round(Number(removeSpaces(input.value)) * Number(input.dataset.vie) + Number(removeSpaces(input.value)) * Number(input.dataset.vie) * (Number(localStorage.getItem("ecaille"))/10));
-					hpsValue = " " + hpsValue.nombreFormate(0);
-					getElementsByTagNameInList(getElementsByTagNameInList(trs[1].childNodes, "TD")[0].childNodes, "SPAN")[0].textContent = hpsValue;
-				}
-				if(localStorage.getItem("morsure") !== null){
-					var atkValue = Math.round(Number(removeSpaces(input.value)) * Number(input.dataset.fdf) + Number(removeSpaces(input.value)) * Number(input.dataset.fdf)* (Number(localStorage.getItem("morsure"))/10));
-					atkValue = " " + atkValue.nombreFormate(0);
-					getElementsByTagNameInList(getElementsByTagNameInList(trs[2].childNodes, "TD")[0].childNodes, "SPAN")[0].textContent = atkValue;
-				}
-				if(localStorage.getItem("morsure") !== null){
-					var defValue = Math.round(Number(removeSpaces(input.value)) * Number(input.dataset.fdd) + Number(removeSpaces(input.value)) * Number(input.dataset.fdd) * (Number(localStorage.getItem("morsure"))/10));
-					defValue = " " + defValue.nombreFormate(0);
-					getElementsByTagNameInList(getElementsByTagNameInList(trs[3].childNodes, "TD")[0].childNodes, "SPAN")[0].textContent = defValue;
-				}
+				
 			}
 		}
 	}, 10);
