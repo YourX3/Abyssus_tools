@@ -1,4 +1,3 @@
-
 // Title       : Abyssus toolz
 // Desc        : Little tools for Abyssus Game("https://s1.abyssus.games/jeu.php")
 // Autor       : YourX3(youri03 in the game)
