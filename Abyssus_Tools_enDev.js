@@ -13,8 +13,10 @@ init();
 
 // fonction appelée lorsque la page est chargée(sur https://s1.abyssus.games/*)
 function init(){
+	Number.prototype.nombreFormate = function(decimales,signe,separateurMilliers){var _sNombre=String(this),i,_sRetour="",_sDecimales="";if(decimales==undefined)decimales=2;if(signe==undefined)signe='';if(separateurMilliers==undefined)separateurMilliers=' ';function separeMilliers(sNombre){var sRetour="";while(sNombre.length%3!=0){sNombre="0"+sNombre}for(i=0;i<sNombre.length;i+=3){if(i==sNombre.length-1)separateurMilliers='';sRetour+=sNombre.substr(i,3)+separateurMilliers}while(sRetour.substr(0,1)=="0"){sRetour=sRetour.substr(1)}return sRetour.substr(0,sRetour.lastIndexOf(separateurMilliers))}if(_sNombre==0){_sRetour=0}else{if(_sNombre.indexOf('.')==-1){for(i=0;i<decimales;i++){_sDecimales+="0"}_sRetour=separeMilliers(_sNombre)+signe+_sDecimales}else{var sDecimalesTmp=(_sNombre.substr(_sNombre.indexOf('.')+1));if(sDecimalesTmp.length>decimales){var nDecimalesManquantes=sDecimalesTmp.length-decimales;var nDiv=1;for(i=0;i<nDecimalesManquantes;i++){nDiv*=10}_sDecimales=Math.round(Number(sDecimalesTmp)/nDiv)}_sRetour=separeMilliers(_sNombre.substr(0,_sNombre.indexOf('.')))+String(signe)+_sDecimales}}return _sRetour}
+	
 	var textVersion = document.createElement('none');
-	textVersion.innerHTML = '<font size="1" color="white">Abyssus Tools V 0.3 __ Last Updtate 05/06/2018 13h20 </font>';
+	textVersion.innerHTML = '<font size="1" color="white">Abyssus Tools V 0.3 __ Last Updtate 05/06/2018 17h10 </font>';
 	document.getElementById('footer').insertBefore(textVersion, document.getElementById('footer').childNodes[0]);
 	
 	// fin de l'URL : sur https://s1.abyssus.games/jeu.php?page=armee : ?page=armee
@@ -219,9 +221,7 @@ function onClick_buttonFloods(){
 //                        PAGE ARMEE                     //
 
 function armyPage(){
-	if(readCookie("armyReplacing") === null){
-		Number.prototype.nombreFormate = function(decimales,signe,separateurMilliers){var _sNombre=String(this),i,_sRetour="",_sDecimales="";if(decimales==undefined)decimales=2;if(signe==undefined)signe='';if(separateurMilliers==undefined)separateurMilliers=' ';function separeMilliers(sNombre){var sRetour="";while(sNombre.length%3!=0){sNombre="0"+sNombre}for(i=0;i<sNombre.length;i+=3){if(i==sNombre.length-1)separateurMilliers='';sRetour+=sNombre.substr(i,3)+separateurMilliers}while(sRetour.substr(0,1)=="0"){sRetour=sRetour.substr(1)}return sRetour.substr(0,sRetour.lastIndexOf(separateurMilliers))}if(_sNombre==0){_sRetour=0}else{if(_sNombre.indexOf('.')==-1){for(i=0;i<decimales;i++){_sDecimales+="0"}_sRetour=separeMilliers(_sNombre)+signe+_sDecimales}else{var sDecimalesTmp=(_sNombre.substr(_sNombre.indexOf('.')+1));if(sDecimalesTmp.length>decimales){var nDecimalesManquantes=sDecimalesTmp.length-decimales;var nDiv=1;for(i=0;i<nDecimalesManquantes;i++){nDiv*=10}_sDecimales=Math.round(Number(sDecimalesTmp)/nDiv)}_sRetour=separeMilliers(_sNombre.substr(0,_sNombre.indexOf('.')))+String(signe)+_sDecimales}}return _sRetour}
-		
+	if(readCookie("armyReplacing") === null){		
 		var alignText = document.createElement('none');
 		alignText.innerHTML = '<text>/ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . </text>';
 		document.getElementsByTagName('center')[0].insertBefore(alignText, document.getElementsByTagName('table')[1]);
@@ -767,13 +767,13 @@ function page_labo(){
 
 function page_membres(){
 	var columnDistance = document.createElement('td');
-	columnDistance.innerHTML = '<td align="center"><td align="center"><a onclick="onClick_membersDistanceAsc()"><img src="images/asc.png" style="vertical-align: middle;"></a><strong> Distance </strong><a onclick="onClick_membersDistanceDec()"><img src="images/desc.png" style="vertical-align: middle;"></a></td></td>';
+	columnDistance.innerHTML = '<td align="center"><td align="center"><a onclick="onClick_membersDistanceAsc()"><img src="images/asc.png" style="vertical-align: middle;"></a><strong> Distance </strong><a onclick="onClick_membersDistanceDesc()"><img src="images/desc.png" style="vertical-align: middle;"></a></td></td>';
 	columnDistance.align ="center";
 	document.getElementsByTagName('tbody')[1].childNodes[1].appendChild(columnDistance);
 	
 	
 	var columnTime = document.createElement('td');
-	columnTime.innerHTML = '<td align="center"><td align="center"><a onclick="onclick_allyTimeAsc()"><img src="images/asc.png" style="vertical-align: middle;"></a><strong> Temps de trajet </strong><a onclick="onclick_allyTimeDesc()"><img src="images/desc.png" style="vertical-align: middle;"></a></td></td>';
+	columnTime.innerHTML = '<td align="center"><td align="center"><a onclick="onClick_membersTimeAsc()"><img src="images/asc.png" style="vertical-align: middle;"></a><strong> Temps de trajet </strong><a onclick="onClick_membersTimeDesc()"><img src="images/desc.png" style="vertical-align: middle;"></a></td></td>';
 	columnTime.align ="center";
 	document.getElementsByTagName('tbody')[1].childNodes[1].appendChild(columnTime);
 	
@@ -826,6 +826,10 @@ function setDistanceAndTime_Members(){
 }
 
 
+function getDistanceOfElementMembers(element){
+	return element.childNodes[19].innerText;
+}
+
 function getPlayersTrMembers(){
 	var listOfElements = document.getElementsByTagName('tbody')[1].childNodes;
 	var result = [];
@@ -840,28 +844,127 @@ function getPlayersTrMembers(){
 
 
 function onClick_membersDistanceAsc(){
+	var listSorted = membersDistanceSorter();
 	
+	for(var i=0; i < listSorted.length; ++i){
+		document.getElementsByTagName('tbody')[1].appendChild(listSorted[i]);
+	}
 }
 
-function onClick_membersDistanceDec(){
+function onClick_membersDistanceDesc(){
+	var listSorted = membersDistanceSorter();
 	
+	for(var i=listSorted.length-1; i > -1; --i){
+		document.getElementsByTagName('tbody')[1].appendChild(listSorted[i]);
+	}
 }
 
 function membersDistanceSorter(){
-	
+	var listOfPlayersTr = getPlayersTrMembers();
+	for(var i=0; i < listOfPlayersTr.length; ++i){
+		document.getElementsByTagName('tbody')[1].removeChild(listOfPlayersTr[i]);
+	}
+	var listSorted = [];
+	listSorted.push(listOfPlayersTr[0]);
+	for(var i=1; i < listOfPlayersTr.length; ++i){
+		if(isNaN(Number(getDistanceOfElementMembers(listSorted[0])))){
+			listSorted.splice(0, 0, listOfPlayersTr[i]);
+		}
+		else if(isNaN(Number(getDistanceOfElementMembers(listOfPlayersTr[i])))){
+			listSorted.push(listOfPlayersTr[i]);
+		}
+		else{
+			var findedMore = false;
+			for(var j=0; j < listSorted.length; ++j){
+				if(Number(getDistanceOfElementMembers(listOfPlayersTr[i])) < Number(getDistanceOfElementMembers(listSorted[j]))){
+					listSorted.splice(j, 0, listOfPlayersTr[i]);
+					findedMore = true;
+					break;
+				}
+			}
+			if(!findedMore)
+				listSorted.push(listOfPlayersTr[i]);
+		}
+	}
+	return listSorted;
 }
 
 
 function onClick_membersTimeAsc(){
+	var listSorted = membersTimeSorter();
 	
+	for(var i=0; i < listSorted.length; ++i){
+		document.getElementsByTagName('tbody')[1].appendChild(listSorted[i]);
+	}
 }
 
-function onClick_membersTimeDec(){
+function onClick_membersTimeDesc(){
+	var listSorted = membersTimeSorter();
 	
+	for(var i=listSorted.length-1; i > -1; --i){
+		document.getElementsByTagName('tbody')[1].appendChild(listSorted[i]);
+	}
 }
 
 function membersTimeSorter(){
-	
+	var listOfPlayersTr = getPlayersTrMembers();
+	for(var i=0; i < listOfPlayersTr.length; ++i){
+		document.getElementsByTagName('tbody')[1].removeChild(listOfPlayersTr[i]);
+	}
+	var listSorted = [];
+	listSorted.push(listOfPlayersTr[0]);
+	for(var i=1; i < listOfPlayersTr.length; ++i){
+		if(getTimeOfElementMembers(listSorted[0]) === "inconnu"){
+			listSorted.splice(0, 0, listOfPlayersTr[i]);
+		}
+		else if(getTimeOfElementMembers(listOfPlayersTr[i]) === "inconnu"){
+			listSorted.push(listOfPlayersTr[i]);
+		}
+		else{
+			var findedMore = false;
+			for(var j=0; j < listSorted.length; ++j){
+				if(getTimeOfElementMembers(listOfPlayersTr[i]) < getTimeOfElementMembers(listSorted[j])){
+					listSorted.splice(j, 0, listOfPlayersTr[i]);
+					findedMore = true;
+					break;
+				}
+			}
+			if(!findedMore)
+				listSorted.push(listOfPlayersTr[i]);
+		}
+	}
+	return listSorted;
+}
+
+function getTimeOfElementMembers(element){
+	var textTime = element.childNodes[20].innerText;
+	if(textTime !== "inconnu"){
+		var listOfUnits = textTime.split(' ');
+		var total = 0;
+		if(listOfUnits.length === 4){
+			var dayNb = Number(listOfUnits[0].replace('j', ''));
+			var hourNb = Number(listOfUnits[1].replace('h', ''));
+			var minNb = Number(listOfUnits[2].replace('m', ''));
+			var secNb = Number(listOfUnits[3].replace('s', ''));
+
+			total = dayNb*86400 + hourNb*3600 + minNb*60 + secNb;
+		}
+		else if(listOfUnits.length === 3){
+			var hourNb = Number(listOfUnits[0].replace('h', ''));
+			var minNb = Number(listOfUnits[1].replace('m', ''));
+			var secNb = Number(listOfUnits[2].replace('s', ''));
+
+			total = hourNb*3600 + minNb*60 + secNb;
+		}
+		else{
+			var minNb = Number(listOfUnits[0].replace('m', ''));
+			var secNb = Number(listOfUnits[1].replace('s', ''));
+
+			total = minNb*60 + secNb;
+		}
+		return total;
+	}
+	return "inconnu";
 }
 
 //////////////////////////////////////////////////////////////
