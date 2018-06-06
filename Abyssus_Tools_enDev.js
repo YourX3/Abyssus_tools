@@ -15,7 +15,7 @@ function init(){
 	Number.prototype.nombreFormate = function(decimales,signe,separateurMilliers){var _sNombre=String(this),i,_sRetour="",_sDecimales="";if(decimales==undefined)decimales=2;if(signe==undefined)signe='';if(separateurMilliers==undefined)separateurMilliers=' ';function separeMilliers(sNombre){var sRetour="";while(sNombre.length%3!=0){sNombre="0"+sNombre}for(i=0;i<sNombre.length;i+=3){if(i==sNombre.length-1)separateurMilliers='';sRetour+=sNombre.substr(i,3)+separateurMilliers}while(sRetour.substr(0,1)=="0"){sRetour=sRetour.substr(1)}return sRetour.substr(0,sRetour.lastIndexOf(separateurMilliers))}if(_sNombre==0){_sRetour=0}else{if(_sNombre.indexOf('.')==-1){for(i=0;i<decimales;i++){_sDecimales+="0"}_sRetour=separeMilliers(_sNombre)+signe+_sDecimales}else{var sDecimalesTmp=(_sNombre.substr(_sNombre.indexOf('.')+1));if(sDecimalesTmp.length>decimales){var nDecimalesManquantes=sDecimalesTmp.length-decimales;var nDiv=1;for(i=0;i<nDecimalesManquantes;i++){nDiv*=10}_sDecimales=Math.round(Number(sDecimalesTmp)/nDiv)}_sRetour=separeMilliers(_sNombre.substr(0,_sNombre.indexOf('.')))+String(signe)+_sDecimales}}return _sRetour}
 	
 	var textVersion = document.createElement('none');
-	textVersion.innerHTML = '<font size="1" color="white">Abyssus Tools V 0.3 __ Last Updtate 06/06/2018 17h37 </font>';
+	textVersion.innerHTML = '<font size="1" color="white">Abyssus Tools V 0.3 __ Last Updtate 06/06/2018 18h59 </font>';
 	document.getElementById('footer').insertBefore(textVersion, document.getElementById('footer').childNodes[0]);
 	
 	// fin de l'URL : sur https://s1.abyssus.games/jeu.php?page=armee : ?page=armee
@@ -52,34 +52,32 @@ function page_atk()
 {
 	// Si aucun cookie au nom "numberOfAttaks" n'a été trouvé -> pas de floods lancés
 	if(readCookie("numberOfAttaks") === null){
-		// nom de la cible
+		var insertContainer = document.getElementsByTagName('center')[0];
+		var insertPlace = document.getElementsByTagName('h1')[0];
+		
 		var targetName = document.getElementsByTagName('h1')[0].textContent.split(' ')[3];
 		var inputTargetTM_value = "TM de " + targetName;
-		// case où entrer le TM la cible
-		var inputTdcTarget = document.createElement('none');
 		
 		if(sessionStorage.getItem('targetTM') != null){
 			inputTargetTM_value = sessionStorage.getItem('targetTM');
 		}
 		sessionStorage.removeItem('targetTM');
-		
-		var input_innerHTML = '<input type="text" id="targetTM" name="targetTM" class="text" value="' + inputTargetTM_value + '" data-nb="0" style="font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; font-size: inherit; line-height: inherit; font-family: inherit; color: rgb(0, 0, 102); text-align: center; outline: none; padding: 5px; width: 120px; cursor: text;">';
-		inputTdcTarget.innerHTML =  input_innerHTML;
-		inputTdcTarget.value += "playerName";
-		document.getElementsByTagName('center')[0].insertBefore(inputTdcTarget, document.getElementsByTagName('h1')[0]);
 
-		// Bouton qui prépare les floods
-		var but_launchFloods = document.createElement('none');
-		but_launchFloods.innerHTML = '<button onclick="onClick_buttonFloods()">Préparer les floods</button>';
-		document.getElementsByTagName('center')[0].insertBefore(but_launchFloods, document.getElementsByTagName('h1')[0]);
+		var input_innerHTML = '<input type="text" id="targetTM" name="targetTM" class="text" value="' + inputTargetTM_value + '" data-nb="0" style="font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; font-size: inherit; line-height: inherit; font-family: inherit; color: rgb(0, 0, 102); text-align: center; outline: none; padding: 5px; width: 120px; cursor: text;">';
 		
-		var checkBoxGhost = document.createElement('none');
-		checkBoxGhost.innerHTML = '<input id="checkBoxGhost" type="checkbox">';
-		document.getElementsByTagName('center')[0].insertBefore(checkBoxGhost, document.getElementsByTagName('h1')[0]);
+		var optiFlood_Elements = document.createElement('optiFlood');
+		optiFlood_Elements.innerHTML = input_innerHTML;
+		optiFlood_Elements.innerHTML = '<button onclick="onClick_buttonFloods()">Préparer les floods</button>';
+		optiFlood_Elements.innerHTML = '<input id="checkBoxGhost" type="checkbox">';
+		optiFlood_Elements.append(document.createTextNode("Ghost ?"));
+		optiFlood_Elements.append(createLine());
+		optiFlood_Elements.append(document.createTextNode("Niveau Quête Poseidon: "));
 		
-		var textGhost = document.createElement('none');
-		textGhost.innerHTML = '<text> Ghost ?</text>';
-		document.getElementsByTagName('center')[0].insertBefore(textGhost, document.getElementsByTagName('h1')[0]);
+		var lvQuestvalue = "inconnue";
+		if(readCookie("poseidonQuestLv") != null){
+			lvQuestvalue = readCookie("poseidonQuestLv");
+		}
+		optiFlood_Elements.innerHTML = '<input type="text" id="inputQuestLv" onfocusout="onFocusOut_inputQuestLv()" class="text" value="' + lvQuestvalue + '" data-nb="0" style="font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; font-size: inherit; line-height: inherit; font-family: inherit; color: rgb(0, 0, 102); text-align: center; outline: none; padding: 5px; width: 50px; cursor: text;">';
 	}
 	else if(document.getElementsByTagName('h1').length > 0){
 		if(Number(readCookie("numberOfAttaks")) < Number(readCookie("attakNum"))){
@@ -100,6 +98,10 @@ function page_atk()
 			}
 		}
 	}
+}
+
+function onFocusOut_inputQuestLv(){
+	createCookie("poseidonQuestLv", document.getElementById("inputQuestLv").value, 86400*30);
 }
 
 function putAllUnitsToNull() {
@@ -148,25 +150,30 @@ function onClick_buttonFloods(){
 	var nbRem = Number(removeSpaces(document.getElementsByName('SJ')[0].value));
 	var playerTM = Number(removeSpaces(document.getElementsByTagName('span')[7].childNodes[1].data));
 	var ghost = document.getElementById('checkBoxGhost').checked;
+	var poseidonQuestLv = Number(removeSpaces(document.getElementById('inputQuestLv')));
+	if(isNaN(poseidonQuestLv))
+		poseidonQuestLv = 0;
 
     if(nbRem > 0 && !isNaN(targetTM)){
         var listOfAttaks = [];
         var lastWasNotTwenty = false;
         var _end = false;
 	var totalFloods = 0;
+	var minMultiplier = 1/(2 + poseidonQuestLv/10 * 2);
+	
         while(!_end){
-            var twentyPercents = Math.round(targetTM*20/100);
+            var twentyPercents = Math.round(targetTM*0.2);
 
             if(nbRem >= twentyPercents){
-                if(targetTM-twentyPercents > (playerTM+twentyPercents)/2){
-					listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), String(twentyPercents)]);
-					nbRem -= twentyPercents;
-					targetTM -= twentyPercents;
-					playerTM += twentyPercents;
-					totalFloods += twentyPercents;
+                if(targetTM-twentyPercents > (playerTM+twentyPercents)* minMultiplier){
+			listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), String(twentyPercents)]);
+			nbRem -= twentyPercents;
+			targetTM -= twentyPercents;
+			playerTM += twentyPercents;
+			totalFloods += twentyPercents;
                 }
                 else if(!lastWasNotTwenty){
-			var value = Math.floor((targetTM-(0.5*playerTM+1))*2/3);
+			var value = Math.floor((targetTM-(minMultiplier*playerTM+1))*2/3);
 			listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), String(value)]);
 			nbRem -= value;
 			lastWasNotTwenty = true;
