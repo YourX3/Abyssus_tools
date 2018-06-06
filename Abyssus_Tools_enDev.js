@@ -66,9 +66,9 @@ function page_atk()
 		var input_innerHTML = '<input type="text" id="targetTM" name="targetTM" class="text" value="' + inputTargetTM_value + '" data-nb="0" style="font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; font-size: inherit; line-height: inherit; font-family: inherit; color: rgb(0, 0, 102); text-align: center; outline: none; padding: 5px; width: 120px; cursor: text;">';
 		
 		var optiFlood_Elements = document.createElement('optiFlood');
-		optiFlood_Elements.innerHTML = input_innerHTML;
-		optiFlood_Elements.innerHTML = '<button onclick="onClick_buttonFloods()">Préparer les floods</button>';
-		optiFlood_Elements.innerHTML = '<input id="checkBoxGhost" type="checkbox">';
+		optiFlood_Elements.innerHTML += input_innerHTML;
+		optiFlood_Elements.innerHTML += '<button onclick="onClick_buttonFloods()">Préparer les floods</button>';
+		optiFlood_Elements.innerHTML += '<input id="checkBoxGhost" type="checkbox">';
 		optiFlood_Elements.append(document.createTextNode("Ghost ?"));
 		optiFlood_Elements.append(createLine());
 		optiFlood_Elements.append(document.createTextNode("Niveau Quête Poseidon: "));
@@ -77,7 +77,7 @@ function page_atk()
 		if(readCookie("poseidonQuestLv") != null){
 			lvQuestvalue = readCookie("poseidonQuestLv");
 		}
-		optiFlood_Elements.innerHTML = '<input type="text" id="inputQuestLv" onfocusout="onFocusOut_inputQuestLv()" class="text" value="' + lvQuestvalue + '" data-nb="0" style="font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; font-size: inherit; line-height: inherit; font-family: inherit; color: rgb(0, 0, 102); text-align: center; outline: none; padding: 5px; width: 50px; cursor: text;">';
+		optiFlood_Elements.innerHTML += '<input type="text" id="inputQuestLv" onfocusout="onFocusOut_inputQuestLv()" class="text" value="' + lvQuestvalue + '" data-nb="0" style="font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; font-size: inherit; line-height: inherit; font-family: inherit; color: rgb(0, 0, 102); text-align: center; outline: none; padding: 5px; width: 50px; cursor: text;">';
 		insertContainer.insertBefore(optiFlood_Elements, insertPlace);
 	}
 	else if(document.getElementsByTagName('h1').length > 0){
