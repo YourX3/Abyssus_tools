@@ -67,7 +67,7 @@ function page_atk()
 		
 		var optiFlood_Elements = document.createElement('optiFlood');
 		optiFlood_Elements.innerHTML += input_innerHTML;
-		optiFlood_Elements.innerHTML += '<button onclick="onClick_buttonFloods()">Préparer les floods</button>';
+		optiFlood_Elements.append(document.createTextNode(" ___ "));
 		optiFlood_Elements.innerHTML += '<input id="checkBoxGhost" type="checkbox">';
 		optiFlood_Elements.append(document.createTextNode("Ghost ?"));
 		optiFlood_Elements.append(createLine());
@@ -78,6 +78,8 @@ function page_atk()
 			lvQuestvalue = readCookie("poseidonQuestLv");
 		}
 		optiFlood_Elements.innerHTML += '<input type="text" id="inputQuestLv" onfocusout="onFocusOut_inputQuestLv()" class="text" value="' + lvQuestvalue + '" data-nb="0" style="font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; font-size: inherit; line-height: inherit; font-family: inherit; color: rgb(0, 0, 102); text-align: center; outline: none; padding: 5px; width: 50px; cursor: text;">';
+		optiFlood_Elements.append(document.createTextNode(" --> "));
+		optiFlood_Elements.innerHTML += '<button onclick="onClick_buttonFloods()">Préparer les floods</button>';
 		insertContainer.insertBefore(optiFlood_Elements, insertPlace);
 	}
 	else if(document.getElementsByTagName('h1').length > 0){
