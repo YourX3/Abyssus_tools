@@ -1029,7 +1029,7 @@ function page_exploration(){
 
 		var buttonPrepareExploration = document.createElement('button');
 		buttonPrepareExploration.innerText = "Préparer les chasses";
-		buttonPrepareExploration.onclick = function(){onclickButtonExplo();};
+		buttonPrepareExploration.onclick = function(){onclickButtonExplo()};
 		insertContainer.insertBefore(buttonPrepareExploration, insertPlace);
 
 
