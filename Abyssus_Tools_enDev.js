@@ -15,7 +15,7 @@ function init(){
 	Number.prototype.nombreFormate = function(decimales,signe,separateurMilliers){var _sNombre=String(this),i,_sRetour="",_sDecimales="";if(decimales==undefined)decimales=2;if(signe==undefined)signe='';if(separateurMilliers==undefined)separateurMilliers=' ';function separeMilliers(sNombre){var sRetour="";while(sNombre.length%3!=0){sNombre="0"+sNombre}for(i=0;i<sNombre.length;i+=3){if(i==sNombre.length-1)separateurMilliers='';sRetour+=sNombre.substr(i,3)+separateurMilliers}while(sRetour.substr(0,1)=="0"){sRetour=sRetour.substr(1)}return sRetour.substr(0,sRetour.lastIndexOf(separateurMilliers))}if(_sNombre==0){_sRetour=0}else{if(_sNombre.indexOf('.')==-1){for(i=0;i<decimales;i++){_sDecimales+="0"}_sRetour=separeMilliers(_sNombre)+signe+_sDecimales}else{var sDecimalesTmp=(_sNombre.substr(_sNombre.indexOf('.')+1));if(sDecimalesTmp.length>decimales){var nDecimalesManquantes=sDecimalesTmp.length-decimales;var nDiv=1;for(i=0;i<nDecimalesManquantes;i++){nDiv*=10}_sDecimales=Math.round(Number(sDecimalesTmp)/nDiv)}_sRetour=separeMilliers(_sNombre.substr(0,_sNombre.indexOf('.')))+String(signe)+_sDecimales}}return _sRetour}
 	
 	var textVersion = document.createElement('none');
-	textVersion.innerHTML = '<font size="1" color="white">Abyssus Tools V 0.5 __ Last Updtate 07/06/2018 20h14 </font>';
+	textVersion.innerHTML = '<font size="1" color="white">Abyssus Tools V 0.5 __ Last Updtate 07/06/2018 20h26 </font>';
 	document.getElementById('footer').insertBefore(textVersion, document.getElementById('footer').childNodes[0]);
 	
 	// fin de l'URL : sur https://s1.abyssus.games/jeu.php?page=armee : ?page=armee
@@ -1073,10 +1073,19 @@ function onclickButtonExplo(){
 	var inputTmByExplo_Value = Number(removeSpaces(document.getElementById("tm").value));
 	var inputNbExplo_Value = Number(removeSpaces(document.getElementById("inputNbExplo").value));
 	
+	var textToAlert = "";
+	
 	if(getExplorationNumberMax() === 0 || inputNbExplo_Value <= getExplorationNumberMax()){
 		var nbUnits = [14];
-		var trList = getElementsByTagNameInList(document.getElementsByTagName('tbody')[1], "TR");
-
+		var trList = getElementsByTagNameInList(document.getElementsByTagName('tbody')[1].childNodes, "TR");
+		
+		textToAlert += "Exploration à lancer :" + "\n" + "\n";
+		textToAlert += "Nb d'exploration: " + String(inputNbExplo_Value) + "\n";
+		textToAlert += "Tm par exploration: " + String(inputTmByExplo_Value) + "\n";
+		textToAlert += "TOTAL -> " + String(inputNbExplo_Value * inputTmByExplo_Value) + "\n" + "\n";
+		
+		textToAlert += "Répartition armée: uniforme";
+		
 		for(var i=1; i < inputNbExplo_Value; ++i){
 			nbUnits[i-1] = getElementsByTagNameInList(getElementsByTagNameInList(trList.childNodes[i].childNodes, "TD")[4].childNodes, "INPUT")[0].value;
 			nbUnits[i-1] = Number(removeSpaces(nbUnits[i-1]));
@@ -1089,6 +1098,11 @@ function onclickButtonExplo(){
 		createCookie("exploCurrent", "1", 60);
 		createCookie("exploTm", String(inputTmByExplo_Value), 60);
 	}
+	else{
+		textToAlert = "Information données incorrectes";
+	}
+	
+	alert(textToAlert);
 }
 
 //////////////////////////////////////////////////////////////
