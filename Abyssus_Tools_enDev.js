@@ -368,20 +368,20 @@ function onClickButtonReplaceArmy(){
 function page_playerProfile(){
 	getElementByInnerText('a', "Attaquer le terrain").onclick = function(){onclick_tmAttack()};
 				
-	var playerTM = document.getElementsByTagName('tbody')[1].childNodes[5].childNodes[3].innerText.split('(')[0];
+	var playerTM = document.getElementsByTagName('tbody')[1].childNodes[5].childNodes[3].text.split('(')[0];
 	playerTM = playerTM.substr(0, playerTM.length-1);
 	var maxTM = (Number(playerTM.replace(/\s/g, ''))+1).nombreFormate(0);
 
 	$.post('ajax/ennemies.php', {mintdc:playerTM, maxtdc:maxTM, page:1, tri:'distance', sens:'asc', guerre:0, paix:0, ally:0}, function(data){
-		var listOfResults = setPlayerTravelTime(data, "playerName:"+document.getElementsByTagName('h1')[0].innerText);
+		var listOfResults = setPlayerTravelTime(data, "playerName:"+document.getElementsByTagName('h1')[0].text);
 		if(listOfResults === null){
-			document.getElementsByTagName('tbody')[1].childNodes[3].childNodes[3].innerText += " Distance et temps de Trajet inconnus..";
+			document.getElementsByTagName('tbody')[1].childNodes[3].childNodes[3].text += " Distance et temps de Trajet inconnus..";
 		}
 		else{
 			var distance = listOfResults[3];
 			var time = listOfResults[4];
 
-			document.getElementsByTagName('tbody')[1].childNodes[3].childNodes[3].innerText += '\r'+ "Distance: " + distance + " _Temps de trajet: " + time;
+			document.getElementsByTagName('tbody')[1].childNodes[3].childNodes[3].text += '\r'+ "Distance: " + distance + " _Temps de trajet: " + time;
 		}
 	});
 }
@@ -470,7 +470,7 @@ function setPlayerTravelTime(data, constraint = "none"){
 }
 
 function onclick_tmAttack(){
-	var tmTarget = document.getElementsByTagName('tbody')[1].childNodes[5].childNodes[3].innerText;
+	var tmTarget = document.getElementsByTagName('tbody')[1].childNodes[5].childNodes[3].text;
 	tmTarget = removeSpaces(tmTarget).split('(')[0];
 	sessionStorage.setItem('targetTM', tmTarget);
 }
@@ -510,23 +510,23 @@ function setDistanceAndTime_Ally(){
 	
 	if(Number(readCookie("playerListNumber")) < listOfPlayersTr.length)
 	{
-		var playerTM = listOfPlayersTr[Number(readCookie("playerListNumber"))].childNodes[5].innerText;
+		var playerTM = listOfPlayersTr[Number(readCookie("playerListNumber"))].childNodes[5].text;
 		var maxTM = (Number(playerTM.replace(/\s/g, ''))+1).nombreFormate(0);
 
 		$.post('ajax/ennemies.php', {mintdc:playerTM, maxtdc:maxTM, page:1, tri:'distance', sens:'asc', guerre:0, paix:0, ally:0}, function(data){
-			var listOfResults = setPlayerTravelTime(data, "ally:"+getTagInH1(document.getElementsByTagName("h1")[0].innerText));
+			var listOfResults = setPlayerTravelTime(data, "ally:"+getTagInH1(document.getElementsByTagName("h1")[0].text));
 			var listOfPlayersTr = getPlayersTr();
 			var targetPlayer = listOfPlayersTr[Number(readCookie("playerListNumber"))];
 
 			if(listOfResults === null){	
 				var distanceTd = document.createElement('td');
 				distanceTd.align = "center";
-				distanceTd.innerText = "inconnue";
+				distanceTd.text = "inconnue";
 				targetPlayer.appendChild(distanceTd);
 
 				var timeTd = document.createElement('td');
 				timeTd.align = "center";
-				timeTd.innerText = "inconnu";
+				timeTd.text = "inconnu";
 				targetPlayer.appendChild(timeTd);
 			}
 			else{
@@ -535,12 +535,12 @@ function setDistanceAndTime_Ally(){
 
 				var distanceTd = document.createElement('td');
 				distanceTd.align = "center";
-				distanceTd.innerText = distance;
+				distanceTd.text = distance;
 				targetPlayer.appendChild(distanceTd);
 
 				var timeTd = document.createElement('td');
 				timeTd.align = "center";
-				timeTd.innerText = time;
+				timeTd.text = time;
 				targetPlayer.appendChild(timeTd);
 			}
 			createCookie("playerListNumber", String(Number(readCookie("playerListNumber")) +1), 5);
@@ -597,7 +597,7 @@ function distanceSorter(){
 }
 
 function getDistanceOfElement(element){
-	return element.childNodes[11].innerText;
+	return element.childNodes[11].text;
 }
 
 
@@ -649,7 +649,7 @@ function timeSorter(){
 }
 
 function getTimeOfElement(element){
-	var textTime = element.childNodes[12].innerText;
+	var textTime = element.childNodes[12].text;
 	if(textTime !== "inconnu"){
 		var listOfUnits = textTime.split(' ');
 		var total = 0;
@@ -762,14 +762,14 @@ function page_labo(){
 	var headers2 = document.getElementsByTagName("h2");
 
 	for(var i=0; i < headers2.length; ++i){
-		if(headers2[i].innerText.split(' ')[0] === "Ecaille"){
-			localStorage.setItem("ecaille", headers2[i].innerText.split(' ')[2]);
+		if(headers2[i].text.split(' ')[0] === "Ecaille"){
+			localStorage.setItem("ecaille", headers2[i].text.split(' ')[2]);
 		}
-		else if(headers2[i].innerText.split(' ')[0] === "Morsure"){
-			localStorage.setItem("morsure", headers2[i].innerText.split(' ')[2]);
+		else if(headers2[i].text.split(' ')[0] === "Morsure"){
+			localStorage.setItem("morsure", headers2[i].text.split(' ')[2]);
 		}
-		else if(headers2[i].innerText.split(' ')[0]+headers2[i].innerText.split(' ')[1] === "Instinctde"){
-			localStorage.setItem("instinctDeChasse", headers2[i].innerText.split(' ')[4]);
+		else if(headers2[i].text.split(' ')[0]+headers2[i].text.split(' ')[1] === "Instinctde"){
+			localStorage.setItem("instinctDeChasse", headers2[i].text.split(' ')[4]);
 		}
 	}
 }
@@ -800,7 +800,7 @@ function setDistanceAndTime_Members(){
 	
 	if(Number(readCookie("playerListNumber")) < listOfPlayersTr.length)
 	{
-		var playerTM = listOfPlayersTr[Number(readCookie("playerListNumber"))].childNodes[11].innerText;
+		var playerTM = listOfPlayersTr[Number(readCookie("playerListNumber"))].childNodes[11].text;
 		var maxTM = (Number(playerTM.replace(/\s/g, ''))+1).nombreFormate(0);
 
 		$.post('ajax/ennemies.php', {mintdc:playerTM, maxtdc:maxTM, page:1, tri:'distance', sens:'asc', guerre:0, paix:0, ally:0}, function(data){
@@ -811,12 +811,12 @@ function setDistanceAndTime_Members(){
 			if(listOfResults === null){	
 				var distanceTd = document.createElement('td');
 				distanceTd.align = "center";
-				distanceTd.innerText = "inconnue";
+				distanceTd.text = "inconnue";
 				targetPlayer.appendChild(distanceTd);
 
 				var timeTd = document.createElement('td');
 				timeTd.align = "center";
-				timeTd.innerText = "inconnu";
+				timeTd.text = "inconnu";
 				targetPlayer.appendChild(timeTd);
 			}
 			else{
@@ -825,12 +825,12 @@ function setDistanceAndTime_Members(){
 
 				var distanceTd = document.createElement('td');
 				distanceTd.align = "center";
-				distanceTd.innerText = distance;
+				distanceTd.text = distance;
 				targetPlayer.appendChild(distanceTd);
 
 				var timeTd = document.createElement('td');
 				timeTd.align = "center";
-				timeTd.innerText = time;
+				timeTd.text = time;
 				targetPlayer.appendChild(timeTd);
 			}
 			createCookie("playerListNumber", String(Number(readCookie("playerListNumber")) +1), 5);
@@ -951,7 +951,7 @@ function membersTimeSorter(){
 }
 
 function getTimeOfElementMembers(element){
-	var textTime = element.childNodes[22].innerText;
+	var textTime = element.childNodes[22].text;
 	if(textTime !== "inconnu"){
 		var listOfUnits = textTime.split(' ');
 		var total = 0;
@@ -1028,7 +1028,7 @@ function page_exploration(){
 		insertContainer.insertBefore(textUnif, insertPlace);
 
 		var buttonPrepareExploration = document.createElement('button');
-		buttonPrepareExploration.innerText = "Préparer les chasses";
+		buttonPrepareExploration.text = "Préparer les chasses";
 		buttonPrepareExploration.onclick = function(){onclickButtonExplo()};
 		insertContainer.insertBefore(buttonPrepareExploration, insertPlace);
 
@@ -1121,7 +1121,7 @@ function getElementByInnerText(tag, innerText){
 	var result = null;
 	
 	for(var i=0; i < listOfElements.length; ++i){
-		if(listOfElements[i].innerText === innerText){
+		if(listOfElements[i].text === innerText){
 			result = listOfElements[i];
 		}
 	}
