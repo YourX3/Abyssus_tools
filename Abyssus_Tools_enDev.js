@@ -15,7 +15,7 @@ function init(){
 	Number.prototype.nombreFormate = function(decimales,signe,separateurMilliers){var _sNombre=String(this),i,_sRetour="",_sDecimales="";if(decimales==undefined)decimales=2;if(signe==undefined)signe='';if(separateurMilliers==undefined)separateurMilliers=' ';function separeMilliers(sNombre){var sRetour="";while(sNombre.length%3!=0){sNombre="0"+sNombre}for(i=0;i<sNombre.length;i+=3){if(i==sNombre.length-1)separateurMilliers='';sRetour+=sNombre.substr(i,3)+separateurMilliers}while(sRetour.substr(0,1)=="0"){sRetour=sRetour.substr(1)}return sRetour.substr(0,sRetour.lastIndexOf(separateurMilliers))}if(_sNombre==0){_sRetour=0}else{if(_sNombre.indexOf('.')==-1){for(i=0;i<decimales;i++){_sDecimales+="0"}_sRetour=separeMilliers(_sNombre)+signe+_sDecimales}else{var sDecimalesTmp=(_sNombre.substr(_sNombre.indexOf('.')+1));if(sDecimalesTmp.length>decimales){var nDecimalesManquantes=sDecimalesTmp.length-decimales;var nDiv=1;for(i=0;i<nDecimalesManquantes;i++){nDiv*=10}_sDecimales=Math.round(Number(sDecimalesTmp)/nDiv)}_sRetour=separeMilliers(_sNombre.substr(0,_sNombre.indexOf('.')))+String(signe)+_sDecimales}}return _sRetour}
 	
 	var textVersion = document.createElement('none');
-	textVersion.innerHTML = '<font size="1" color="white">Abyssus Tools V 0.5 __ Last Updtate 08/06/2018 13h16 </font>';
+	textVersion.innerHTML = '<font size="1" color="white">Abyssus Tools V 0.5 __ Last Updtate 08/06/2018 14h40 </font>';
 	document.getElementById('footer').insertBefore(textVersion, document.getElementById('footer').childNodes[0]);
 	
 	// fin de l'URL : sur https://s1.abyssus.games/jeu.php?page=armee : ?page=armee
@@ -521,12 +521,12 @@ function setDistanceAndTime_Ally(){
 			if(listOfResults === null){	
 				var distanceTd = document.createElement('td');
 				distanceTd.align = "center";
-				distanceTd.text = "inconnue";
+				distanceTd.textContent = "inconnue";
 				targetPlayer.appendChild(distanceTd);
 
 				var timeTd = document.createElement('td');
 				timeTd.align = "center";
-				timeTd.text = "inconnu";
+				timeTd.textContent = "inconnu";
 				targetPlayer.appendChild(timeTd);
 			}
 			else{
@@ -535,12 +535,12 @@ function setDistanceAndTime_Ally(){
 
 				var distanceTd = document.createElement('td');
 				distanceTd.align = "center";
-				distanceTd.text = distance;
+				distanceTd.textContent = distance;
 				targetPlayer.appendChild(distanceTd);
 
 				var timeTd = document.createElement('td');
 				timeTd.align = "center";
-				timeTd.text = time;
+				timeTd.textContent = time;
 				targetPlayer.appendChild(timeTd);
 			}
 			createCookie("playerListNumber", String(Number(readCookie("playerListNumber")) +1), 5);
@@ -801,7 +801,7 @@ function setDistanceAndTime_Members(){
 	
 	if(playerListNumb < listOfPlayersTr.length)
 	{
-		var playerTM = listOfPlayersTr[playerListNumb].childNodes[11].text;
+		var playerTM = listOfPlayersTr[playerListNumb].childNodes[11].textContent;
 		var maxTM = (Number(playerTM.replace(/\s/g, ''))+1).nombreFormate(0);
 
 		$.post('ajax/ennemies.php', {mintdc:playerTM, maxtdc:maxTM, page:1, tri:'distance', sens:'asc', guerre:0, paix:0, ally:0}, function(data){
@@ -812,12 +812,12 @@ function setDistanceAndTime_Members(){
 			if(listOfResults === null){	
 				var distanceTd = document.createElement('td');
 				distanceTd.align = "center";
-				distanceTd.text = "inconnue";
+				distanceTd.textContent = "inconnue";
 				targetPlayer.appendChild(distanceTd);
 
 				var timeTd = document.createElement('td');
 				timeTd.align = "center";
-				timeTd.text = "inconnu";
+				timeTd.textContent = "inconnu";
 				targetPlayer.appendChild(timeTd);
 			}
 			else{
@@ -826,12 +826,12 @@ function setDistanceAndTime_Members(){
 
 				var distanceTd = document.createElement('td');
 				distanceTd.align = "center";
-				distanceTd.text = distance;
+				distanceTd.textContent = distance;
 				targetPlayer.appendChild(distanceTd);
 
 				var timeTd = document.createElement('td');
 				timeTd.align = "center";
-				timeTd.text = time;
+				timeTd.textContent = time;
 				targetPlayer.appendChild(timeTd);
 			}
 			createCookie("playerListNumber", String(Number(readCookie("playerListNumber")) +1), 5);
@@ -1087,8 +1087,8 @@ function onclickButtonExplo(){
 		
 		textToAlert += "Répartition armée: uniforme";
 		
-		for(var i=1; i < inputNbExplo_Value; ++i){
-			nbUnits[i-1] = getElementsByTagNameInList(getElementsByTagNameInList(trList.childNodes[i].childNodes, "TD")[4].childNodes, "INPUT")[0].value;
+		for(var i=1; i < trList.length; ++i){
+			nbUnits[i-1] = getElementsByTagNameInList(getElementsByTagNameInList(trList[i].childNodes, "TD")[4].childNodes, "INPUT")[0].value;
 			nbUnits[i-1] = Number(removeSpaces(nbUnits[i-1]));
 
 			var value = Math.round(nbUnits[i-1] / inputNbExplo_Value);
@@ -1122,7 +1122,7 @@ function getElementByInnerText(tag, innerText){
 	var result = null;
 	
 	for(var i=0; i < listOfElements.length; ++i){
-		if(listOfElements[i].text === innerText){
+		if(listOfElements[i].textContent === innerText){
 			result = listOfElements[i];
 		}
 	}
