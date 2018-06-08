@@ -265,6 +265,8 @@ function armyPage(){
 	else if(readCookie("armyReplacing") === "1"){
 		createCookie("armyReplacing", "2", 5);
 		var antiSondeInput_Value = readCookie("antiSondeValue");
+		if(antiSondeInput_Value === null)
+			antiSondeInput_Value = "10000 rem";
 		var type;
 		var nb = Number(removeSpaces(antiSondeInput_Value.split(' ')[0]));
 
