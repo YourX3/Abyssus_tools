@@ -844,7 +844,7 @@ function setDistanceAndTime_Members(){
 
 
 function getDistanceOfElementMembers(element){
-	return element.childNodes[21].innerText;
+	return element.childNodes[21].textContent;
 }
 
 function getPlayersTrMembers(){
