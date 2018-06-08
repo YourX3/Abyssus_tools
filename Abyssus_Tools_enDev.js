@@ -1052,6 +1052,8 @@ function page_exploration(){
 			document.getElementById("tm").value = readCookie("exploTm");
 			if(Number(readCookie("exploCurrent"))+1 === Number(readCookie("exploTotal"))){}
 			else {
+				var trList = getElementsByTagNameInList(document.getElementsByTagName('tbody')[1].childNodes, "TR");
+				
 				for(var i=1; i < 14; ++i){
 					getElementsByTagNameInList(getElementsByTagNameInList(trList.childNodes[i].childNodes, "TD")[4].childNodes, "INPUT")[0].value = readCookie("explo_" + String(i+1));
 				}
@@ -1098,7 +1100,7 @@ function onclickButtonExplo(){
 		}
 		
 		createCookie("exploTotal", String(inputNbExplo_Value), 60);
-		createCookie("exploCurrent", "1", 60);
+		createCookie("exploCurrent", "0", 60);
 		createCookie("exploTm", String(inputTmByExplo_Value), 60);
 	}
 	else{
