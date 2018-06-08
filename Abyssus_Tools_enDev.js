@@ -797,10 +797,11 @@ function page_membres(){
 
 function setDistanceAndTime_Members(){
 	var listOfPlayersTr = getPlayersTrMembers();
+	var playerListNumb = Number(readCookie("playerListNumber"));
 	
-	if(Number(readCookie("playerListNumber")) < listOfPlayersTr.length)
+	if(playerListNumb < listOfPlayersTr.length)
 	{
-		var playerTM = listOfPlayersTr[Number(readCookie("playerListNumber"))].childNodes[11].text;
+		var playerTM = listOfPlayersTr[playerListNumb].childNodes[11].text;
 		var maxTM = (Number(playerTM.replace(/\s/g, ''))+1).nombreFormate(0);
 
 		$.post('ajax/ennemies.php', {mintdc:playerTM, maxtdc:maxTM, page:1, tri:'distance', sens:'asc', guerre:0, paix:0, ally:0}, function(data){
