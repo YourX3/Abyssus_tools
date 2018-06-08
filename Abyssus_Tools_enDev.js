@@ -719,42 +719,72 @@ function getElementsByTagNameInList(list, tagName){
 function page_prodUnit(){
 	var body = document.getElementsByTagName("body")[0];
 	body.addEventListener("keyup", function(){updateTables()});
+	
+	setRealAtkToArmy(true);
 }
 
 function updateTables(){
 	setTimeout(function(){
-		var tables = getElementsByTagNameInList(document.getElementById("bloc").childNodes, "TABLE");
-		if(tables.length > 0){
-			for(var i=0; i < tables.length; ++i){
-				var trs = getElementsByTagNameInList(tables[i].childNodes[1].childNodes, "TR");
-				
-				var input = getElementsByTagNameInList(getElementsByTagNameInList(trs[0].childNodes, "TD")[1].childNodes, "INPUT");
-				if(input.length > 0){
-					input = input[0];
-					if(localStorage.getItem("ecaille") !== null){
-						var hpsValue = Math.round(Number(removeSpaces(input.value)) * Number(input.dataset.vie) + Number(removeSpaces(input.value)) * Number(input.dataset.vie) * (Number(localStorage.getItem("ecaille"))/10));
-						hpsValue = " " + hpsValue.nombreFormate(0);
-						getElementsByTagNameInList(getElementsByTagNameInList(trs[1].childNodes, "TD")[0].childNodes, "SPAN")[0].textContent = hpsValue;
-					}
-					if(localStorage.getItem("morsure") !== null){
-						var atkValue = Math.round(Number(removeSpaces(input.value)) * Number(input.dataset.fdf) + Number(removeSpaces(input.value)) * Number(input.dataset.fdf)* (Number(localStorage.getItem("morsure"))/10));
-						atkValue = " " + atkValue.nombreFormate(0);
-						getElementsByTagNameInList(getElementsByTagNameInList(trs[2].childNodes, "TD")[0].childNodes, "SPAN")[0].textContent = atkValue;
-					}
-					if(localStorage.getItem("morsure") !== null){
-						var defValue = Math.round(Number(removeSpaces(input.value)) * Number(input.dataset.fdd) + Number(removeSpaces(input.value)) * Number(input.dataset.fdd) * (Number(localStorage.getItem("morsure"))/10));
-						defValue = " " + defValue.nombreFormate(0);
-						getElementsByTagNameInList(getElementsByTagNameInList(trs[3].childNodes, "TD")[0].childNodes, "SPAN")[0].textContent = defValue;
-					}
-				}
-								       
-				
-			}
-		}
+		setRealAtkToArmy(false);
 	}, 10);
 }
 
 
+function setRealAtkToArmy(firstTime){
+	var tables = getElementsByTagNameInList(document.getElementById("bloc").childNodes, "TABLE");
+	if(tables.length > 0){
+		for(var i=0; i < tables.length; ++i){
+			var trs = getElementsByTagNameInList(tables[i].childNodes[1].childNodes, "TR");
+
+			var input = getElementsByTagNameInList(getElementsByTagNameInList(trs[0].childNodes, "TD")[1].childNodes, "INPUT");
+			if(input.length > 0){
+				input = input[0];
+				var inputValue = input.value;
+				
+				if(inputValue === "" || inputValue === "0")
+					inputValue = 1;
+				else
+					inputValue = Number(inputValue);
+				
+				if(localStorage.getItem("ecaille") !== null){
+					var hpsValue = Math.round(Number(removeSpaces(inputValue)) * Number(input.dataset.vie) + Number(removeSpaces(inputValue)) * Number(input.dataset.vie) * (Number(localStorage.getItem("ecaille"))/10));
+					hpsValue = " " + hpsValue.nombreFormate(0);
+					getElementsByTagNameInList(getElementsByTagNameInList(trs[1].childNodes, "TD")[0].childNodes, "SPAN")[0].textContent = hpsValue;
+				}
+				if(localStorage.getItem("morsure") !== null){
+					var atkValue = Math.round(Number(removeSpaces(inputValue)) * Number(input.dataset.fdf) + Number(removeSpaces(inputValue)) * Number(input.dataset.fdf)* (Number(localStorage.getItem("morsure"))/10));
+					atkValue = " " + atkValue.nombreFormate(0);
+					getElementsByTagNameInList(getElementsByTagNameInList(trs[2].childNodes, "TD")[0].childNodes, "SPAN")[0].textContent = atkValue;
+				}
+				if(localStorage.getItem("morsure") !== null){
+					var defValue = Math.round(Number(removeSpaces(inputValue)) * Number(input.dataset.fdd) + Number(removeSpaces(inputValue)) * Number(input.dataset.fdd) * (Number(localStorage.getItem("morsure"))/10));
+					defValue = " " + defValue.nombreFormate(0);
+					getElementsByTagNameInList(getElementsByTagNameInList(trs[3].childNodes, "TD")[0].childNodes, "SPAN")[0].textContent = defValue;
+				}
+			}
+			else if(firstTime){
+				if(localStorage.getItem("ecaille") !== null){
+					var hpsValue_old = Number(removeSpaces(getElementsByTagNameInList(getElementsByTagNameInList(trs[1].childNodes, "TD")[0].childNodes, "SPAN")[0].textContent));
+					var hpsValue = hpsValue_old + hpsValue_old * (Number(localStorage.getItem("ecaille"))/10));
+					hpsValue = " " + hpsValue.nombreFormate(0);
+					getElementsByTagNameInList(getElementsByTagNameInList(trs[1].childNodes, "TD")[0].childNodes, "SPAN")[0].textContent = hpsValue;
+				}
+				if(localStorage.getItem("morsure") !== null){
+					var atkValue_old = Number(removeSpaces(getElementsByTagNameInList(getElementsByTagNameInList(trs[2].childNodes, "TD")[0].childNodes, "SPAN")[0].textContent));
+					var atkValue = atkValue_old + atkValue_old * (Number(localStorage.getItem("morsure"))/10));
+					atkValue = " " + atkValue.nombreFormate(0);
+					getElementsByTagNameInList(getElementsByTagNameInList(trs[2].childNodes, "TD")[0].childNodes, "SPAN")[0].textContent = atkValue;
+				}
+				if(localStorage.getItem("morsure") !== null){
+					var defValue_old = Number(removeSpaces(getElementsByTagNameInList(getElementsByTagNameInList(trs[3].childNodes, "TD")[0].childNodes, "SPAN")[0].textContent));
+					var defValue = defValue_old + defValue_old * (Number(localStorage.getItem("morsure"))/10));
+					defValue = " " + defValue.nombreFormate(0);
+					getElementsByTagNameInList(getElementsByTagNameInList(trs[3].childNodes, "TD")[0].childNodes, "SPAN")[0].textContent = defValue;
+				}
+			}
+		}
+	}
+}
 
 
 //////////////////////////////////////////////////////////////
