@@ -470,7 +470,7 @@ function setPlayerTravelTime(data, constraint = "none"){
 }
 
 function onclick_tmAttack(){
-	var tmTarget = document.getElementsByTagName('tbody')[1].childNodes[5].childNodes[3].text;
+	var tmTarget = document.getElementsByTagName('tbody')[1].childNodes[5].childNodes[3].textContent;
 	tmTarget = removeSpaces(tmTarget).split('(')[0];
 	sessionStorage.setItem('targetTM', tmTarget);
 }
@@ -762,14 +762,14 @@ function page_labo(){
 	var headers2 = document.getElementsByTagName("h2");
 
 	for(var i=0; i < headers2.length; ++i){
-		if(headers2[i].text.split(' ')[0] === "Ecaille"){
-			localStorage.setItem("ecaille", headers2[i].text.split(' ')[2]);
+		if(headers2[i].textContent.split(' ')[0] === "Ecaille"){
+			localStorage.setItem("ecaille", headers2[i].textContent.split(' ')[2]);
 		}
-		else if(headers2[i].text.split(' ')[0] === "Morsure"){
-			localStorage.setItem("morsure", headers2[i].text.split(' ')[2]);
+		else if(headers2[i].textContent.split(' ')[0] === "Morsure"){
+			localStorage.setItem("morsure", headers2[i].textContent.split(' ')[2]);
 		}
-		else if(headers2[i].text.split(' ')[0]+headers2[i].text.split(' ')[1] === "Instinctde"){
-			localStorage.setItem("instinctDeChasse", headers2[i].text.split(' ')[4]);
+		else if(headers2[i].textContent.split(' ')[0]+headers2[i].textContent.split(' ')[1] === "Instinctde"){
+			localStorage.setItem("instinctDeChasse", headers2[i].textContent.split(' ')[4]);
 		}
 	}
 }
@@ -952,7 +952,7 @@ function membersTimeSorter(){
 }
 
 function getTimeOfElementMembers(element){
-	var textTime = element.childNodes[22].text;
+	var textTime = element.childNodes[22].textContent;
 	if(textTime !== "inconnu"){
 		var listOfUnits = textTime.split(' ');
 		var total = 0;
