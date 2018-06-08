@@ -510,11 +510,11 @@ function setDistanceAndTime_Ally(){
 	
 	if(Number(readCookie("playerListNumber")) < listOfPlayersTr.length)
 	{
-		var playerTM = listOfPlayersTr[Number(readCookie("playerListNumber"))].childNodes[5].text;
+		var playerTM = listOfPlayersTr[Number(readCookie("playerListNumber"))].childNodes[5].textContent;
 		var maxTM = (Number(playerTM.replace(/\s/g, ''))+1).nombreFormate(0);
 
 		$.post('ajax/ennemies.php', {mintdc:playerTM, maxtdc:maxTM, page:1, tri:'distance', sens:'asc', guerre:0, paix:0, ally:0}, function(data){
-			var listOfResults = setPlayerTravelTime(data, "ally:"+getTagInH1(document.getElementsByTagName("h1")[0].text));
+			var listOfResults = setPlayerTravelTime(data, "ally:"+getTagInH1(document.getElementsByTagName("h1")[0].textContent));
 			var listOfPlayersTr = getPlayersTr();
 			var targetPlayer = listOfPlayersTr[Number(readCookie("playerListNumber"))];
 
@@ -597,7 +597,7 @@ function distanceSorter(){
 }
 
 function getDistanceOfElement(element){
-	return element.childNodes[11].text;
+	return element.childNodes[11].textContent;
 }
 
 
@@ -649,7 +649,7 @@ function timeSorter(){
 }
 
 function getTimeOfElement(element){
-	var textTime = element.childNodes[12].text;
+	var textTime = element.childNodes[12].textContent;
 	if(textTime !== "inconnu"){
 		var listOfUnits = textTime.split(' ');
 		var total = 0;
