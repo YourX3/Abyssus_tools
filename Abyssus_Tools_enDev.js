@@ -85,7 +85,7 @@ function page_atk()
 		if(Number(readCookie("numberOfAttaks")) < Number(readCookie("attakNum"))){
 			deleteCookie("numberOfAttaks");
 			deleteCookie("attakNum");
-			var textFloodsEncours =  document.createTextNode("Tous les floods ont été lancés"));
+			var textFloodsEncours =  document.createTextNode("Tous les floods ont été lancés");
 			insertContainer.insertBefore(textUnif, insertPlace);
 		}
 		else{
