@@ -90,7 +90,7 @@ function page_atk()
 		}
 		else{
 			var textFloodsEncours =  document.createTextNode("Attaques en cours de lancement: " + readCookie("attakNum") + "/" + readCookie("numberOfAttaks"));
-			insertContainer.insertBefore(textUnif, insertPlace);
+			insertContainer.insertBefore(textFloodsEncours, insertPlace);
 			
 			if(readCookie("Attaque_"+readCookie("attakNum")) === "Ghost"){
 				createCookie("attakNum", String(Number(readCookie("attakNum"))+1), 60);
