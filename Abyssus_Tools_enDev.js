@@ -1073,7 +1073,7 @@ function page_exploration(){
 		insertContainer.insertBefore(createLine(), insertPlace);
 	}
 	else {
-		if(Number(readCookie("exploCurrent")) <= Number(readCookie("exploTotal"))){
+		if(Number(readCookie("exploCurrent")) < Number(readCookie("exploTotal"))){
 			var textLanc =  document.createTextNode("Lancement d'explorations en cours... " + readCookie("exploCurrent") + "/" + readCookie("exploTotal"));
 			insertContainer.insertBefore(textLanc, insertPlace);
 
@@ -1089,7 +1089,7 @@ function page_exploration(){
 					getElementsByTagNameInList(getElementsByTagNameInList(trList[i].childNodes, "TD")[4].childNodes, "INPUT")[0].value = readCookie("explo_" + String(i));
 				}
 			}
-			createCookie("exploCurrent", String(Number(readCookie("exploCurrent")+1)), 60);
+			createCookie("exploCurrent", String(Number(readCookie("exploCurrent"))+1), 60);
 			$("input[name='explorer']").click();
 		}
 		else {
