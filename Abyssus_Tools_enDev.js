@@ -15,14 +15,14 @@ function init(){
 	Number.prototype.nombreFormate = function(decimales,signe,separateurMilliers){var _sNombre=String(this),i,_sRetour="",_sDecimales="";if(decimales==undefined)decimales=2;if(signe==undefined)signe='';if(separateurMilliers==undefined)separateurMilliers=' ';function separeMilliers(sNombre){var sRetour="";while(sNombre.length%3!=0){sNombre="0"+sNombre}for(i=0;i<sNombre.length;i+=3){if(i==sNombre.length-1)separateurMilliers='';sRetour+=sNombre.substr(i,3)+separateurMilliers}while(sRetour.substr(0,1)=="0"){sRetour=sRetour.substr(1)}return sRetour.substr(0,sRetour.lastIndexOf(separateurMilliers))}if(_sNombre==0){_sRetour=0}else{if(_sNombre.indexOf('.')==-1){for(i=0;i<decimales;i++){_sDecimales+="0"}_sRetour=separeMilliers(_sNombre)+signe+_sDecimales}else{var sDecimalesTmp=(_sNombre.substr(_sNombre.indexOf('.')+1));if(sDecimalesTmp.length>decimales){var nDecimalesManquantes=sDecimalesTmp.length-decimales;var nDiv=1;for(i=0;i<nDecimalesManquantes;i++){nDiv*=10}_sDecimales=Math.round(Number(sDecimalesTmp)/nDiv)}_sRetour=separeMilliers(_sNombre.substr(0,_sNombre.indexOf('.')))+String(signe)+_sDecimales}}return _sRetour}
 	
 	var textVersion = document.createElement('none');
-	textVersion.innerHTML = '<font size="1" color="white">Abyssus Tools V 0.5 __ Last Updtate 08/06/2018 22h07 </font>';
+	textVersion.innerHTML = '<font size="1" color="white">Abyssus Tools V 0.5 __ Last Updtate 11/06/2018 16h47 </font>';
 	document.getElementById('footer').insertBefore(textVersion, document.getElementById('footer').childNodes[0]);
 	
 	// fin de l'URL : sur https://s1.abyssus.games/jeu.php?page=armee : ?page=armee
 	var docSearchPath = document.location.search;
 	
 	// si la page est la Page d'attaque sur le TM
-	if(docSearchPath.split('&')[0] === "?page=attaque" && docSearchPath.split('&')[2] === "lieu=1")
+	if(docSearchPath.split('&')[0] === "?page=attaque")
 		page_atk();
 	// si la page est la page d'armée
 	else if(docSearchPath === "?page=armee" || docSearchPath.split('&')[1] === "action=barriere")
@@ -50,18 +50,17 @@ function init(){
 
 function page_atk()
 {
-	// Si aucun cookie au nom "numberOfAttaks" n'a été trouvé -> pas de floods lancés
-	if(readCookie("numberOfAttaks") === null){
-		var insertContainer = document.getElementsByTagName('center')[0];
-		var insertPlace = document.getElementsByTagName('h1')[0];
-		
+	var insertContainer = document.getElementsByTagName('center')[0];
+	var insertPlace = document.getElementsByTagName('h1')[0];
+	
+	if(readCookie("numberOfAttaks") === null){	
 		var targetName = document.getElementsByTagName('h1')[0].textContent.split(' ')[3];
 		var inputTargetTM_value = "TM de " + targetName;
 		
 		if(sessionStorage.getItem('targetTM') != null){
 			inputTargetTM_value = sessionStorage.getItem('targetTM');
+			sessionStorage.removeItem('targetTM');
 		}
-		sessionStorage.removeItem('targetTM');
 
 		var input_innerHTML = '<input type="text" id="targetTM" name="targetTM" class="text" value="' + inputTargetTM_value + '" data-nb="0" style="font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; font-size: inherit; line-height: inherit; font-family: inherit; color: rgb(0, 0, 102); text-align: center; outline: none; padding: 5px; width: 120px; cursor: text;">';
 		
@@ -82,13 +81,17 @@ function page_atk()
 		optiFlood_Elements.innerHTML += '<button onclick="onClick_buttonFloods()">Préparer les floods</button>';
 		insertContainer.insertBefore(optiFlood_Elements, insertPlace);
 	}
-	else if(document.getElementsByTagName('h1').length > 0){
+	else{
 		if(Number(readCookie("numberOfAttaks")) < Number(readCookie("attakNum"))){
 			deleteCookie("numberOfAttaks");
 			deleteCookie("attakNum");
-			document.getElementsByTagName('h1')[0].textContent = "Tous les floods ont été lancés";
+			var textFloodsEncours =  document.createTextNode("Tous les floods ont été lancés"));
+			insertContainer.insertBefore(textUnif, insertPlace);
 		}
 		else{
+			var textFloodsEncours =  document.createTextNode("Attaques en cours de lancement: " + readCookie("attakNum") + "/" + readCookie("numberOfAttaks"));
+			insertContainer.insertBefore(textUnif, insertPlace);
+			
 			if(readCookie("Attaque_"+readCookie("attakNum")) === "Ghost"){
 				createCookie("attakNum", String(Number(readCookie("attakNum"))+1), 60);
 			}
@@ -1068,10 +1071,8 @@ function page_exploration(){
 		insertContainer.insertBefore(createLine(), insertPlace);
 	}
 	else {
-		
-		
 		if(Number(readCookie("exploCurrent")) < Number(readCookie("exploTotal"))){
-			var textLanc =  document.createTextNode("Lancement d'explorations en cours");
+			var textLanc =  document.createTextNode("Lancement d'explorations en cours... " readCookie("exploCurrent") + "/" + readCookie("exploTotal"));
 			insertContainer.insertBefore(textLanc, insertPlace);
 
 			insertContainer.insertBefore(createLine(), insertPlace);
