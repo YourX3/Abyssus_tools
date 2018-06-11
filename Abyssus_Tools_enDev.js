@@ -1073,7 +1073,7 @@ function page_exploration(){
 	}
 	else {
 		if(Number(readCookie("exploCurrent")) < Number(readCookie("exploTotal"))){
-			var textLanc =  document.createTextNode("Lancement d'explorations en cours... " readCookie("exploCurrent") + "/" + readCookie("exploTotal"));
+			var textLanc =  document.createTextNode("Lancement d'explorations en cours... " + readCookie("exploCurrent") + "/" + readCookie("exploTotal"));
 			insertContainer.insertBefore(textLanc, insertPlace);
 
 			insertContainer.insertBefore(createLine(), insertPlace);
