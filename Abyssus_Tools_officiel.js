@@ -15,14 +15,14 @@ function init(){
 	Number.prototype.nombreFormate = function(decimales,signe,separateurMilliers){var _sNombre=String(this),i,_sRetour="",_sDecimales="";if(decimales==undefined)decimales=2;if(signe==undefined)signe='';if(separateurMilliers==undefined)separateurMilliers=' ';function separeMilliers(sNombre){var sRetour="";while(sNombre.length%3!=0){sNombre="0"+sNombre}for(i=0;i<sNombre.length;i+=3){if(i==sNombre.length-1)separateurMilliers='';sRetour+=sNombre.substr(i,3)+separateurMilliers}while(sRetour.substr(0,1)=="0"){sRetour=sRetour.substr(1)}return sRetour.substr(0,sRetour.lastIndexOf(separateurMilliers))}if(_sNombre==0){_sRetour=0}else{if(_sNombre.indexOf('.')==-1){for(i=0;i<decimales;i++){_sDecimales+="0"}_sRetour=separeMilliers(_sNombre)+signe+_sDecimales}else{var sDecimalesTmp=(_sNombre.substr(_sNombre.indexOf('.')+1));if(sDecimalesTmp.length>decimales){var nDecimalesManquantes=sDecimalesTmp.length-decimales;var nDiv=1;for(i=0;i<nDecimalesManquantes;i++){nDiv*=10}_sDecimales=Math.round(Number(sDecimalesTmp)/nDiv)}_sRetour=separeMilliers(_sNombre.substr(0,_sNombre.indexOf('.')))+String(signe)+_sDecimales}}return _sRetour}
 	
 	var textVersion = document.createElement('none');
-	textVersion.innerHTML = '<font size="1" color="white">Abyssus Tools V 0.5 __ Last Updtate 08/06/2018 22h07 </font>';
+	textVersion.innerHTML = '<font size="1" color="white">Abyssus Tools V 0.5 __ Last Updtate 12/06/2018 17h00 </font>';
 	document.getElementById('footer').insertBefore(textVersion, document.getElementById('footer').childNodes[0]);
 	
 	// fin de l'URL : sur https://s1.abyssus.games/jeu.php?page=armee : ?page=armee
 	var docSearchPath = document.location.search;
 	
 	// si la page est la Page d'attaque sur le TM
-	if(docSearchPath.split('&')[0] === "?page=attaque" && docSearchPath.split('&')[2] === "lieu=1")
+	if(docSearchPath.split('&')[0] === "?page=attaque")
 		page_atk();
 	// si la page est la page d'armée
 	else if(docSearchPath === "?page=armee" || docSearchPath.split('&')[1] === "action=barriere")
@@ -50,18 +50,17 @@ function init(){
 
 function page_atk()
 {
-	// Si aucun cookie au nom "numberOfAttaks" n'a été trouvé -> pas de floods lancés
-	if(readCookie("numberOfAttaks") === null){
-		var insertContainer = document.getElementsByTagName('center')[0];
-		var insertPlace = document.getElementsByTagName('h1')[0];
-		
+	var insertContainer = document.getElementsByTagName('center')[0];
+	var insertPlace = document.getElementsByTagName('h1')[0];
+	
+	if(readCookie("numberOfAttaks") === null){	
 		var targetName = document.getElementsByTagName('h1')[0].textContent.split(' ')[3];
 		var inputTargetTM_value = "TM de " + targetName;
 		
 		if(sessionStorage.getItem('targetTM') != null){
 			inputTargetTM_value = sessionStorage.getItem('targetTM');
+			sessionStorage.removeItem('targetTM');
 		}
-		sessionStorage.removeItem('targetTM');
 
 		var input_innerHTML = '<input type="text" id="targetTM" name="targetTM" class="text" value="' + inputTargetTM_value + '" data-nb="0" style="font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; font-size: inherit; line-height: inherit; font-family: inherit; color: rgb(0, 0, 102); text-align: center; outline: none; padding: 5px; width: 120px; cursor: text;">';
 		
@@ -79,16 +78,20 @@ function page_atk()
 		}
 		optiFlood_Elements.innerHTML += '<input type="text" id="inputQuestLv" onfocusout="onFocusOut_inputQuestLv()" class="text" value="' + lvQuestvalue + '" data-nb="0" style="font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; font-size: inherit; line-height: inherit; font-family: inherit; color: rgb(0, 0, 102); text-align: center; outline: none; padding: 5px; width: 50px; cursor: text;">';
 		optiFlood_Elements.append(document.createTextNode(" --> "));
-		optiFlood_Elements.innerHTML += '<button onclick="onClick_buttonFloods()">Préparer les floods</button>';
+		optiFlood_Elements.innerHTML += '<button onclick="onClick_buttonFloods()">Lancer les floods</button>';
 		insertContainer.insertBefore(optiFlood_Elements, insertPlace);
 	}
-	else if(document.getElementsByTagName('h1').length > 0){
+	else{
 		if(Number(readCookie("numberOfAttaks")) < Number(readCookie("attakNum"))){
 			deleteCookie("numberOfAttaks");
 			deleteCookie("attakNum");
-			document.getElementsByTagName('h1')[0].textContent = "Tous les floods ont été lancés";
+			var textFloodsEncours =  document.createTextNode("Tous les floods ont été lancés");
+			insertContainer.insertBefore(textUnif, insertPlace);
 		}
 		else{
+			var textFloodsEncours =  document.createTextNode("Attaques en cours de lancement: " + readCookie("attakNum") + "/" + readCookie("numberOfAttaks"));
+			insertContainer.insertBefore(textFloodsEncours, insertPlace);
+			
 			if(readCookie("Attaque_"+readCookie("attakNum")) === "Ghost"){
 				createCookie("attakNum", String(Number(readCookie("attakNum"))+1), 60);
 			}
@@ -99,6 +102,7 @@ function page_atk()
 				document.getElementsByName('SJ')[0].data = readCookie("Attaque_"+readCookie("attakNum"));
 				createCookie("attakNum", String(Number(readCookie("attakNum"))+1), 60);
 			}
+			$("input[value='Attaquer']").click();
 		}
 	}
 }
@@ -149,7 +153,7 @@ function putAllUnitsToNull() {
 }
 
 function onClick_buttonFloods(){
-    	var targetTM = Number(removeSpaces(document.getElementsByName('targetTM')[0].value));
+	var targetTM = Number(removeSpaces(document.getElementsByName('targetTM')[0].value));
 	var nbRem = Number(removeSpaces(document.getElementsByName('SJ')[0].value));
 	var playerTM = Number(removeSpaces(document.getElementsByTagName('span')[7].childNodes[1].data));
 	var ghost = document.getElementById('checkBoxGhost').checked;
@@ -207,23 +211,24 @@ function onClick_buttonFloods(){
             }
         }
 
-        createCookie("numberOfAttaks", String(listOfAttaks.length), 60);
-        createCookie("attakNum", "1", 60);
+	createCookie("numberOfAttaks", String(listOfAttaks.length), 15);
+	createCookie("attakNum", "1", 15);
 	var textToAlert = "Nb d'attaques : " + String(listOfAttaks.length) + "\n";
-        for(var i=0; i < listOfAttaks.length; ++i){
-            textToAlert += "Attaque " + String((listOfAttaks[i])[0]) + ": " + String((listOfAttaks[i])[1]) + "\n";
-            createCookie(String((listOfAttaks[i])[0]), String((listOfAttaks[i])[1]), 60);
-        }
+	for(var i=0; i < listOfAttaks.length; ++i){
+	    textToAlert += "Attaque " + String((listOfAttaks[i])[0]) + ": " + String((listOfAttaks[i])[1]) + "\n";
+	    createCookie(String((listOfAttaks[i])[0]), String((listOfAttaks[i])[1]), 15);
+	}
 	textToAlert += "Total: " + String(totalFloods) + "\n" + "\n";
 	textToAlert += "Votre TM: " + String(playerTM) + "\n";
 	textToAlert += "TM de la cible: " + String(targetTM);
-	
+
 	alert(textToAlert);
-		
+
 	putAllUnitsToNull();
 	document.getElementsByName('SJ')[0].value = readCookie("Attaque_"+readCookie("attakNum"));
 	document.getElementsByName('SJ')[0].data = readCookie("Attaque_"+readCookie("attakNum"));
-	createCookie("attakNum", String(Number(readCookie("attakNum"))+1), 60);
+	createCookie("attakNum", String(Number(readCookie("attakNum"))+1), 15);
+	$("input[value='Attaquer']").click();
     }
 }
 
@@ -233,12 +238,13 @@ function onClick_buttonFloods(){
 
 function armyPage(){
 	if(readCookie("armyReplacing") === null){		
-		var alignText = document.createElement('none');
+		/*var alignText = document.createElement('none');
 		alignText.innerHTML = '<text>/ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . </text>';
-		document.getElementsByTagName('center')[0].insertBefore(alignText, document.getElementsByTagName('table')[1]);
+		document.getElementsByTagName('center')[0].insertBefore(alignText, document.getElementsByTagName('table')[1]);*/
 
 		var but_replaceArmy = document.createElement('none');
 		but_replaceArmy.innerHTML = '<button onclick="onClickButtonReplaceArmy()">Placer anti-sonde</button>';
+		but_replaceArmy.align = "right";
 		document.getElementsByTagName('center')[0].insertBefore(but_replaceArmy, document.getElementsByTagName('table')[1]);
 
 		var antiSondeText = document.createElement('none');
@@ -368,24 +374,36 @@ function onClickButtonReplaceArmy(){
 	
 	
 function page_playerProfile(){
-	getElementByInnerText('a', "Attaquer le terrain").onclick = function(){onclick_tmAttack()};
-				
-	var playerTM = document.getElementsByTagName('tbody')[1].childNodes[5].childNodes[3].textContent.split('(')[0];
-	playerTM = playerTM.substr(0, playerTM.length-1);
-	var maxTM = (Number(playerTM.replace(/\s/g, ''))+1).nombreFormate(0);
+	if(sessionStorage.getItem("displayingDistances_total") === null){
+		getElementByInnerText('a', "Attaquer le terrain").onclick = function(){onclick_tmAttack()};		
+		var playerTM = document.getElementsByTagName('tbody')[1].childNodes[5].childNodes[3].textContent.split('(')[0];
+		playerTM = playerTM.substr(0, playerTM.length-1);
+		var maxTM = (Number(playerTM.replace(/\s/g, ''))+1).nombreFormate(0);
 
-	$.post('ajax/ennemies.php', {mintdc:playerTM, maxtdc:maxTM, page:1, tri:'distance', sens:'asc', guerre:0, paix:0, ally:0}, function(data){
-		var listOfResults = setPlayerTravelTime(data, "playerName:"+document.getElementsByTagName('h1')[0].textContent);
-		if(listOfResults === null){
-			document.getElementsByTagName('tbody')[1].childNodes[3].childNodes[3].textContent += "\n" + " Distance et temps de Trajet inconnus..";
-		}
-		else{
-			var distance = listOfResults[3];
-			var time = listOfResults[4];
+		$.post('ajax/ennemies.php', {mintdc:playerTM, maxtdc:maxTM, page:1, tri:'distance', sens:'asc', guerre:0, paix:0, ally:0}, function(data){
+			var listOfResults = setPlayerTravelTime(data, "playerName:"+document.getElementsByTagName('h1')[0].textContent);
+			if(listOfResults === null){
+				document.getElementsByTagName('tbody')[1].childNodes[3].childNodes[3].textContent += "\n" + " Distance et temps de Trajet inconnus..";
+			}
+			else{
+				var distance = listOfResults[3];
+				var time = listOfResults[4];
 
-			document.getElementsByTagName('tbody')[1].childNodes[3].childNodes[3].textContent += "\n" + "Distance: " + distance + " _Temps de trajet: " + time;
-		}
-	});
+				document.getElementsByTagName('tbody')[1].childNodes[3].childNodes[3].textContent += "\n" + "Distance: " + distance + " _Temps de trajet: " + time;
+			}
+		});
+	}
+	else{
+		var locationText = removeSpaces(document.getElementsByTagName('tbody')[1].childNodes[3].childNodes[3].textContent);
+		
+		var posX = locationText.locationText.split(":")[1];
+		posX.substr(0, posX.length-1);
+		
+		var posY = locationText.locationText.split(":")[2];
+		
+		sessionStorage.setItem("displayingDistances_" + sessionStorage.getItem("displayingDistances_current"), posX +"_" + posY);
+		document.location.href = "jeu.php?page=listemembre";
+	}
 }
 
 function setPlayerTravelTime(data, constraint = "none"){
@@ -810,19 +828,44 @@ function page_labo(){
 //                         PAGE MEMBRES                           //
 
 function page_membres(){
-	var columnDistance = document.createElement('td');
-	columnDistance.innerHTML = '<td align="center"><td align="center"><a onclick="onClick_membersDistanceAsc()"><img src="images/asc.png" style="vertical-align: middle;"></a><strong> Distance </strong><a onclick="onClick_membersDistanceDesc()"><img src="images/desc.png" style="vertical-align: middle;"></a></td></td>';
-	columnDistance.align ="center";
-	document.getElementsByTagName('tbody')[1].childNodes[1].appendChild(columnDistance);
-	
-	
-	var columnTime = document.createElement('td');
-	columnTime.innerHTML = '<td align="center"><td align="center"><a onclick="onClick_membersTimeAsc()"><img src="images/asc.png" style="vertical-align: middle;"></a><strong> Temps de trajet </strong><a onclick="onClick_membersTimeDesc()"><img src="images/desc.png" style="vertical-align: middle;"></a></td></td>';
-	columnTime.align ="center";
-	document.getElementsByTagName('tbody')[1].childNodes[1].appendChild(columnTime);
-	
-	createCookie("playerListNumber", "0", 5);
-	setDistanceAndTime_Members();
+	if(sessionStorage.getItem("displayingDistances_total") === null){
+		var columnDistance = document.createElement('td');
+		columnDistance.innerHTML = '<td align="center"><td align="center"><a onclick="onClick_membersDistanceAsc()"><img src="images/asc.png" style="vertical-align: middle;"></a><strong> Distance </strong><a onclick="onClick_membersDistanceDesc()"><img src="images/desc.png" style="vertical-align: middle;"></a></td></td>';
+		columnDistance.align ="center";
+		document.getElementsByTagName('tbody')[1].childNodes[1].appendChild(columnDistance);
+
+
+		var columnTime = document.createElement('td');
+		columnTime.innerHTML = '<td align="center"><td align="center"><a onclick="onClick_membersTimeAsc()"><img src="images/asc.png" style="vertical-align: middle;"></a><strong> Temps de trajet </strong><a onclick="onClick_membersTimeDesc()"><img src="images/desc.png" style="vertical-align: middle;"></a></td></td>';
+		columnTime.align ="center";
+		document.getElementsByTagName('tbody')[1].childNodes[1].appendChild(columnTime);
+
+		var insertContainer = document.getElementsByTagName("center")[0];
+		var insertPlace = document.getElementById("tableaumembre");
+
+		var divChangePosition = document.createElement('div');
+		divChangePosition.align = "right";
+
+		var buttonChangePosition = document.createElement('button');
+		buttonChangePosition.textContent = "Se placer en temps que ";
+		divChangePosition.appendChild(buttonChangePosition);
+		divChangePosition.innerHTML += '<input type="text" id="inputPlayerName" class="text" value="" style="font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; font-size: inherit; line-height: inherit; font-family: inherit; color: rgb(0, 0, 102); text-align: center; outline: none; padding: 5px; width: 120px; cursor: text;">';
+
+		insertContainer.insertBefore(divChangePosition, insertPlace);
+		insertContainer.insertBefore(createLine(), insertPlace);
+		insertContainer.insertBefore(createLine(), insertPlace);
+
+		createCookie("playerListNumber", "0", 5);
+		setDistanceAndTime_Members();
+	}
+	else if(sessionStorage.getItem("displayingDistances_current") < sessionStorage.getItem("displayingDistances_total")-1){
+		var nbCurrentDisplaying = Number(sessionStorage.getItem("displayingDistances_current"))+1;
+		var targetTR = getPlayersTrMembers()[nbCurrentDisplaying];
+		
+		var href = getElementsByTagNameInList(getElementsByTagNameInList(targetTR.childNodes, "TD")[3].childNodes, "A")[0].href;
+		sessionStorage.setItem("displayingDistances_current", nbCurrentDisplaying);
+		document.location.href = href;
+	}
 }
 
 function setDistanceAndTime_Members(){
@@ -867,6 +910,16 @@ function setDistanceAndTime_Members(){
 			createCookie("playerListNumber", String(Number(readCookie("playerListNumber")) +1), 5);
 			setDistanceAndTime_Members();
 		});
+	}
+}
+
+function onClick_buttonChangePosition(){
+	var inputValue = document.getElementById('inputPlayerName').value;
+	
+	if(inputValue != ""){
+		sessionStorage.setItem("displayingDistances_total", String(getPlayersTrMembers().length));
+		sessionStorage.setItem("displayingDistances_current", "-1");
+		document.location.href ="jeu.php?page=joueur&pseudo=" + inputValue;
 	}
 }
 
@@ -1059,7 +1112,7 @@ function page_exploration(){
 		insertContainer.insertBefore(textUnif, insertPlace);
 
 		var buttonPrepareExploration = document.createElement('button');
-		buttonPrepareExploration.textContent = "Préparer les chasses";
+		buttonPrepareExploration.textContent = "Lancer les explorations";
 		buttonPrepareExploration.onclick = function(){onclickButtonExplo()};
 		insertContainer.insertBefore(buttonPrepareExploration, insertPlace);
 
@@ -1068,10 +1121,8 @@ function page_exploration(){
 		insertContainer.insertBefore(createLine(), insertPlace);
 	}
 	else {
-		
-		
 		if(Number(readCookie("exploCurrent")) < Number(readCookie("exploTotal"))){
-			var textLanc =  document.createTextNode("Lancement d'explorations en cours");
+			var textLanc =  document.createTextNode("Lancement d'explorations en cours... " + readCookie("exploCurrent") + "/" + readCookie("exploTotal"));
 			insertContainer.insertBefore(textLanc, insertPlace);
 
 			insertContainer.insertBefore(createLine(), insertPlace);
@@ -1086,7 +1137,8 @@ function page_exploration(){
 					getElementsByTagNameInList(getElementsByTagNameInList(trList[i].childNodes, "TD")[4].childNodes, "INPUT")[0].value = readCookie("explo_" + String(i));
 				}
 			}
-			createCookie("exploCurrent", String(Number(readCookie("exploCurrent")+1)), 60);
+			createCookie("exploCurrent", String(Number(readCookie("exploCurrent"))+1), 60);
+			$("input[name='explorer']").click();
 		}
 		else {
 			var textLanc =  document.createTextNode("Toutes les explorations ont été lancées !");
@@ -1095,7 +1147,6 @@ function page_exploration(){
 			insertContainer.insertBefore(createLine(), insertPlace);
 			insertContainer.insertBefore(createLine(), insertPlace);
 		}
-		
 	}
 }
 
