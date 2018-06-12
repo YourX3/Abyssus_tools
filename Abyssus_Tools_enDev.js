@@ -15,7 +15,7 @@ function init(){
 	Number.prototype.nombreFormate = function(decimales,signe,separateurMilliers){var _sNombre=String(this),i,_sRetour="",_sDecimales="";if(decimales==undefined)decimales=2;if(signe==undefined)signe='';if(separateurMilliers==undefined)separateurMilliers=' ';function separeMilliers(sNombre){var sRetour="";while(sNombre.length%3!=0){sNombre="0"+sNombre}for(i=0;i<sNombre.length;i+=3){if(i==sNombre.length-1)separateurMilliers='';sRetour+=sNombre.substr(i,3)+separateurMilliers}while(sRetour.substr(0,1)=="0"){sRetour=sRetour.substr(1)}return sRetour.substr(0,sRetour.lastIndexOf(separateurMilliers))}if(_sNombre==0){_sRetour=0}else{if(_sNombre.indexOf('.')==-1){for(i=0;i<decimales;i++){_sDecimales+="0"}_sRetour=separeMilliers(_sNombre)+signe+_sDecimales}else{var sDecimalesTmp=(_sNombre.substr(_sNombre.indexOf('.')+1));if(sDecimalesTmp.length>decimales){var nDecimalesManquantes=sDecimalesTmp.length-decimales;var nDiv=1;for(i=0;i<nDecimalesManquantes;i++){nDiv*=10}_sDecimales=Math.round(Number(sDecimalesTmp)/nDiv)}_sRetour=separeMilliers(_sNombre.substr(0,_sNombre.indexOf('.')))+String(signe)+_sDecimales}}return _sRetour}
 	
 	var textVersion = document.createElement('none');
-	textVersion.innerHTML = '<font size="1" color="white">Abyssus Tools V 0.5 __ Last Updtate 11/06/2018 20h49 </font>';
+	textVersion.innerHTML = '<font size="1" color="white">Abyssus Tools V 0.5 __ Last Updtate 12/06/2018 12h49 </font>';
 	document.getElementById('footer').insertBefore(textVersion, document.getElementById('footer').childNodes[0]);
 	
 	// fin de l'URL : sur https://s1.abyssus.games/jeu.php?page=armee : ?page=armee
@@ -238,12 +238,13 @@ function onClick_buttonFloods(){
 
 function armyPage(){
 	if(readCookie("armyReplacing") === null){		
-		var alignText = document.createElement('none');
+		/*var alignText = document.createElement('none');
 		alignText.innerHTML = '<text>/ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . </text>';
-		document.getElementsByTagName('center')[0].insertBefore(alignText, document.getElementsByTagName('table')[1]);
+		document.getElementsByTagName('center')[0].insertBefore(alignText, document.getElementsByTagName('table')[1]);*/
 
 		var but_replaceArmy = document.createElement('none');
 		but_replaceArmy.innerHTML = '<button onclick="onClickButtonReplaceArmy()">Placer anti-sonde</button>';
+		but_replaceArmy.align = "right";
 		document.getElementsByTagName('center')[0].insertBefore(but_replaceArmy, document.getElementsByTagName('table')[1]);
 
 		var antiSondeText = document.createElement('none');
@@ -825,6 +826,16 @@ function page_membres(){
 	columnTime.innerHTML = '<td align="center"><td align="center"><a onclick="onClick_membersTimeAsc()"><img src="images/asc.png" style="vertical-align: middle;"></a><strong> Temps de trajet </strong><a onclick="onClick_membersTimeDesc()"><img src="images/desc.png" style="vertical-align: middle;"></a></td></td>';
 	columnTime.align ="center";
 	document.getElementsByTagName('tbody')[1].childNodes[1].appendChild(columnTime);
+	
+	var insertContainer = document.getElementsByTagName("center")[0];
+	var insertPlace = document.getElementById("tableaumembre");
+	
+	var divChangePosition = document.createElement('div');
+	divChangePosition.align = "right";
+	
+	var buttonChangePosition = document.createElement('button');
+	buttonChangePosition.textContent = "Se placer en temps que ";
+	divChangePosition.appendChild(buttonChangePosition);
 	
 	createCookie("playerListNumber", "0", 5);
 	setDistanceAndTime_Members();
