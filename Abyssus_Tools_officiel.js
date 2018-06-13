@@ -870,7 +870,7 @@ function page_membres(){
 		columnTime.align ="center";
 		document.getElementsByTagName('tbody')[1].childNodes[1].appendChild(columnTime);
 
-		var insertContainer = document.getElementsById("bloc");
+		var insertContainer = document.getElementById("bloc");
 		var insertPlace = document.getElementById("tableaumembre");
 
 		var divChangePosition = document.createElement('div');
