@@ -242,7 +242,7 @@ function armyPage(){
 		var insertPlace = document.getElementsByTagName('table')[1];
 	
 		var divAlignRight = document.createElement("div");
-		divAlignRight.align = "right";
+		divAlignRight.align = "center";
 		
 		divAlignRight.innerHTML += '<button onclick="onClickButtonReplaceArmy()">Placer anti-sonde</button>';
 		divAlignRight.appendChild(document.createTextNode(" _ Anti-sonde : "));
