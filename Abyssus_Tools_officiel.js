@@ -237,19 +237,15 @@ function onClick_buttonFloods(){
 //                        PAGE ARMEE                     //
 
 function armyPage(){
-	if(readCookie("armyReplacing") === null){		
-		/*var alignText = document.createElement('none');
-		alignText.innerHTML = '<text>/ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . </text>';
-		document.getElementsByTagName('center')[0].insertBefore(alignText, document.getElementsByTagName('table')[1]);*/
-
-		var but_replaceArmy = document.createElement('none');
-		but_replaceArmy.innerHTML = '<button onclick="onClickButtonReplaceArmy()">Placer anti-sonde</button>';
-		but_replaceArmy.align = "right";
-		document.getElementsByTagName('center')[0].insertBefore(but_replaceArmy, document.getElementsByTagName('table')[1]);
-
-		var antiSondeText = document.createElement('none');
-		antiSondeText.innerHTML = '<text> __ Anti sonde : </text>';
-		document.getElementsByTagName('center')[0].insertBefore(antiSondeText, document.getElementsByTagName('table')[1]);
+	if(readCookie("armyReplacing") === null){
+		var insertContainer = document.getElementsByTagName('center')[0];
+		var insertPlace = document.getElementsByTagName('table')[1];
+	
+		var divAlignRight = document.createElement("div");
+		divAlignRight.align = "right";
+		
+		divAlignRight.innerHTML += '<button onclick="onClickButtonReplaceArmy()">Placer anti-sonde</button>';
+		divAlignRight.appendChild(document.createTextNode(" _ Anti-sonde : "));
 
 		var antiSondeValue;
 		if(readCookie("antiSondeValue") === null){
@@ -258,15 +254,12 @@ function armyPage(){
 		else{
 			antiSondeValue = readCookie("antiSondeValue");
 		}
+		divAlignRight.innerHTML += '<input type="text" id="antiSondeInput" class="text" value="' + antiSondeValue + '" style="font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; font-size: inherit; line-height: inherit; font-family: inherit; color: rgb(0, 0, 102); text-align: center; outline: none; padding: 5px; width: 120px; cursor: text;">';
 
-		var antiSondeInput = document.createElement('none');
-		antiSondeInput.innerHTML = '<input type="text" name="antiSondeInput" class="text" value="' + antiSondeValue + '" style="font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; font-size: inherit; line-height: inherit; font-family: inherit; color: rgb(0, 0, 102); text-align: center; outline: none; padding: 5px; width: 120px; cursor: text;">';
-
-
-		$(antiSondeInput).on('focusout', function(){
+		$(#antiSondeInput).on('focusout', function(){
 		    onFocusOut_antiSondeInput();
 		});
-		document.getElementsByTagName('center')[0].insertBefore(antiSondeInput, document.getElementsByTagName('table')[1]);
+		insertContainer.insertBefore(divAlignRight, insertPlace);
 	}
 	else if(readCookie("armyReplacing") === "1"){
 		createCookie("armyReplacing", "2", 5);
