@@ -392,9 +392,9 @@ function page_playerProfile(){
 		var locationText = removeSpaces(document.getElementsByTagName('tbody')[1].childNodes[3].childNodes[3].textContent);
 		
 		var posX = locationText.split(":")[1];
-		posX.substr(0, posX.length-1);
+		posX.substr(0, posX.length-2);
 		
-		var posY = locationText.locationText.split(":")[2];
+		var posY = locationText.split(":")[2];
 		
 		sessionStorage.setItem("displayingDistances_" + sessionStorage.getItem("displayingDistances_current"), posX +"_" + posY);
 		document.location.href = "jeu.php?page=listemembre";
