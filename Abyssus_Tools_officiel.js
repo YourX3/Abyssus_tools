@@ -876,10 +876,7 @@ function page_membres(){
 		var divChangePosition = document.createElement('div');
 		divChangePosition.align = "right";
 
-		var buttonChangePosition = document.createElement('button');
-		buttonChangePosition.textContent = "Se placer en temps que ";
-		buttonChangePosition.onclick = function(){onClick_buttonChangePosition();}
-		divChangePosition.appendChild(buttonChangePosition);
+		divChangePosition.innerHTML += '<button onclick="onClick_buttonChangePosition()">Se placer en temps que </button>';
 		divChangePosition.innerHTML += '<input type="text" id="inputPlayerName" class="text" value="" style="font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; font-size: inherit; line-height: inherit; font-family: inherit; color: rgb(0, 0, 102); text-align: center; outline: none; padding: 5px; width: 120px; cursor: text;">';
 
 		insertContainer.insertBefore(divChangePosition, insertPlace);
