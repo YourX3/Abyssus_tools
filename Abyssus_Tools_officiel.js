@@ -15,7 +15,7 @@ function init(){
 	Number.prototype.nombreFormate = function(decimales,signe,separateurMilliers){var _sNombre=String(this),i,_sRetour="",_sDecimales="";if(decimales==undefined)decimales=2;if(signe==undefined)signe='';if(separateurMilliers==undefined)separateurMilliers=' ';function separeMilliers(sNombre){var sRetour="";while(sNombre.length%3!=0){sNombre="0"+sNombre}for(i=0;i<sNombre.length;i+=3){if(i==sNombre.length-1)separateurMilliers='';sRetour+=sNombre.substr(i,3)+separateurMilliers}while(sRetour.substr(0,1)=="0"){sRetour=sRetour.substr(1)}return sRetour.substr(0,sRetour.lastIndexOf(separateurMilliers))}if(_sNombre==0){_sRetour=0}else{if(_sNombre.indexOf('.')==-1){for(i=0;i<decimales;i++){_sDecimales+="0"}_sRetour=separeMilliers(_sNombre)+signe+_sDecimales}else{var sDecimalesTmp=(_sNombre.substr(_sNombre.indexOf('.')+1));if(sDecimalesTmp.length>decimales){var nDecimalesManquantes=sDecimalesTmp.length-decimales;var nDiv=1;for(i=0;i<nDecimalesManquantes;i++){nDiv*=10}_sDecimales=Math.round(Number(sDecimalesTmp)/nDiv)}_sRetour=separeMilliers(_sNombre.substr(0,_sNombre.indexOf('.')))+String(signe)+_sDecimales}}return _sRetour}
 	
 	var textVersion = document.createElement('none');
-	textVersion.innerHTML = '<font size="1" color="white">Abyssus Tools V 0.6 __ Last Updtate 13/06/2018 22h08 </font>';
+	textVersion.innerHTML = '<font size="1" color="white">Abyssus Tools V 0.6 __ Last Updtate 14/06/2018 17h08 </font>';
 	document.getElementById('footer').insertBefore(textVersion, document.getElementById('footer').childNodes[0]);
 	
 	// fin de l'URL : sur https://s1.abyssus.games/jeu.php?page=armee : ?page=armee
@@ -378,13 +378,13 @@ function page_playerProfile(){
 		$.post('ajax/ennemies.php', {mintdc:playerTM, maxtdc:maxTM, page:1, tri:'distance', sens:'asc', guerre:0, paix:0, ally:0}, function(data){
 			var listOfResults = setPlayerTravelTime(data, "playerName:"+document.getElementsByTagName('h1')[0].textContent);
 			if(listOfResults === null){
-				document.getElementsByTagName('tbody')[1].childNodes[3].childNodes[3].textContent += "\n" + " Distance et temps de Trajet inconnus..";
+				document.getElementsByTagName('tbody')[1].childNodes[3].childNodes[3].textContent += "\r" + " Distance et temps de Trajet inconnus..";
 			}
 			else{
 				var distance = listOfResults[3];
 				var time = listOfResults[4];
-
-				document.getElementsByTagName('tbody')[1].childNodes[3].childNodes[3].textContent += "\n" + "Distance: " + distance + " _Temps de trajet: " + time;
+	
+				document.getElementsByTagName('tbody')[1].childNodes[3].childNodes[3].textContent += "\r" + "Distance: " + distance + " _Temps de trajet: " + time;
 			}
 		});
 	}
@@ -397,7 +397,13 @@ function page_playerProfile(){
 		var posY = locationText.split(":")[2];
 		
 		sessionStorage.setItem("displayingDistances_" + sessionStorage.getItem("displayingDistances_current"), posX +"_" + posY);
-		document.location.href = "jeu.php?page=listemembre";
+		
+		if(Number(sessionStorage.getItem("displayingDistances_current"))+1 === Number(sessionStorage.getItem("displayingDistances_total")))
+			document.location.href = sessionStorage.getItem("displayingDistances_finalHref");
+		else{
+			sessionStorage.setItem("displayingDistances_current", String(Number(sessionStorage.getItem("displayingDistances_current"))+1)));
+			document.location.href = "jeu.php?page=joueur&pseudo=" + sessionStorage.getItem("displayingDistancesPlayers_" + String(sessionStorage.getItem("displayingDistances_current"))));
+		}
 	}
 }
 
@@ -853,14 +859,6 @@ function page_membres(){
 		createCookie("playerListNumber", "0", 5);
 		setDistanceAndTime_Members();
 	}
-	else if(sessionStorage.getItem("displayingDistances_current") < sessionStorage.getItem("displayingDistances_total")-1){
-		var nbCurrentDisplaying = Number(sessionStorage.getItem("displayingDistances_current"))+1;
-		var targetTR = getPlayersTrMembers()[nbCurrentDisplaying];
-		
-		var href = getElementsByTagNameInList(getElementsByTagNameInList(targetTR.childNodes, "TD")[3].childNodes, "A")[0].href;
-		sessionStorage.setItem("displayingDistances_current", nbCurrentDisplaying);
-		document.location.href = href;
-	}
 	else {
 		var columnDistance = document.createElement('td');
 		columnDistance.innerHTML = '<td align="center"><td align="center"><a onclick="onClick_membersDistanceAsc()"><img src="images/asc.png" style="vertical-align: middle;"></a><strong> Distance </strong><a onclick="onClick_membersDistanceDesc()"><img src="images/desc.png" style="vertical-align: middle;"></a></td></td>';
@@ -892,15 +890,20 @@ function page_membres(){
 		var targetPos = sessionStorage.getItem("displayingDistances_-1");
 		var allPos = [];
 		
-		for(var i=0; i < String(sessionStorage.getItem("displayingDistances_total")); ++i){
+		for(var i=0; i < Number(sessionStorage.getItem("displayingDistances_total")); ++i){
 			if(sessionStorage.getItem("displayingDistances_" + String(i)) !== null){
 				allPos.push(sessionStorage.getItem("displayingDistances_" + String(i)));
 				sessionStorage.removeItem("displayingDistances_" + String(i));
 			}
 		}
 		
+		for(var i=0; i < Number(sessionStorage.getItem("displayingDistances_total")); ++i){
+			sessionStorage.removeItem("displayingDistancesPlayers_" + String(i));
+		}
+		
 		setDistanceAndTime_byPos(targetPos, allPos);
 		
+		sessionStorage.removeItem("displayingDistances_finalHref");
 		sessionStorage.removeItem("displayingDistances_current");
 		sessionStorage.removeItem("displayingDistances_total");
 	}
@@ -1023,6 +1026,13 @@ function onClick_buttonChangePosition(){
 			inputVcValue = 10;
 		
 		sessionStorage.setItem("displayingDistances_vc", String(inputVcValue));
+		sessionStorage.setItem("displayingDistances_finalHref", document.location.href);
+		
+		var listOfPlayersTr = getPlayersTrMembers();
+		
+		for(var i=0; i < listOfPlayersTr.length; ++i){
+			sessionStorage.setItem("displayingDistancesPlayers_" + String(i), getElementsByTagNameInList(getElementsByTagNameInList(listOfPlayersTr[i].childNodes, "TD")[3].childNodes, "A")[0].textContent);
+		}
 		
 		document.location.href ="jeu.php?page=joueur&pseudo=" + inputValue;
 	}
