@@ -400,7 +400,7 @@ function page_playerProfile(){
 		
 		if(Number(sessionStorage.getItem("displayingDistances_current"))+1 === Number(sessionStorage.getItem("displayingDistances_total")))
 			document.location.href = sessionStorage.getItem("displayingDistances_finalHref");
-		else{
+		else {
 			sessionStorage.setItem("displayingDistances_current", String(Number(sessionStorage.getItem("displayingDistances_current"))+1));
 			document.location.href = "jeu.php?page=joueur&pseudo=" + sessionStorage.getItem("displayingDistancesPlayers_" + String(sessionStorage.getItem("displayingDistances_current"))));
 		}
