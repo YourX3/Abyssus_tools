@@ -15,7 +15,7 @@ function init(){
 	Number.prototype.nombreFormate = function(decimales,signe,separateurMilliers){var _sNombre=String(this),i,_sRetour="",_sDecimales="";if(decimales==undefined)decimales=2;if(signe==undefined)signe='';if(separateurMilliers==undefined)separateurMilliers=' ';function separeMilliers(sNombre){var sRetour="";while(sNombre.length%3!=0){sNombre="0"+sNombre}for(i=0;i<sNombre.length;i+=3){if(i==sNombre.length-1)separateurMilliers='';sRetour+=sNombre.substr(i,3)+separateurMilliers}while(sRetour.substr(0,1)=="0"){sRetour=sRetour.substr(1)}return sRetour.substr(0,sRetour.lastIndexOf(separateurMilliers))}if(_sNombre==0){_sRetour=0}else{if(_sNombre.indexOf('.')==-1){for(i=0;i<decimales;i++){_sDecimales+="0"}_sRetour=separeMilliers(_sNombre)+signe+_sDecimales}else{var sDecimalesTmp=(_sNombre.substr(_sNombre.indexOf('.')+1));if(sDecimalesTmp.length>decimales){var nDecimalesManquantes=sDecimalesTmp.length-decimales;var nDiv=1;for(i=0;i<nDecimalesManquantes;i++){nDiv*=10}_sDecimales=Math.round(Number(sDecimalesTmp)/nDiv)}_sRetour=separeMilliers(_sNombre.substr(0,_sNombre.indexOf('.')))+String(signe)+_sDecimales}}return _sRetour}
 	
 	var textVersion = document.createElement('none');
-	textVersion.innerHTML = '<font size="1" color="white">Abyssus Tools V 0.5 __ Last Updtate 12/06/2018 12h49 </font>';
+	textVersion.innerHTML = '<font size="1" color="white">Abyssus Tools V 0.6 __ Last Updtate 13/06/2018 22h08 </font>';
 	document.getElementById('footer').insertBefore(textVersion, document.getElementById('footer').childNodes[0]);
 	
 	// fin de l'URL : sur https://s1.abyssus.games/jeu.php?page=armee : ?page=armee
@@ -237,19 +237,15 @@ function onClick_buttonFloods(){
 //                        PAGE ARMEE                     //
 
 function armyPage(){
-	if(readCookie("armyReplacing") === null){		
-		/*var alignText = document.createElement('none');
-		alignText.innerHTML = '<text>/ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . </text>';
-		document.getElementsByTagName('center')[0].insertBefore(alignText, document.getElementsByTagName('table')[1]);*/
-
-		var but_replaceArmy = document.createElement('none');
-		but_replaceArmy.innerHTML = '<button onclick="onClickButtonReplaceArmy()">Placer anti-sonde</button>';
-		but_replaceArmy.align = "right";
-		document.getElementsByTagName('center')[0].insertBefore(but_replaceArmy, document.getElementsByTagName('table')[1]);
-
-		var antiSondeText = document.createElement('none');
-		antiSondeText.innerHTML = '<text> __ Anti sonde : </text>';
-		document.getElementsByTagName('center')[0].insertBefore(antiSondeText, document.getElementsByTagName('table')[1]);
+	if(readCookie("armyReplacing") === null){
+		var insertContainer = document.getElementsByTagName('center')[0];
+		var insertPlace = document.getElementsByTagName('table')[1];
+	
+		var divAlignRight = document.createElement("div");
+		divAlignRight.align = "center";
+		
+		divAlignRight.innerHTML += '<button onclick="onClickButtonReplaceArmy()">Placer anti-sonde</button>';
+		divAlignRight.appendChild(document.createTextNode(" _ Anti-sonde : "));
 
 		var antiSondeValue;
 		if(readCookie("antiSondeValue") === null){
@@ -258,15 +254,14 @@ function armyPage(){
 		else{
 			antiSondeValue = readCookie("antiSondeValue");
 		}
+		divAlignRight.innerHTML += '<input type="text" id="antiSondeInput" class="text" value="' + antiSondeValue + '" style="font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; font-size: inherit; line-height: inherit; font-family: inherit; color: rgb(0, 0, 102); text-align: center; outline: none; padding: 5px; width: 120px; cursor: text;">';
 
-		var antiSondeInput = document.createElement('none');
-		antiSondeInput.innerHTML = '<input type="text" name="antiSondeInput" class="text" value="' + antiSondeValue + '" style="font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; font-size: inherit; line-height: inherit; font-family: inherit; color: rgb(0, 0, 102); text-align: center; outline: none; padding: 5px; width: 120px; cursor: text;">';
-
-
-		$(antiSondeInput).on('focusout', function(){
+		$('#antiSondeInput').on('focusout', function(){
 		    onFocusOut_antiSondeInput();
 		});
-		document.getElementsByTagName('center')[0].insertBefore(antiSondeInput, document.getElementsByTagName('table')[1]);
+		
+		divAlignRight.appendChild(createLine());
+		insertContainer.insertBefore(divAlignRight, insertPlace);
 	}
 	else if(readCookie("armyReplacing") === "1"){
 		createCookie("armyReplacing", "2", 5);
@@ -374,24 +369,36 @@ function onClickButtonReplaceArmy(){
 	
 	
 function page_playerProfile(){
-	getElementByInnerText('a', "Attaquer le terrain").onclick = function(){onclick_tmAttack()};
-				
-	var playerTM = document.getElementsByTagName('tbody')[1].childNodes[5].childNodes[3].textContent.split('(')[0];
-	playerTM = playerTM.substr(0, playerTM.length-1);
-	var maxTM = (Number(playerTM.replace(/\s/g, ''))+1).nombreFormate(0);
+	if(sessionStorage.getItem("displayingDistances_total") === null){
+		getElementByInnerText('a', "Attaquer le terrain").onclick = function(){onclick_tmAttack()};		
+		var playerTM = document.getElementsByTagName('tbody')[1].childNodes[5].childNodes[3].textContent.split('(')[0];
+		playerTM = playerTM.substr(0, playerTM.length-1);
+		var maxTM = (Number(playerTM.replace(/\s/g, ''))+1).nombreFormate(0);
 
-	$.post('ajax/ennemies.php', {mintdc:playerTM, maxtdc:maxTM, page:1, tri:'distance', sens:'asc', guerre:0, paix:0, ally:0}, function(data){
-		var listOfResults = setPlayerTravelTime(data, "playerName:"+document.getElementsByTagName('h1')[0].textContent);
-		if(listOfResults === null){
-			document.getElementsByTagName('tbody')[1].childNodes[3].childNodes[3].textContent += "\n" + " Distance et temps de Trajet inconnus..";
-		}
-		else{
-			var distance = listOfResults[3];
-			var time = listOfResults[4];
+		$.post('ajax/ennemies.php', {mintdc:playerTM, maxtdc:maxTM, page:1, tri:'distance', sens:'asc', guerre:0, paix:0, ally:0}, function(data){
+			var listOfResults = setPlayerTravelTime(data, "playerName:"+document.getElementsByTagName('h1')[0].textContent);
+			if(listOfResults === null){
+				document.getElementsByTagName('tbody')[1].childNodes[3].childNodes[3].textContent += "\n" + " Distance et temps de Trajet inconnus..";
+			}
+			else{
+				var distance = listOfResults[3];
+				var time = listOfResults[4];
 
-			document.getElementsByTagName('tbody')[1].childNodes[3].childNodes[3].textContent += "\n" + "Distance: " + distance + " _Temps de trajet: " + time;
-		}
-	});
+				document.getElementsByTagName('tbody')[1].childNodes[3].childNodes[3].textContent += "\n" + "Distance: " + distance + " _Temps de trajet: " + time;
+			}
+		});
+	}
+	else{
+		var locationText = removeSpaces(document.getElementsByTagName('tbody')[1].childNodes[3].childNodes[3].textContent);
+		
+		var posX = locationText.split(":")[1];
+		posX = posX.substr(0, posX.length-1);
+		
+		var posY = locationText.split(":")[2];
+		
+		sessionStorage.setItem("displayingDistances_" + sessionStorage.getItem("displayingDistances_current"), posX +"_" + posY);
+		document.location.href = "jeu.php?page=listemembre";
+	}
 }
 
 function setPlayerTravelTime(data, constraint = "none"){
@@ -816,30 +823,148 @@ function page_labo(){
 //                         PAGE MEMBRES                           //
 
 function page_membres(){
-	var columnDistance = document.createElement('td');
-	columnDistance.innerHTML = '<td align="center"><td align="center"><a onclick="onClick_membersDistanceAsc()"><img src="images/asc.png" style="vertical-align: middle;"></a><strong> Distance </strong><a onclick="onClick_membersDistanceDesc()"><img src="images/desc.png" style="vertical-align: middle;"></a></td></td>';
-	columnDistance.align ="center";
-	document.getElementsByTagName('tbody')[1].childNodes[1].appendChild(columnDistance);
-	
-	
-	var columnTime = document.createElement('td');
-	columnTime.innerHTML = '<td align="center"><td align="center"><a onclick="onClick_membersTimeAsc()"><img src="images/asc.png" style="vertical-align: middle;"></a><strong> Temps de trajet </strong><a onclick="onClick_membersTimeDesc()"><img src="images/desc.png" style="vertical-align: middle;"></a></td></td>';
-	columnTime.align ="center";
-	document.getElementsByTagName('tbody')[1].childNodes[1].appendChild(columnTime);
-	
-	var insertContainer = document.getElementsByTagName("center")[0];
-	var insertPlace = document.getElementById("tableaumembre");
-	
-	var divChangePosition = document.createElement('div');
-	divChangePosition.align = "right";
-	
-	var buttonChangePosition = document.createElement('button');
-	buttonChangePosition.textContent = "Se placer en temps que ";
-	divChangePosition.appendChild(buttonChangePosition);
-	
-	createCookie("playerListNumber", "0", 5);
-	setDistanceAndTime_Members();
+	if(sessionStorage.getItem("displayingDistances_total") === null){
+		var columnDistance = document.createElement('td');
+		columnDistance.innerHTML = '<td align="center"><td align="center"><a onclick="onClick_membersDistanceAsc()"><img src="images/asc.png" style="vertical-align: middle;"></a><strong> Distance </strong><a onclick="onClick_membersDistanceDesc()"><img src="images/desc.png" style="vertical-align: middle;"></a></td></td>';
+		columnDistance.align ="center";
+		document.getElementsByTagName('tbody')[1].childNodes[1].appendChild(columnDistance);
+
+
+		var columnTime = document.createElement('td');
+		columnTime.innerHTML = '<td align="center"><td align="center"><a onclick="onClick_membersTimeAsc()"><img src="images/asc.png" style="vertical-align: middle;"></a><strong> Temps de trajet </strong><a onclick="onClick_membersTimeDesc()"><img src="images/desc.png" style="vertical-align: middle;"></a></td></td>';
+		columnTime.align ="center";
+		document.getElementsByTagName('tbody')[1].childNodes[1].appendChild(columnTime);
+
+		var insertContainer = document.getElementById("bloc");
+		var insertPlace = document.getElementById("tableaumembre");
+
+		var divChangePosition = document.createElement('div');
+		divChangePosition.align = "right";
+
+		divChangePosition.innerHTML += '<button onclick="onClick_buttonChangePosition()">Se placer en temps que </button>';
+		divChangePosition.innerHTML += '<input type="text" id="inputPlayerName" class="text" value="" style="font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; font-size: inherit; line-height: inherit; font-family: inherit; color: rgb(0, 0, 102); text-align: center; outline: none; padding: 5px; width: 120px; cursor: text;">';
+
+		divChangePosition.appendChild(document.createTextNode(" __ VC: "));
+		divChangePosition.innerHTML += '<input type="text" id="inputVC" class="text" value="10" style="font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; font-size: inherit; line-height: inherit; font-family: inherit; color: rgb(0, 0, 102); text-align: center; outline: none; padding: 5px; width: 70px; cursor: text;">';
+		
+		insertContainer.insertBefore(divChangePosition, insertPlace);
+		insertContainer.insertBefore(createLine(), insertPlace);
+
+		createCookie("playerListNumber", "0", 5);
+		setDistanceAndTime_Members();
+	}
+	else if(sessionStorage.getItem("displayingDistances_current") < sessionStorage.getItem("displayingDistances_total")-1){
+		var nbCurrentDisplaying = Number(sessionStorage.getItem("displayingDistances_current"))+1;
+		var targetTR = getPlayersTrMembers()[nbCurrentDisplaying];
+		
+		var href = getElementsByTagNameInList(getElementsByTagNameInList(targetTR.childNodes, "TD")[3].childNodes, "A")[0].href;
+		sessionStorage.setItem("displayingDistances_current", nbCurrentDisplaying);
+		document.location.href = href;
+	}
+	else {
+		var columnDistance = document.createElement('td');
+		columnDistance.innerHTML = '<td align="center"><td align="center"><a onclick="onClick_membersDistanceAsc()"><img src="images/asc.png" style="vertical-align: middle;"></a><strong> Distance </strong><a onclick="onClick_membersDistanceDesc()"><img src="images/desc.png" style="vertical-align: middle;"></a></td></td>';
+		columnDistance.align ="center";
+		document.getElementsByTagName('tbody')[1].childNodes[1].appendChild(columnDistance);
+
+
+		var columnTime = document.createElement('td');
+		columnTime.innerHTML = '<td align="center"><td align="center"><a onclick="onClick_membersTimeAsc()"><img src="images/asc.png" style="vertical-align: middle;"></a><strong> Temps de trajet </strong><a onclick="onClick_membersTimeDesc()"><img src="images/desc.png" style="vertical-align: middle;"></a></td></td>';
+		columnTime.align ="center";
+		document.getElementsByTagName('tbody')[1].childNodes[1].appendChild(columnTime);
+
+		var insertContainer = document.getElementById("bloc");
+		var insertPlace = document.getElementById("tableaumembre");
+
+		var divChangePosition = document.createElement('div');
+		divChangePosition.align = "right";
+
+		divChangePosition.innerHTML += '<button onclick="onClick_buttonChangePosition()">Se placer en temps que </button>';
+		divChangePosition.innerHTML += '<input type="text" id="inputPlayerName" class="text" value="" style="font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; font-size: inherit; line-height: inherit; font-family: inherit; color: rgb(0, 0, 102); text-align: center; outline: none; padding: 5px; width: 120px; cursor: text;">';
+
+		divChangePosition.appendChild(document.createTextNode(" __ VC: "));
+		divChangePosition.innerHTML += '<input type="text" id="inputVC" class="text" value="10" style="font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; font-size: inherit; line-height: inherit; font-family: inherit; color: rgb(0, 0, 102); text-align: center; outline: none; padding: 5px; width: 70px; cursor: text;">';
+		
+		
+		insertContainer.insertBefore(divChangePosition, insertPlace);
+		insertContainer.insertBefore(createLine(), insertPlace);
+		
+		var targetPos = sessionStorage.getItem("displayingDistances_-1");
+		var allPos = [];
+		
+		for(var i=0; i < String(sessionStorage.getItem("displayingDistances_total")); ++i){
+			if(sessionStorage.getItem("displayingDistances_" + String(i)) !== null){
+				allPos.push(sessionStorage.getItem("displayingDistances_" + String(i)));
+				sessionStorage.removeItem("displayingDistances_" + String(i));
+			}
+		}
+		
+		setDistanceAndTime_byPos(targetPos, allPos);
+		
+		sessionStorage.removeItem("displayingDistances_current");
+		sessionStorage.removeItem("displayingDistances_total");
+	}
 }
+
+function setDistanceAndTime_byPos(targetPos, playersPos){
+	var listOfPlayersTr = getPlayersTrMembers();
+	var posTargetX = targetPos.split("_")[0];
+	var posTargetY = targetPos.split("_")[1];
+	
+	var vc = Number(sessionStorage.getItem("displayingDistances_vc"));
+	
+	for(var i=0; i < listOfPlayersTr.length; ++i){
+		var targetPlayer = listOfPlayersTr[i];
+		var posPlayerX = playersPos[i].split("_")[0];
+		var posPlayerY = playersPos[i].split("_")[1];
+		
+		var distance = String(Math.ceil(Math.sqrt((Number(posPlayerX) - Number(posTargetX)) * (Number(posPlayerX) - Number(posTargetX)) + (Number(posPlayerY) - Number(posTargetY)) * (Number(posPlayerY) - Number(posTargetY)))));
+		var time = Math.ceil(Math.round((24 * 3600 * ((1 - Math.exp(-(Math.sqrt(Math.pow(Math.abs(posTargetX - posPlayerX), 2) + Math.pow(Math.abs(posTargetY - posPlayerY), 2))) / 350)) * 7.375 * Math.pow(0.9, vc)))));
+
+		time = displayingTime(time);
+		
+		var distanceTd = document.createElement('td');
+		distanceTd.align = "center";
+		distanceTd.textContent = distance;
+		targetPlayer.appendChild(distanceTd);
+
+		var timeTd = document.createElement('td');
+		timeTd.align = "center";
+		timeTd.textContent = time;
+		targetPlayer.appendChild(timeTd);
+	}
+	
+}
+
+function displayingTime(time){
+	var result = "";
+	
+	if(time === 0){
+		result = "0m 0s";
+	}
+	else {
+		if(Math.floor(time / 86400) > 0){
+			result = String(Math.floor(time / 86400)) + "j ";
+			time -= Math.floor(time / 86400) * 86400;
+		}
+
+		if(Math.floor(time / 3600) > 0){
+			result += String(Math.floor(time / 3600)) + "h ";
+			time -= Math.floor(time / 3600) * 3600;
+		}
+
+		if(Math.floor(time / 60) > 0){
+			result += String(Math.floor(time / 60)) + "m ";
+			time -= Math.floor(time / 60) * 60;
+		}
+
+		if(time > 0){
+			result += String(time) + "s";
+		}
+	}
+	return result;
+}
+
 
 function setDistanceAndTime_Members(){
 	var listOfPlayersTr = getPlayersTrMembers();
@@ -883,6 +1008,23 @@ function setDistanceAndTime_Members(){
 			createCookie("playerListNumber", String(Number(readCookie("playerListNumber")) +1), 5);
 			setDistanceAndTime_Members();
 		});
+	}
+}
+
+function onClick_buttonChangePosition(){
+	var inputValue = document.getElementById('inputPlayerName').value;
+	
+	if(inputValue != ""){
+		sessionStorage.setItem("displayingDistances_total", String(getPlayersTrMembers().length));
+		sessionStorage.setItem("displayingDistances_current", "-1");
+		
+		var inputVcValue = Number(document.getElementById("inputVC").value);
+		if(isNaN(inputVcValue))
+			inputVcValue = 10;
+		
+		sessionStorage.setItem("displayingDistances_vc", String(inputVcValue));
+		
+		document.location.href ="jeu.php?page=joueur&pseudo=" + inputValue;
 	}
 }
 
