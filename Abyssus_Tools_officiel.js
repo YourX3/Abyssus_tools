@@ -517,7 +517,7 @@ function page_ally(){
 		columnTime.align ="center";
 		document.getElementsByTagName('tbody')[2].childNodes[1].appendChild(columnTime);
 
-		var insertContainer = document.getElementById("center");
+		var insertContainer = document.getElementsByTagName("center")[0];
 		var insertPlace = document.getElementsByTagName("h3")[1];
 
 		var divChangePosition = document.createElement('div');
