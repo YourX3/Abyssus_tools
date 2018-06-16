@@ -537,6 +537,17 @@ function page_ally(){
 		setDistanceAndTime_Ally();
 	}
 	else {
+		var columnDistance = document.createElement('td');
+		columnDistance.innerHTML = '<td align="center"><td align="center"><a onclick="onclick_allyDistanceAsc()"><img src="images/asc.png" style="vertical-align: middle;"></a><strong> Distance </strong><a onclick="onclick_allyDistanceDesc()"><img src="images/desc.png" style="vertical-align: middle;"></a></td></td>';
+		columnDistance.align ="center";
+		document.getElementsByTagName('tbody')[2].childNodes[1].appendChild(columnDistance);
+
+
+		var columnTime = document.createElement('td');
+		columnTime.innerHTML = '<td align="center"><td align="center"><a onclick="onclick_allyTimeAsc()"><img src="images/asc.png" style="vertical-align: middle;"></a><strong> Temps de trajet </strong><a onclick="onclick_allyTimeDesc()"><img src="images/desc.png" style="vertical-align: middle;"></a></td></td>';
+		columnTime.align ="center";
+		document.getElementsByTagName('tbody')[2].childNodes[1].appendChild(columnTime);
+		
 		var insertContainer = document.getElementsByTagName("center")[0];
 		var insertPlace = document.getElementsByTagName("h3")[1];
 
