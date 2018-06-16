@@ -378,13 +378,13 @@ function page_playerProfile(){
 		$.post('ajax/ennemies.php', {mintdc:playerTM, maxtdc:maxTM, page:1, tri:'distance', sens:'asc', guerre:0, paix:0, ally:0}, function(data){
 			var listOfResults = setPlayerTravelTime(data, "playerName:"+document.getElementsByTagName('h1')[0].textContent);
 			if(listOfResults === null){
-				document.getElementsByTagName('tbody')[1].childNodes[3].childNodes[3].textContent += "\r" + " Distance et temps de Trajet inconnus..";
+				document.getElementsByTagName('tbody')[1].childNodes[3].childNodes[3].textContent += "\r" + " ____________ Distance et temps de Trajet inconnus..";
 			}
 			else{
 				var distance = listOfResults[3];
 				var time = listOfResults[4];
 	
-				document.getElementsByTagName('tbody')[1].childNodes[3].childNodes[3].textContent += "\r" + "Distance: " + distance + " _Temps de trajet: " + time;
+				document.getElementsByTagName('tbody')[1].childNodes[3].childNodes[3].textContent += "\r" + " ____________ Distance: " + distance + " _Temps de trajet: " + time;
 			}
 		});
 	}
