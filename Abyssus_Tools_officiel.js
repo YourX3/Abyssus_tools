@@ -66,11 +66,15 @@ function page_atk()
 		
 		var optiFlood_Elements = document.createElement('optiFlood');
 		optiFlood_Elements.innerHTML += input_innerHTML;
-		optiFlood_Elements.append(document.createTextNode(" ___ "));
+		optiFlood_Elements.append(createLine());
 		optiFlood_Elements.innerHTML += '<input id="checkBoxGhost" type="checkbox">';
 		optiFlood_Elements.append(document.createTextNode("Ghost ?"));
+		optiFlood_Elements.append(document.createTextNode(" ___ "));
+		optiFlood_Elements.innerHTML += '<input id="checkBoxMulti" type="checkbox">';
+		optiFlood_Elements.append(document.createTextNode("Multiflood"));
 		optiFlood_Elements.append(createLine());
 		optiFlood_Elements.append(document.createTextNode("Niveau Quête Poseidon: "));
+		
 		
 		var lvQuestvalue = "inconnue";
 		if(readCookie("poseidonQuestLv") != null){
@@ -152,71 +156,180 @@ function putAllUnitsToNull() {
 	document.getElementsByName('L')[0].data = 0;
 }
 
+
+function strToNumber_time(time){
+	if(time !== ""){
+		var listOfUnits = time.split(' ');
+		var total = 0;
+		if(listOfUnits.length === 4){
+			var dayNb = Number(listOfUnits[0].replace('j', ''));
+			var hourNb = Number(listOfUnits[1].replace('h', ''));
+			var minNb = Number(listOfUnits[2].replace('m', ''));
+			var secNb = Number(listOfUnits[3].replace('s', ''));
+
+			total = dayNb*86400 + hourNb*3600 + minNb*60 + secNb;
+		}
+		else if(listOfUnits.length === 3){
+			var hourNb = Number(listOfUnits[0].replace('h', ''));
+			var minNb = Number(listOfUnits[1].replace('m', ''));
+			var secNb = Number(listOfUnits[2].replace('s', ''));
+
+			total = hourNb*3600 + minNb*60 + secNb;
+		}
+		else{
+			var minNb = Number(listOfUnits[0].replace('m', ''));
+			var secNb = Number(listOfUnits[1].replace('s', ''));
+
+			total = minNb*60 + secNb;
+		}
+		return total;
+	}
+	return "inconnu";
+}
+
+
 function onClick_buttonFloods(){
 	var targetTM = Number(removeSpaces(document.getElementsByName('targetTM')[0].value));
-	var nbRem = Number(removeSpaces(document.getElementsByName('SJ')[0].value));
 	var playerTM = Number(removeSpaces(document.getElementsByTagName('span')[7].childNodes[1].data));
+	var nbRem = Number(removeSpaces(document.getElementsByName('SJ')[0].value));
+	
+	if(nbRem > 0 && !isNaN(targetTM)){
+		var currentAtks = document.getElementdByTagName("i");    
+		if(multi && currentAtks.length > 0){
+			var targetTM_new = Number(targetTM).nombreFormate(0);
+			var maxTM = (Number(targetTM_new.replace(/\s/g, ''))+1).nombreFormate(0);
+
+			$.post('ajax/ennemies.php', {mintdc:targetTM_new, maxtdc:maxTM, page:1, tri:'distance', sens:'asc', guerre:0, paix:0, ally:0}, function(data){
+				var listOfResults = setPlayerTravelTime(data, "playerName:"+document.getElementsByTagName('h1')[0].textContent);
+				if(listOfResults !== null){
+					var time = listOfResults[4];
+					time = strToNumber_time(time);
+
+					if(time !== "inconnu"){
+						var indexsOfAtks = [];
+						$(".restedans").each(function(index) {
+							var currentAtkTime = $(this).value;
+							currentAtkTime = currentAtkTime.split(" ");
+							var timeValue = "";
+							for(var i=currentAtkTime.length-1; i > 0; i-=2){
+								currentAtkTime[i-1] = currentAtkTime.replace(/\D/g,'');
+								
+								switch(i-1){
+									case 0: 
+										currentAtkTime[i-1] += "s";
+										break;
+										
+									case 1: 
+										currentAtkTime[i-1] += "m";
+										break;
+										
+									case 2: 
+										currentAtkTime[i-1] += "h";
+										break;
+										
+									case 3: 
+										currentAtkTime[i-1] += "j";
+										break;
+								}
+								timeValue += currentAtkTime[i-1] + " ";
+							}
+							if(strToNumber_time(timeValue) <= time){
+								indexsOfAtks.push(index);
+							}
+						});
+						for(var i=0; i < currentAtks.length; ++i){
+							if(indexsOfAtks.includes(i)){
+								var army = indexsOfAtks[i].childNodes[indexsOfAtks[i].childNodes.length-1];
+								army = removeAll_nonNbOrSpaces(army).split("  ");
+								
+								var totalBooty = 0;
+								for(var j = 0; j < army.length; ++j){
+									totalBooty += Number(removeSpaces(army[j]));
+								}
+								playerTM += totalBooty;
+							}
+						}
+					}
+				}
+			});
+		}
+		
+		optiFlood(playerTM, targetTM);
+	}
+}
+
+function removeAll_nonNbOrSpaces(str){
+	var result = "";
+	for(var i=0; i < str.length; ++i){
+		if(str[i] === "0" || str[i] === "1" || str[i] === "2" || str[i] === "3" || str[i] === "4" || str[i] === "5" || str[i] === "6" || str[i] === "7" || str[i] === "8" || str[i] === "9" || str[i] === " ")
+			result += str[i];
+	}
+	return result;
+}
+
+function optiFlood(playerTM, targetTM){
+	var nbRem = Number(removeSpaces(document.getElementsByName('SJ')[0].value));
 	var ghost = document.getElementById('checkBoxGhost').checked;
+	var multi = document.getElementById('checkBoxMulti').checked;
 	var poseidonQuestLv = Number(removeSpaces(document.getElementById('inputQuestLv').value));
 	if(isNaN(poseidonQuestLv))
 		poseidonQuestLv = 0;
-
-    if(nbRem > 0 && !isNaN(targetTM)){
-        var listOfAttaks = [];
+	
+	var listOfAttaks = [];
         var lastWasNotTwenty = false;
         var _end = false;
 	var totalFloods = 0;
 	var minMultiplier = 1/(2 + poseidonQuestLv/10 * 2);
 	
-        while(!_end){
-            var twentyPercents = Math.round(targetTM*0.2);
+	while(!_end){
+		var twentyPercents = Math.round(targetTM*0.2);
 
-            if(nbRem >= twentyPercents){
-                if(targetTM-twentyPercents > (playerTM+twentyPercents)* minMultiplier){
-			listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), String(twentyPercents)]);
-			nbRem -= twentyPercents;
-			targetTM -= twentyPercents;
-			playerTM += twentyPercents;
-			totalFloods += twentyPercents;
-                }
-                else if(!lastWasNotTwenty){
-			var value = Math.floor((targetTM-(minMultiplier*playerTM+1))*2/3);
-			listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), String(value)]);
-			nbRem -= value;
-			lastWasNotTwenty = true;
-			targetTM -= value;
-			playerTM += value;
-			totalFloods += value;
-                }
-                else{
-			if(ghost){
-				listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), "Ghost"]);
+		if(nbRem >= twentyPercents){
+			if(targetTM-twentyPercents > (playerTM+twentyPercents)* minMultiplier){
+				listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), String(twentyPercents)]);
+				nbRem -= twentyPercents;
+				targetTM -= twentyPercents;
+				playerTM += twentyPercents;
+				totalFloods += twentyPercents;
+			}
+			else if(!lastWasNotTwenty){
+				var value = Math.floor((targetTM-(minMultiplier*playerTM+1))*2/3);
+				listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), String(value)]);
+				nbRem -= value;
+				lastWasNotTwenty = true;
+				targetTM -= value;
+				playerTM += value;
+				totalFloods += value;
 			}
 			else{
-				listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), String(twentyPercents)]);
+				if(ghost){
+					listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), "Ghost"]);
+				}
+				else{
+					listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), String(twentyPercents)]);
+				}
+				nbRem -= twentyPercents;
+				_end = true;
+				targetTM -= twentyPercents;
+				playerTM += twentyPercents;
+				totalFloods += twentyPercents;
 			}
-			nbRem -= twentyPercents;
+		}
+		else{
+			listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), +String(nbRem)]);
+			playerTM += nbRem;
+			targetTM -= nbRem;
+			totalFloods += nbRem;
 			_end = true;
-			targetTM -= twentyPercents;
-			playerTM += twentyPercents;
-			totalFloods += twentyPercents;
-                }
-            }
-            else{
-            	listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), +String(nbRem)]);
-		playerTM += nbRem;
-		targetTM -= nbRem;
-		totalFloods += nbRem;
-            	_end = true;
-            }
-        }
+		}
+	}
 
 	createCookie("numberOfAttaks", String(listOfAttaks.length), 15);
 	createCookie("attakNum", "1", 15);
 	var textToAlert = "Nb d'attaques : " + String(listOfAttaks.length) + "\n";
 	for(var i=0; i < listOfAttaks.length; ++i){
-	    textToAlert += "Attaque " + String((listOfAttaks[i])[0]) + ": " + String((listOfAttaks[i])[1]) + "\n";
-	    createCookie(String((listOfAttaks[i])[0]), String((listOfAttaks[i])[1]), 15);
+	textToAlert += "Attaque " + String((listOfAttaks[i])[0]) + ": " + String((listOfAttaks[i])[1]) + "\n";
+	createCookie(String((listOfAttaks[i])[0]), String((listOfAttaks[i])[1]), 15);
 	}
 	textToAlert += "Total: " + String(totalFloods) + "\n" + "\n";
 	textToAlert += "Votre TM: " + String(playerTM) + "\n";
@@ -229,7 +342,6 @@ function onClick_buttonFloods(){
 	document.getElementsByName('SJ')[0].data = readCookie("Attaque_"+readCookie("attakNum"));
 	createCookie("attakNum", String(Number(readCookie("attakNum"))+1), 15);
 	$("input[value='Attaquer']").click();
-    }
 }
 
 
@@ -396,7 +508,7 @@ function page_playerProfile(){
 			sessionStorage.removeItem("displayingDistances_-1");
 			sessionStorage.removeItem("displayingDistances_finalHref");
 			sessionStorage.removeItem("displayingDistances_current");
-			sessionStorage.removeItem("displayingDistances_t
+			sessionStorage.removeItem("displayingDistances_total");
 		}
 		else {		
 			var playerTM = document.getElementsByTagName('tbody')[1].childNodes[5].childNodes[3].textContent.split('(')[0];
