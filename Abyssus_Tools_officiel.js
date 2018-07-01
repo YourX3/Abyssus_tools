@@ -194,7 +194,7 @@ function onClick_buttonFloods(){
 	var nbRem = Number(removeSpaces(document.getElementsByName('SJ')[0].value));
 	
 	if(nbRem > 0 && !isNaN(targetTM)){
-		var currentAtks = document.getElementdByTagName("i");    
+		var currentAtks = document.getElementsByTagName("i");    
 		if(multi && currentAtks.length > 0){
 			var targetTM_new = Number(targetTM).nombreFormate(0);
 			var maxTM = (Number(targetTM_new.replace(/\s/g, ''))+1).nombreFormate(0);
