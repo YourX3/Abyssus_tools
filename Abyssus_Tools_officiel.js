@@ -543,9 +543,6 @@ function page_playerProfile(){
 		
 		insertContainer.insertBefore(divChangePosition, insertPlace);
 		insertContainer.insertBefore(createLine(), insertPlace);
-
-		createCookie("playerListNumber", "0", 5);
-		setDistanceAndTime_Ally();
 	}
 	else{
 		var locationText = removeSpaces(document.getElementsByTagName('tbody')[1].childNodes[3].childNodes[3].textContent);
