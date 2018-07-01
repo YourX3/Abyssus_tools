@@ -369,24 +369,71 @@ function onClickButtonReplaceArmy(){
 	
 	
 function page_playerProfile(){
-	if(sessionStorage.getItem("displayingDistances_total") === null){
-		getElementByInnerText('a', "Attaquer le terrain").onclick = function(){onclick_tmAttack()};		
-		var playerTM = document.getElementsByTagName('tbody')[1].childNodes[5].childNodes[3].textContent.split('(')[0];
-		playerTM = playerTM.substr(0, playerTM.length-1);
-		var maxTM = (Number(playerTM.replace(/\s/g, ''))+1).nombreFormate(0);
+	if(sessionStorage.getItem("displayingDistances_total") === null || sessionStorage.getItem("displayingDistances_total") === "-2"){
+		getElementByInnerText('a', "Attaquer le terrain").onclick = function(){onclick_tmAttack()};
+		
+		if(sessionStorage.getItem("displayingDistances_total") === "-2") {
+			
+			var positionTarget sessionStorage.getItem("displayingDistances_-1");
+			
+			var posTargetX = positionTarget.split("_")[0];
+			var posTargetY = positionTarget.split("_")[1];
 
-		$.post('ajax/ennemies.php', {mintdc:playerTM, maxtdc:maxTM, page:1, tri:'distance', sens:'asc', guerre:0, paix:0, ally:0}, function(data){
-			var listOfResults = setPlayerTravelTime(data, "playerName:"+document.getElementsByTagName('h1')[0].textContent);
-			if(listOfResults === null){
-				document.getElementsByTagName('tbody')[1].childNodes[3].childNodes[3].textContent += "\r" + " ______________________ Distance et temps de Trajet inconnus..";
-			}
-			else{
-				var distance = listOfResults[3];
-				var time = listOfResults[4];
-	
-				document.getElementsByTagName('tbody')[1].childNodes[3].childNodes[3].textContent += "\r" + " ______________________ Distance: " + distance + " _Temps de trajet: " + time;
-			}
-		});
+			var vc = Number(sessionStorage.getItem("displayingDistances_vc"));
+
+
+			var locationText = removeSpaces(document.getElementsByTagName('tbody')[1].childNodes[3].childNodes[3].textContent);
+			var posX = locationText.split(":")[1];
+			posX = posX.substr(0, posX.length-1);
+			var posY = locationText.split(":")[2];
+
+			var distance = String(Math.ceil(Math.sqrt((Number(posX) - Number(posTargetX)) * (Number(posX) - Number(posTargetX)) + (Number(posY) - Number(posTargetY)) * (Number(posX) - Number(posTargetY)))));
+			var time = Math.ceil(Math.round((24 * 3600 * ((1 - Math.exp(-(Math.sqrt(Math.pow(Math.abs(posTargetX - posX), 2) + Math.pow(Math.abs(posTargetY - posY), 2))) / 350)) * 7.375 * Math.pow(0.9, vc)))));
+			time = displayingTime(time);
+			
+			document.getElementsByTagName('tbody')[1].childNodes[3].childNodes[3].textContent += "\r" + " ______________________ Distance: " + distance + " _Temps de trajet: " + time;
+			
+			sessionStorage.removeItem("displayingDistances_-1");
+			sessionStorage.removeItem("displayingDistances_finalHref");
+			sessionStorage.removeItem("displayingDistances_current");
+			sessionStorage.removeItem("displayingDistances_t
+		}
+		else {		
+			var playerTM = document.getElementsByTagName('tbody')[1].childNodes[5].childNodes[3].textContent.split('(')[0];
+			playerTM = playerTM.substr(0, playerTM.length-1);
+			var maxTM = (Number(playerTM.replace(/\s/g, ''))+1).nombreFormate(0);
+
+			$.post('ajax/ennemies.php', {mintdc:playerTM, maxtdc:maxTM, page:1, tri:'distance', sens:'asc', guerre:0, paix:0, ally:0}, function(data){
+				var listOfResults = setPlayerTravelTime(data, "playerName:"+document.getElementsByTagName('h1')[0].textContent);
+				if(listOfResults === null){
+					document.getElementsByTagName('tbody')[1].childNodes[3].childNodes[3].textContent += "\r" + " ______________________ Distance et temps de Trajet inconnus..";
+				}
+				else{
+					var distance = listOfResults[3];
+					var time = listOfResults[4];
+
+					document.getElementsByTagName('tbody')[1].childNodes[3].childNodes[3].textContent += "\r" + " ______________________ Distance: " + distance + " _Temps de trajet: " + time;
+				}
+			});
+		}
+		
+		var insertContainer = document.getElementsByTagName("center")[0];
+		var insertPlace = document.getElementsByTagName("table")[1];
+
+		var divChangePosition = document.createElement('div');
+
+		divChangePosition.innerHTML += '<button onclick="onClick_buttonChangePosition_profile()">Se placer en temps que </button>';
+		divChangePosition.innerHTML += '<input type="text" id="inputPlayerName" class="text" value="" style="font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; font-size: inherit; line-height: inherit; font-family: inherit; color: rgb(0, 0, 102); text-align: center; outline: none; padding: 5px; width: 120px; cursor: text;">';
+
+		divChangePosition.appendChild(document.createTextNode(" __ VC: "));
+		divChangePosition.innerHTML += '<input type="text" id="inputVC" class="text" value="10" style="font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; font-size: inherit; line-height: inherit; font-family: inherit; color: rgb(0, 0, 102); text-align: center; outline: none; padding: 5px; width: 70px; cursor: text;">';
+		
+		
+		insertContainer.insertBefore(createLine(), insertPlace);
+		insertContainer.insertBefore(divChangePosition, insertPlace);
+
+		createCookie("playerListNumber", "0", 5);
+		setDistanceAndTime_Ally();
 	}
 	else{
 		var locationText = removeSpaces(document.getElementsByTagName('tbody')[1].childNodes[3].childNodes[3].textContent);
@@ -398,7 +445,11 @@ function page_playerProfile(){
 		
 		sessionStorage.setItem("displayingDistances_" + sessionStorage.getItem("displayingDistances_current"), posX +"_" + posY);
 		
-		if(Number(sessionStorage.getItem("displayingDistances_current"))+1 === Number(sessionStorage.getItem("displayingDistances_total")))
+		if(sessionStorage.getItem("displayingDistances_total") === "-1"){
+			sessionStorage.setItem("displayingDistances_total", "-2");
+			document.location.href = sessionStorage.getItem("displayingDistances_finalHref");
+		}
+		else if(Number(sessionStorage.getItem("displayingDistances_current"))+1 === Number(sessionStorage.getItem("displayingDistances_total")))
 			document.location.href = sessionStorage.getItem("displayingDistances_finalHref");
 		else {
 			sessionStorage.setItem("displayingDistances_current", String(Number(sessionStorage.getItem("displayingDistances_current"))+1));
@@ -406,6 +457,32 @@ function page_playerProfile(){
 		}
 	}
 }
+
+function onClick_buttonChangePosition_profile(){
+	var inputValue = document.getElementById('inputPlayerName').value;
+	
+	if(inputValue != ""){
+		sessionStorage.setItem("displayingDistances_total", "-1");
+		sessionStorage.setItem("displayingDistances_current", "-1");
+		
+		var inputVcValue = Number(document.getElementById("inputVC").value);
+		if(isNaN(inputVcValue))
+			inputVcValue = 10;
+		
+		sessionStorage.setItem("displayingDistances_vc", String(inputVcValue));
+		sessionStorage.setItem("displayingDistances_finalHref", document.location.href);
+		
+		var listOfPlayersTr = getPlayersTr();
+		
+		for(var i=0; i < listOfPlayersTr.length; ++i){
+			sessionStorage.setItem("displayingDistancesPlayers_" + String(i), getElementsByTagNameInList(getElementsByTagNameInList(listOfPlayersTr[i].childNodes, "TD")[0].childNodes, "A")[0].textContent);
+		}
+		
+		document.location.href ="jeu.php?page=joueur&pseudo=" + inputValue;
+	}
+}
+
+
 
 function setPlayerTravelTime(data, constraint = "none"){
 	var dataSplited = data.split(/\r?\n/);
