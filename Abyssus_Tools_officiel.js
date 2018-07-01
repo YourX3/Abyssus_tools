@@ -1363,7 +1363,9 @@ function page_exploration(){
 			insertContainer.insertBefore(createLine(), insertPlace);
 			
 			document.getElementById("tm").value = readCookie("exploTm");
-			if(Number(readCookie("exploCurrent"))+1 === Number(readCookie("exploTotal"))){}
+			if(Number(readCookie("exploCurrent"))+1 === Number(readCookie("exploTotal"))){
+				$("#remplissage").click();
+			}
 			else {
 				var trList = getElementsByTagNameInList(document.getElementsByTagName('tbody')[1].childNodes, "TR");
 				
