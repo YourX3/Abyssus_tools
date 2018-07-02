@@ -216,19 +216,19 @@ function onClick_buttonFloods(){
 								currentAtkTime[i-1] = currentAtkTime[i-1].replace(/\D/g,'');
 								
 								switch(i-1){
-									case 0: 
+									case 1: 
 										currentAtkTime[i-1] += "s";
 										break;
 										
-									case 1: 
+									case 3: 
 										currentAtkTime[i-1] += "m";
 										break;
 										
-									case 2: 
+									case 5: 
 										currentAtkTime[i-1] += "h";
 										break;
 										
-									case 3: 
+									case 7: 
 										currentAtkTime[i-1] += "j";
 										break;
 								}
