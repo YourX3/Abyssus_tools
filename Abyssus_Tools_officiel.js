@@ -201,7 +201,7 @@ function onClick_buttonFloods(){
 			var maxTM = (Number(targetTM_new.replace(/\s/g, ''))+1).nombreFormate(0);
 
 			$.post('ajax/ennemies.php', {mintdc:targetTM_new, maxtdc:maxTM, page:1, tri:'distance', sens:'asc', guerre:0, paix:0, ally:0}, function(data){
-				var listOfResults = setPlayerTravelTime(data, "playerName:"+document.getElementsByTagName('h1')[0].textContent);
+				var listOfResults = setPlayerTravelTime(data);
 				if(listOfResults !== null){
 					var time = listOfResults[4];
 					time = strToNumber_time(time);
