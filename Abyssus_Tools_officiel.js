@@ -250,12 +250,13 @@ function onClick_buttonFloods(){
 								playerTM += totalBooty;
 							}
 						}
+						optiFlood(playerTM, targetTM);
 					}
 				}
 			});
 		}
-		
-		optiFlood(playerTM, targetTM);
+		else
+			optiFlood(playerTM, targetTM);
 	}
 }
 
