@@ -216,23 +216,23 @@ function onClick_buttonFloods(){
 								currentAtkTime[i-1] = currentAtkTime[i-1].replace(/\D/g,'');
 								
 								switch(i-1){
-									case 0: 
-										currentAtkTime[i-1] += "s";
+									case currentAtkTime.length-7: 
+										currentAtkTime[i-1] += "j";
 										break;
 										
-									case 2: 
-										currentAtkTime[i-1] += "m";
-										break;
-										
-									case 4: 
+									case currentAtkTime.length-5: 
 										currentAtkTime[i-1] += "h";
 										break;
 										
-									case 6: 
-										currentAtkTime[i-1] += "j";
+									case currentAtkTime.length-3: 
+										currentAtkTime[i-1] += "m";
+										break;
+										
+									case currentAtkTime.length-1: 
+										currentAtkTime[i-1] += "s";
 										break;
 								}
-								timeValue += currentAtkTime[i-1] + " ";
+								timeValue = currentAtkTime[i-1] + " " + timeValue;
 							}
 							if(strToNumber_time(timeValue) <= time){
 								indexsOfAtks.push(index);
