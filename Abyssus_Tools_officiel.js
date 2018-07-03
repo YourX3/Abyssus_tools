@@ -312,67 +312,74 @@ function optiFlood(playerTM, targetTM){
 	var totalFloods = 0;
 	var minMultiplier = 1/(2 + poseidonQuestLv/10 * 2);
 	
-	while(!_end){
-		var twentyPercents = Math.round(targetTM*0.2);
+	if(playerTM * minMultiplier < targetTM){
+		while(!_end){
+			var twentyPercents = Math.round(targetTM*0.2);
 
-		if(nbRem >= twentyPercents){
-			if(targetTM-twentyPercents > (playerTM+twentyPercents)* minMultiplier){
-				listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), String(twentyPercents)]);
-				nbRem -= twentyPercents;
-				targetTM -= twentyPercents;
-				playerTM += twentyPercents;
-				totalFloods += twentyPercents;
-			}
-			else if(!lastWasNotTwenty){
-				var value = Math.floor((targetTM-(minMultiplier*playerTM+1))*2/3);
-				listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), String(value)]);
-				nbRem -= value;
-				lastWasNotTwenty = true;
-				targetTM -= value;
-				playerTM += value;
-				totalFloods += value;
-			}
-			else{
-				if(ghost){
-					listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), "Ghost"]);
+			if(nbRem >= twentyPercents){
+				if(targetTM-twentyPercents > (playerTM+twentyPercents)* minMultiplier){
+					listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), String(twentyPercents)]);
+					nbRem -= twentyPercents;
+					targetTM -= twentyPercents;
+					playerTM += twentyPercents;
+					totalFloods += twentyPercents;
+				}
+				else if(!lastWasNotTwenty){
+					var value = Math.floor((targetTM-(minMultiplier*playerTM+1))*2/3);
+					listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), String(value)]);
+					nbRem -= value;
+					lastWasNotTwenty = true;
+					targetTM -= value;
+					playerTM += value;
+					totalFloods += value;
 				}
 				else{
-					listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), String(twentyPercents)]);
+					if(ghost){
+						listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), "Ghost"]);
+					}
+					else{
+						listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), String(twentyPercents)]);
+					}
+					nbRem -= twentyPercents;
+					_end = true;
+					targetTM -= twentyPercents;
+					playerTM += twentyPercents;
+					totalFloods += twentyPercents;
 				}
-				nbRem -= twentyPercents;
+			}
+			else{
+				listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), +String(nbRem)]);
+				playerTM += nbRem;
+				targetTM -= nbRem;
+				totalFloods += nbRem;
 				_end = true;
-				targetTM -= twentyPercents;
-				playerTM += twentyPercents;
-				totalFloods += twentyPercents;
 			}
 		}
-		else{
-			listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), +String(nbRem)]);
-			playerTM += nbRem;
-			targetTM -= nbRem;
-			totalFloods += nbRem;
-			_end = true;
+
+		createCookie("numberOfAttaks", String(listOfAttaks.length), 15);
+		createCookie("attakNum", "1", 15);
+		var textToAlert = "Nb d'attaques : " + String(listOfAttaks.length) + "\n";
+		for(var i=0; i < listOfAttaks.length; ++i){
+		textToAlert += "Attaque " + String((listOfAttaks[i])[0]) + ": " + String((listOfAttaks[i])[1]) + "\n";
+		createCookie(String((listOfAttaks[i])[0]), String((listOfAttaks[i])[1]), 15);
 		}
+		textToAlert += "Total: " + String(totalFloods) + "\n" + "\n";
+		textToAlert += "Votre TM: " + String(playerTM) + "\n";
+		textToAlert += "TM de la cible: " + String(targetTM);
+
+		alert(textToAlert);
+
+		putAllUnitsToNull();
+		document.getElementsByName('SJ')[0].value = readCookie("Attaque_"+readCookie("attakNum"));
+		document.getElementsByName('SJ')[0].data = readCookie("Attaque_"+readCookie("attakNum"));
+		createCookie("attakNum", String(Number(readCookie("attakNum"))+1), 15);
+		$("input[value='Attaquer']").click();
 	}
-
-	createCookie("numberOfAttaks", String(listOfAttaks.length), 15);
-	createCookie("attakNum", "1", 15);
-	var textToAlert = "Nb d'attaques : " + String(listOfAttaks.length) + "\n";
-	for(var i=0; i < listOfAttaks.length; ++i){
-	textToAlert += "Attaque " + String((listOfAttaks[i])[0]) + ": " + String((listOfAttaks[i])[1]) + "\n";
-	createCookie(String((listOfAttaks[i])[0]), String((listOfAttaks[i])[1]), 15);
+	else{
+		alert("Vous êtes hors de portée de votre cible !");
 	}
-	textToAlert += "Total: " + String(totalFloods) + "\n" + "\n";
-	textToAlert += "Votre TM: " + String(playerTM) + "\n";
-	textToAlert += "TM de la cible: " + String(targetTM);
-
-	alert(textToAlert);
-
-	putAllUnitsToNull();
-	document.getElementsByName('SJ')[0].value = readCookie("Attaque_"+readCookie("attakNum"));
-	document.getElementsByName('SJ')[0].data = readCookie("Attaque_"+readCookie("attakNum"));
-	createCookie("attakNum", String(Number(readCookie("attakNum"))+1), 15);
-	$("input[value='Attaquer']").click();
+	
+	
 }
 
 
