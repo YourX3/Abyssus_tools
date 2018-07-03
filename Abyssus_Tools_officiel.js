@@ -215,23 +215,53 @@ function onClick_buttonFloods(){
 							for(var i=currentAtkTime.length-1; i > 0; i-=2){
 								currentAtkTime[i-1] = currentAtkTime[i-1].replace(/\D/g,'');
 								
-								switch(i-1){
-									case currentAtkTime.length-8: 
-										currentAtkTime[i-1] += "j";
-										break;
-										
-									case currentAtkTime.length-6: 
-										currentAtkTime[i-1] += "h";
-										break;
-										
-									case currentAtkTime.length-4: 
-										currentAtkTime[i-1] += "m";
-										break;
-										
-									case currentAtkTime.length-2: 
-										currentAtkTime[i-1] += "s";
-										break;
+								if(currentAtkTime.length === 4){
+									switch(i){
+										case 0: 
+											currentAtkTime[i] += "m";
+											break;
+
+										case 2: 
+											currentAtkTime[i] += "s";
+											break;
+									}
 								}
+								else if(currentAtkTime.length === 6){
+									switch(i){
+										case 0: 
+											currentAtkTime[i] += "h";
+											break;
+
+										case 2: 
+											currentAtkTime[i] += "m";
+											break;
+
+										case 4: 
+											currentAtkTime[i] += "s";
+											break;
+									}
+								}
+								else if(currentAtkTime.length === 8){
+									switch(i){
+										case 0: 
+											currentAtkTime[i] += "j";
+											break;
+
+										case 2: 
+											currentAtkTime[i] += "h";
+											break;
+
+										case 4: 
+											currentAtkTime[i] += "m";
+											break;
+											
+										case 6: 
+											currentAtkTime[i] += "s";
+											break;
+									}
+								}
+								
+								
 								timeValue = currentAtkTime[i-1] + " " + timeValue;
 							}
 							if(strToNumber_time(timeValue) <= time){
