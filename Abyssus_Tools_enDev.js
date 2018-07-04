@@ -2,9 +2,9 @@
 // Desc        : Little tools for Abyssus Game("https://s1.abyssus.games/jeu.php")
 // Autor       : YourX3(youri03 in the game)
 // Creation    : 04/05/2018
-// Last update : 15/05/2018  20h16
+// Last update : 02/07/2018  20h16
 
-// Version     : 0.3
+// Version     : 0.7
 
 
 
@@ -15,7 +15,7 @@ function init(){
 	Number.prototype.nombreFormate = function(decimales,signe,separateurMilliers){var _sNombre=String(this),i,_sRetour="",_sDecimales="";if(decimales==undefined)decimales=2;if(signe==undefined)signe='';if(separateurMilliers==undefined)separateurMilliers=' ';function separeMilliers(sNombre){var sRetour="";while(sNombre.length%3!=0){sNombre="0"+sNombre}for(i=0;i<sNombre.length;i+=3){if(i==sNombre.length-1)separateurMilliers='';sRetour+=sNombre.substr(i,3)+separateurMilliers}while(sRetour.substr(0,1)=="0"){sRetour=sRetour.substr(1)}return sRetour.substr(0,sRetour.lastIndexOf(separateurMilliers))}if(_sNombre==0){_sRetour=0}else{if(_sNombre.indexOf('.')==-1){for(i=0;i<decimales;i++){_sDecimales+="0"}_sRetour=separeMilliers(_sNombre)+signe+_sDecimales}else{var sDecimalesTmp=(_sNombre.substr(_sNombre.indexOf('.')+1));if(sDecimalesTmp.length>decimales){var nDecimalesManquantes=sDecimalesTmp.length-decimales;var nDiv=1;for(i=0;i<nDecimalesManquantes;i++){nDiv*=10}_sDecimales=Math.round(Number(sDecimalesTmp)/nDiv)}_sRetour=separeMilliers(_sNombre.substr(0,_sNombre.indexOf('.')))+String(signe)+_sDecimales}}return _sRetour}
 	
 	var textVersion = document.createElement('none');
-	textVersion.innerHTML = '<font size="1" color="white">Abyssus Tools V 0.6 __ Last Updtate 15/06/2018 20h43 </font>';
+	textVersion.innerHTML = '<font size="1" color="white">Abyssus Tools V 0.7 __ Last Updtate 03/07/2018 11h22 </font>';
 	document.getElementById('footer').insertBefore(textVersion, document.getElementById('footer').childNodes[0]);
 	
 	// fin de l'URL : sur https://s1.abyssus.games/jeu.php?page=armee : ?page=armee
@@ -66,11 +66,15 @@ function page_atk()
 		
 		var optiFlood_Elements = document.createElement('optiFlood');
 		optiFlood_Elements.innerHTML += input_innerHTML;
-		optiFlood_Elements.append(document.createTextNode(" ___ "));
+		optiFlood_Elements.append(createLine());
 		optiFlood_Elements.innerHTML += '<input id="checkBoxGhost" type="checkbox">';
 		optiFlood_Elements.append(document.createTextNode("Ghost ?"));
+		optiFlood_Elements.append(document.createTextNode(" ___ "));
+		optiFlood_Elements.innerHTML += '<input id="checkBoxMulti" type="checkbox">';
+		optiFlood_Elements.append(document.createTextNode("Multiflood"));
 		optiFlood_Elements.append(createLine());
 		optiFlood_Elements.append(document.createTextNode("Niveau Quête Poseidon: "));
+		
 		
 		var lvQuestvalue = "inconnue";
 		if(readCookie("poseidonQuestLv") != null){
@@ -152,84 +156,231 @@ function putAllUnitsToNull() {
 	document.getElementsByName('L')[0].data = 0;
 }
 
+
+function strToNumber_time(time){
+	if(time !== ""){
+		var listOfUnits = time.split(' ');
+		var total = 0;
+		if(listOfUnits.length === 4){
+			var dayNb = Number(listOfUnits[0].replace('j', ''));
+			var hourNb = Number(listOfUnits[1].replace('h', ''));
+			var minNb = Number(listOfUnits[2].replace('m', ''));
+			var secNb = Number(listOfUnits[3].replace('s', ''));
+
+			total = dayNb*86400 + hourNb*3600 + minNb*60 + secNb;
+		}
+		else if(listOfUnits.length === 3){
+			var hourNb = Number(listOfUnits[0].replace('h', ''));
+			var minNb = Number(listOfUnits[1].replace('m', ''));
+			var secNb = Number(listOfUnits[2].replace('s', ''));
+
+			total = hourNb*3600 + minNb*60 + secNb;
+		}
+		else{
+			var minNb = Number(listOfUnits[0].replace('m', ''));
+			var secNb = Number(listOfUnits[1].replace('s', ''));
+
+			total = minNb*60 + secNb;
+		}
+		return total;
+	}
+	return "inconnu";
+}
+
+
 function onClick_buttonFloods(){
 	var targetTM = Number(removeSpaces(document.getElementsByName('targetTM')[0].value));
-	var nbRem = Number(removeSpaces(document.getElementsByName('SJ')[0].value));
 	var playerTM = Number(removeSpaces(document.getElementsByTagName('span')[7].childNodes[1].data));
+	var nbRem = Number(removeSpaces(document.getElementsByName('SJ')[0].value));
+	var multi = document.getElementById('checkBoxMulti').checked;
+	
+	if(nbRem > 0 && !isNaN(targetTM)){
+		var currentAtks = document.getElementsByTagName("i");
+		currentAtks = currentAtks.splice(1);
+		if(multi && currentAtks.length > 0){
+			var targetTM_new = Number(targetTM).nombreFormate(0);
+			var maxTM = (Number(targetTM_new.replace(/\s/g, ''))+1).nombreFormate(0);
+
+			$.post('ajax/ennemies.php', {mintdc:targetTM_new, maxtdc:maxTM, page:1, tri:'distance', sens:'asc', guerre:0, paix:0, ally:0}, function(data){
+				var listOfResults = setPlayerTravelTime(data);
+				if(listOfResults !== null){
+					var time = listOfResults[4];
+					time = strToNumber_time(time);
+
+					if(time !== "inconnu"){
+						var indexsOfAtks = [];
+						$(".restedans").each(function(index) {
+							var currentAtkTime = this.textContent;
+							currentAtkTime = currentAtkTime.split(" ");
+							var timeValue = "";
+							for(var i=currentAtkTime.length-2; i > -1; i-=2){
+								currentAtkTime[i] = currentAtkTime[i].replace(/\D/g,'');
+								
+								if(currentAtkTime.length === 4){
+									switch(i){
+										case 0: 
+											currentAtkTime[i] += "m ";
+											break;
+
+										case 2: 
+											currentAtkTime[i] += "s";
+											break;
+									}
+								}
+								else if(currentAtkTime.length === 6){
+									switch(i){
+										case 0: 
+											currentAtkTime[i] += "h ";
+											break;
+
+										case 2: 
+											currentAtkTime[i] += "m ";
+											break;
+
+										case 4: 
+											currentAtkTime[i] += "s";
+											break;
+									}
+								}
+								else if(currentAtkTime.length === 8){
+									switch(i){
+										case 0: 
+											currentAtkTime[i] += "j ";
+											break;
+
+										case 2: 
+											currentAtkTime[i] += "h ";
+											break;
+
+										case 4: 
+											currentAtkTime[i] += "m ";
+											break;
+											
+										case 6: 
+											currentAtkTime[i] += "s";
+											break;
+									}
+								}
+								
+								
+								timeValue = currentAtkTime[i] + timeValue;
+							}
+							if(strToNumber_time(timeValue) <= time){
+								indexsOfAtks.push(index);
+							}
+						});
+						for(var i=0; i < currentAtks.length; ++i){
+							if(indexsOfAtks.includes(i)){
+								var army = currentAtks[i].childNodes[currentAtks[i].childNodes.length-1].textContent;
+								army = removeAll_nonNbOrSpaces(army).split("  ");
+								
+								var totalBooty = 0;
+								for(var j = 0; j < army.length; ++j){
+									totalBooty += Number(removeSpaces(army[j]));
+								}
+								playerTM += totalBooty;
+							}
+						}
+					}
+				}
+				optiFlood(playerTM, targetTM);
+			});
+		}
+		else
+			optiFlood(playerTM, targetTM);
+	}
+}
+
+function removeAll_nonNbOrSpaces(str){
+	var result = "";
+	for(var i=0; i < str.length; ++i){
+		if(str[i] === "0" || str[i] === "1" || str[i] === "2" || str[i] === "3" || str[i] === "4" || str[i] === "5" || str[i] === "6" || str[i] === "7" || str[i] === "8" || str[i] === "9" || str[i] === " ")
+			result += str[i];
+	}
+	return result;
+}
+
+function optiFlood(playerTM, targetTM){
+	var nbRem = Number(removeSpaces(document.getElementsByName('SJ')[0].value));
 	var ghost = document.getElementById('checkBoxGhost').checked;
 	var poseidonQuestLv = Number(removeSpaces(document.getElementById('inputQuestLv').value));
 	if(isNaN(poseidonQuestLv))
 		poseidonQuestLv = 0;
-
-    if(nbRem > 0 && !isNaN(targetTM)){
-        var listOfAttaks = [];
+	
+	var listOfAttaks = [];
         var lastWasNotTwenty = false;
         var _end = false;
 	var totalFloods = 0;
 	var minMultiplier = 1/(2 + poseidonQuestLv/10 * 2);
 	
-        while(!_end){
-            var twentyPercents = Math.round(targetTM*0.2);
+	if(playerTM * minMultiplier < targetTM){
+		while(!_end){
+			var twentyPercents = Math.round(targetTM*0.2);
 
-            if(nbRem >= twentyPercents){
-                if(targetTM-twentyPercents > (playerTM+twentyPercents)* minMultiplier){
-			listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), String(twentyPercents)]);
-			nbRem -= twentyPercents;
-			targetTM -= twentyPercents;
-			playerTM += twentyPercents;
-			totalFloods += twentyPercents;
-                }
-                else if(!lastWasNotTwenty){
-			var value = Math.floor((targetTM-(minMultiplier*playerTM+1))*2/3);
-			listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), String(value)]);
-			nbRem -= value;
-			lastWasNotTwenty = true;
-			targetTM -= value;
-			playerTM += value;
-			totalFloods += value;
-                }
-                else{
-			if(ghost){
-				listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), "Ghost"]);
+			if(nbRem >= twentyPercents){
+				if(targetTM-twentyPercents > (playerTM+twentyPercents)* minMultiplier){
+					listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), String(twentyPercents)]);
+					nbRem -= twentyPercents;
+					targetTM -= twentyPercents;
+					playerTM += twentyPercents;
+					totalFloods += twentyPercents;
+				}
+				else if(!lastWasNotTwenty){
+					var value = Math.floor((targetTM-(minMultiplier*playerTM+1))*2/3);
+					listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), String(value)]);
+					nbRem -= value;
+					lastWasNotTwenty = true;
+					targetTM -= value;
+					playerTM += value;
+					totalFloods += value;
+				}
+				else{
+					if(ghost){
+						listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), "Ghost"]);
+					}
+					else{
+						listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), String(twentyPercents)]);
+					}
+					nbRem -= twentyPercents;
+					_end = true;
+					targetTM -= twentyPercents;
+					playerTM += twentyPercents;
+					totalFloods += twentyPercents;
+				}
 			}
 			else{
-				listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), String(twentyPercents)]);
+				listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), +String(nbRem)]);
+				playerTM += nbRem;
+				targetTM -= nbRem;
+				totalFloods += nbRem;
+				_end = true;
 			}
-			nbRem -= twentyPercents;
-			_end = true;
-			targetTM -= twentyPercents;
-			playerTM += twentyPercents;
-			totalFloods += twentyPercents;
-                }
-            }
-            else{
-            	listOfAttaks.push(["Attaque_"+String(listOfAttaks.length+1), +String(nbRem)]);
-		playerTM += nbRem;
-		targetTM -= nbRem;
-		totalFloods += nbRem;
-            	_end = true;
-            }
-        }
+		}
 
-	createCookie("numberOfAttaks", String(listOfAttaks.length), 15);
-	createCookie("attakNum", "1", 15);
-	var textToAlert = "Nb d'attaques : " + String(listOfAttaks.length) + "\n";
-	for(var i=0; i < listOfAttaks.length; ++i){
-	    textToAlert += "Attaque " + String((listOfAttaks[i])[0]) + ": " + String((listOfAttaks[i])[1]) + "\n";
-	    createCookie(String((listOfAttaks[i])[0]), String((listOfAttaks[i])[1]), 15);
+		createCookie("numberOfAttaks", String(listOfAttaks.length), 15);
+		createCookie("attakNum", "1", 15);
+		var textToAlert = "Nb d'attaques : " + String(listOfAttaks.length) + "\n";
+		for(var i=0; i < listOfAttaks.length; ++i){
+		textToAlert += "Attaque " + String((listOfAttaks[i])[0]) + ": " + String((listOfAttaks[i])[1]) + "\n";
+		createCookie(String((listOfAttaks[i])[0]), String((listOfAttaks[i])[1]), 15);
+		}
+		textToAlert += "Total: " + String(totalFloods) + "\n" + "\n";
+		textToAlert += "Votre TM: " + String(playerTM) + "\n";
+		textToAlert += "TM de la cible: " + String(targetTM);
+
+		alert(textToAlert);
+
+		putAllUnitsToNull();
+		document.getElementsByName('SJ')[0].value = readCookie("Attaque_"+readCookie("attakNum"));
+		document.getElementsByName('SJ')[0].data = readCookie("Attaque_"+readCookie("attakNum"));
+		createCookie("attakNum", String(Number(readCookie("attakNum"))+1), 15);
+		$("input[value='Attaquer']").click();
 	}
-	textToAlert += "Total: " + String(totalFloods) + "\n" + "\n";
-	textToAlert += "Votre TM: " + String(playerTM) + "\n";
-	textToAlert += "TM de la cible: " + String(targetTM);
-
-	alert(textToAlert);
-
-	putAllUnitsToNull();
-	document.getElementsByName('SJ')[0].value = readCookie("Attaque_"+readCookie("attakNum"));
-	document.getElementsByName('SJ')[0].data = readCookie("Attaque_"+readCookie("attakNum"));
-	createCookie("attakNum", String(Number(readCookie("attakNum"))+1), 15);
-	$("input[value='Attaquer']").click();
-    }
+	else{
+		alert("Vous êtes hors de portée de votre cible !");
+	}
+	
+	
 }
 
 
@@ -369,24 +520,68 @@ function onClickButtonReplaceArmy(){
 	
 	
 function page_playerProfile(){
-	if(sessionStorage.getItem("displayingDistances_total") === null){
-		getElementByInnerText('a', "Attaquer le terrain").onclick = function(){onclick_tmAttack()};		
-		var playerTM = document.getElementsByTagName('tbody')[1].childNodes[5].childNodes[3].textContent.split('(')[0];
-		playerTM = playerTM.substr(0, playerTM.length-1);
-		var maxTM = (Number(playerTM.replace(/\s/g, ''))+1).nombreFormate(0);
+	if(sessionStorage.getItem("displayingDistances_total") === null || sessionStorage.getItem("displayingDistances_total") === "-2"){
+		getElementByInnerText('a', "Attaquer le terrain").onclick = function(){onclick_tmAttack()};
+		
+		if(sessionStorage.getItem("displayingDistances_total") === "-2") {
+			
+			var positionTarget = sessionStorage.getItem("displayingDistances_-1");
+			
+			var posTargetX = positionTarget.split("_")[0];
+			var posTargetY = positionTarget.split("_")[1];
 
-		$.post('ajax/ennemies.php', {mintdc:playerTM, maxtdc:maxTM, page:1, tri:'distance', sens:'asc', guerre:0, paix:0, ally:0}, function(data){
-			var listOfResults = setPlayerTravelTime(data, "playerName:"+document.getElementsByTagName('h1')[0].textContent);
-			if(listOfResults === null){
-				document.getElementsByTagName('tbody')[1].childNodes[3].childNodes[3].textContent += "\r" + " ______________________ Distance et temps de Trajet inconnus..";
-			}
-			else{
-				var distance = listOfResults[3];
-				var time = listOfResults[4];
-	
-				document.getElementsByTagName('tbody')[1].childNodes[3].childNodes[3].textContent += "\r" + " ______________________ Distance: " + distance + " _Temps de trajet: " + time;
-			}
-		});
+			var vc = Number(sessionStorage.getItem("displayingDistances_vc"));
+
+
+			var locationText = removeSpaces(document.getElementsByTagName('tbody')[1].childNodes[3].childNodes[3].textContent);
+			var posX = locationText.split(":")[1];
+			posX = posX.substr(0, posX.length-1);
+			var posY = locationText.split(":")[2];
+
+			var distance = String(Math.ceil(Math.sqrt((Number(posX) - Number(posTargetX)) * (Number(posX) - Number(posTargetX)) + (Number(posY) - Number(posTargetY)) * (Number(posX) - Number(posTargetY)))));
+			var time = Math.ceil(Math.round((24 * 3600 * ((1 - Math.exp(-(Math.sqrt(Math.pow(Math.abs(posTargetX - posX), 2) + Math.pow(Math.abs(posTargetY - posY), 2))) / 350)) * 7.375 * Math.pow(0.9, vc)))));
+			time = displayingTime(time);
+			
+			document.getElementsByTagName('tbody')[1].childNodes[3].childNodes[3].textContent += "\r" + " ______________________ Distance: " + distance + " _Temps de trajet: " + time;
+			
+			sessionStorage.removeItem("displayingDistances_-1");
+			sessionStorage.removeItem("displayingDistances_finalHref");
+			sessionStorage.removeItem("displayingDistances_current");
+			sessionStorage.removeItem("displayingDistances_total");
+		}
+		else {		
+			var playerTM = document.getElementsByTagName('tbody')[1].childNodes[5].childNodes[3].textContent.split('(')[0];
+			playerTM = playerTM.substr(0, playerTM.length-1);
+			var maxTM = (Number(playerTM.replace(/\s/g, ''))+1).nombreFormate(0);
+
+			$.post('ajax/ennemies.php', {mintdc:playerTM, maxtdc:maxTM, page:1, tri:'distance', sens:'asc', guerre:0, paix:0, ally:0}, function(data){
+				var listOfResults = setPlayerTravelTime(data, "playerName:"+document.getElementsByTagName('h1')[0].textContent);
+				if(listOfResults === null){
+					document.getElementsByTagName('tbody')[1].childNodes[3].childNodes[3].textContent += "\r" + " ______________________ Distance et temps de Trajet inconnus..";
+				}
+				else{
+					var distance = listOfResults[3];
+					var time = listOfResults[4];
+
+					document.getElementsByTagName('tbody')[1].childNodes[3].childNodes[3].textContent += "\r" + " ______________________ Distance: " + distance + " _Temps de trajet: " + time;
+				}
+			});
+		}
+		
+		var insertContainer = document.getElementsByTagName("center")[0];
+		var insertPlace = document.getElementsByTagName("table")[1];
+
+		var divChangePosition = document.createElement('div');
+
+		divChangePosition.innerHTML += '<button onclick="onClick_buttonChangePosition_profile()">Se placer en temps que </button>';
+		divChangePosition.innerHTML += '<input type="text" id="inputPlayerName" class="text" value="" style="font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; font-size: inherit; line-height: inherit; font-family: inherit; color: rgb(0, 0, 102); text-align: center; outline: none; padding: 5px; width: 120px; cursor: text;">';
+
+		divChangePosition.appendChild(document.createTextNode(" __ VC: "));
+		divChangePosition.innerHTML += '<input type="text" id="inputVC" class="text" value="10" style="font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; font-size: inherit; line-height: inherit; font-family: inherit; color: rgb(0, 0, 102); text-align: center; outline: none; padding: 5px; width: 70px; cursor: text;">';
+		
+		
+		insertContainer.insertBefore(divChangePosition, insertPlace);
+		insertContainer.insertBefore(createLine(), insertPlace);
 	}
 	else{
 		var locationText = removeSpaces(document.getElementsByTagName('tbody')[1].childNodes[3].childNodes[3].textContent);
@@ -398,7 +593,11 @@ function page_playerProfile(){
 		
 		sessionStorage.setItem("displayingDistances_" + sessionStorage.getItem("displayingDistances_current"), posX +"_" + posY);
 		
-		if(Number(sessionStorage.getItem("displayingDistances_current"))+1 === Number(sessionStorage.getItem("displayingDistances_total")))
+		if(sessionStorage.getItem("displayingDistances_total") === "-1"){
+			sessionStorage.setItem("displayingDistances_total", "-2");
+			document.location.href = sessionStorage.getItem("displayingDistances_finalHref");
+		}
+		else if(Number(sessionStorage.getItem("displayingDistances_current"))+1 === Number(sessionStorage.getItem("displayingDistances_total")))
 			document.location.href = sessionStorage.getItem("displayingDistances_finalHref");
 		else {
 			sessionStorage.setItem("displayingDistances_current", String(Number(sessionStorage.getItem("displayingDistances_current"))+1));
@@ -406,6 +605,26 @@ function page_playerProfile(){
 		}
 	}
 }
+
+function onClick_buttonChangePosition_profile(){
+	var inputValue = document.getElementById('inputPlayerName').value;
+	
+	if(inputValue !== ""){
+		sessionStorage.setItem("displayingDistances_total", "-1");
+		sessionStorage.setItem("displayingDistances_current", "-1");
+		
+		var inputVcValue = Number(document.getElementById("inputVC").value);
+		if(isNaN(inputVcValue))
+			inputVcValue = 10;
+		
+		sessionStorage.setItem("displayingDistances_vc", String(inputVcValue));
+		sessionStorage.setItem("displayingDistances_finalHref", document.location.href);
+		
+		document.location.href ="jeu.php?page=joueur&pseudo=" + inputValue;
+	}
+}
+
+
 
 function setPlayerTravelTime(data, constraint = "none"){
 	var dataSplited = data.split(/\r?\n/);
@@ -1363,7 +1582,9 @@ function page_exploration(){
 			insertContainer.insertBefore(createLine(), insertPlace);
 			
 			document.getElementById("tm").value = readCookie("exploTm");
-			if(Number(readCookie("exploCurrent"))+1 === Number(readCookie("exploTotal"))){}
+			if(Number(readCookie("exploCurrent"))+1 === Number(readCookie("exploTotal"))){
+				$("#remplissage").click();
+			}
 			else {
 				var trList = getElementsByTagNameInList(document.getElementsByTagName('tbody')[1].childNodes, "TR");
 				
@@ -1380,6 +1601,9 @@ function page_exploration(){
 
 			insertContainer.insertBefore(createLine(), insertPlace);
 			insertContainer.insertBefore(createLine(), insertPlace);
+			
+			deleteCookie("exploCurrent");
+			deleteCookie("exploTotal");
 		}
 	}
 }
