@@ -196,8 +196,8 @@ function onClick_buttonFloods(){
 	
 	if(nbRem > 0 && !isNaN(targetTM)){
 		var currentAtks = document.getElementsByTagName("i");
-		currentAtks = currentAtks.splice(1);
 		if(multi && currentAtks.length > 0){
+			currentAtks = currentAtks.splice(1);
 			var targetTM_new = Number(targetTM).nombreFormate(0);
 			var maxTM = (Number(targetTM_new.replace(/\s/g, ''))+1).nombreFormate(0);
 
