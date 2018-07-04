@@ -195,7 +195,7 @@ function onClick_buttonFloods(){
 	var multi = document.getElementById('checkBoxMulti').checked;
 	
 	if(nbRem > 0 && !isNaN(targetTM)){
-		var currentAtks = document.getElementsByTagName("i");
+		var currentAtks = Array.from(document.getElementsByTagName("i"));
 		if(multi && currentAtks.length > 0){
 			currentAtks = currentAtks.splice(1);
 			var targetTM_new = Number(targetTM).nombreFormate(0);
