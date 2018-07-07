@@ -409,6 +409,10 @@ function armyPage(){
 		
 		divAlignRight.appendChild(createLine());
 		insertContainer.insertBefore(divAlignRight, insertPlace);
+		
+		$("#antiSondeInput").focusout(function() {
+			onFocusOut_antiSondeInput();
+		});
 	}
 	else if(readCookie("armyReplacing") === "1"){
 		createCookie("armyReplacing", "2", 5);
