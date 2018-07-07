@@ -405,10 +405,14 @@ function armyPage(){
 		else{
 			antiSondeValue = readCookie("antiSondeValue");
 		}
-		divAlignRight.innerHTML += '<input type="text" onfocusout="onFocusOut_antiSondeInput()" id="antiSondeInput" class="text" value="' + antiSondeValue + '" style="font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; font-size: inherit; line-height: inherit; font-family: inherit; color: rgb(0, 0, 102); text-align: center; outline: none; padding: 5px; width: 120px; cursor: text;">';
+		divAlignRight.innerHTML += '<input type="text"  id="antiSondeInput" class="text" value="' + antiSondeValue + '" style="font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; font-size: inherit; line-height: inherit; font-family: inherit; color: rgb(0, 0, 102); text-align: center; outline: none; padding: 5px; width: 120px; cursor: text;">';
 		
 		divAlignRight.appendChild(createLine());
 		insertContainer.insertBefore(divAlignRight, insertPlace);
+		
+		$("#antiSondeInput").focusout(function() {
+			onFocusOut_antiSondeInput();
+		});
 	}
 	else if(readCookie("armyReplacing") === "1"){
 		createCookie("armyReplacing", "2", 5);
