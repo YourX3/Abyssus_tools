@@ -483,7 +483,7 @@ function armyPage(){
 }
 
 function onFocusOut_antiSondeInput(){
-	var antiSondeInput_Value = document.getElementsByName("antiSondeInput")[0].value;
+	var antiSondeInput_Value = document.getElementById("antiSondeInput").value;
 	if(!rightAntiSonde(antiSondeInput_Value)){
 		antiSondeInput_Value = "10000 rem";
 		document.getElementsByName("antiSondeInput")[0].value = "10000 rem";
