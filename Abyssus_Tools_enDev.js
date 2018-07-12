@@ -1120,19 +1120,19 @@ function setRealAtkToArmy(firstTime){
 			else if(firstTime){
 				if(localStorage.getItem("ecaille") !== null){
 					var hpsValue_old = Number(removeSpaces(getElementsByTagNameInList(getElementsByTagNameInList(trs[1].childNodes, "TD")[0].childNodes, "SPAN")[0].textContent));
-					var hpsValue = hpsValue_old + hpsValue_old * (Number(localStorage.getItem("ecaille"))/10);
+					var hpsValue = Math.round(hpsValue_old + hpsValue_old * (Number(localStorage.getItem("ecaille"))/10));
 					hpsValue = " " + hpsValue.nombreFormate(0);
 					getElementsByTagNameInList(getElementsByTagNameInList(trs[1].childNodes, "TD")[0].childNodes, "SPAN")[0].textContent = hpsValue;
 				}
 				if(localStorage.getItem("morsure") !== null){
 					var atkValue_old = Number(removeSpaces(getElementsByTagNameInList(getElementsByTagNameInList(trs[2].childNodes, "TD")[0].childNodes, "SPAN")[0].textContent));
-					var atkValue = atkValue_old + atkValue_old * (Number(localStorage.getItem("morsure"))/10);
+					var atkValue = Math.round(atkValue_old + atkValue_old * (Number(localStorage.getItem("morsure"))/10));
 					atkValue = " " + atkValue.nombreFormate(0);
 					getElementsByTagNameInList(getElementsByTagNameInList(trs[2].childNodes, "TD")[0].childNodes, "SPAN")[0].textContent = atkValue;
 				}
 				if(localStorage.getItem("morsure") !== null){
 					var defValue_old = Number(removeSpaces(getElementsByTagNameInList(getElementsByTagNameInList(trs[3].childNodes, "TD")[0].childNodes, "SPAN")[0].textContent));
-					var defValue = defValue_old + defValue_old * (Number(localStorage.getItem("morsure"))/10);
+					var defValue = Math.round(defValue_old + defValue_old * (Number(localStorage.getItem("morsure"))/10));
 					defValue = " " + defValue.nombreFormate(0);
 					getElementsByTagNameInList(getElementsByTagNameInList(trs[3].childNodes, "TD")[0].childNodes, "SPAN")[0].textContent = defValue;
 				}
